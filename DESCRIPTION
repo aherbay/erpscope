@@ -1,13 +1,13 @@
 Package: erpscope
-Title: What the Package Does (One Line, Title Case)
+Title: Visualize ERPs in R
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Alexandre",
+           family = "Herbay",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "alexandre.herbay@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Functions to plot ERPs and run statistical models
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
 Encoding: UTF-8
