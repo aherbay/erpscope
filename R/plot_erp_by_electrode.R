@@ -10,7 +10,7 @@
 #' @param conditionToPlot column of the dataframe witht the condition to plot
 #'
 #' @return A PDF file containing the ERP plots
-
+#' @export
 
 
 plot_erp_by_electrode<- function( data,
@@ -49,21 +49,31 @@ plot_erp_by_electrode<- function( data,
               scale_y_reverse() + theme_light() +
               stat_summary(fun.y = mean, geom = "line", size = .75) +
               labs(x = "Time (in ms)",
-                  y = bquote(paste("Voltage aplitude (", mu, "V): ", .(vary))),
+                  y = bquote(paste("Voltage amplitude (", mu, "V): ", .(vary))),
                   title = paste(vary,"by",conditionToPlot))+
               scale_color_manual(values=color_palette)+
               scale_x_continuous(breaks=seq(-500,900,100))+
               geom_vline(xintercept = 0,linetype = "solid" )+
               geom_hline(yintercept = 0)+
+
               geom_vline(xintercept = 400, linetype = "dotted")+
-              geom_vline(xintercept = -450, linetype = "longdash")+
-              annotate(geom = "text", x = -420, y = y_annot, label = "Prime", angle = 90)+
-              annotate(geom = "text", x = 30, y = y_annot, label = "Target", angle = 90)+
               annotate(geom = "text", x = 370, y = y_annot, label = "400ms", color = "dark grey", angle = 90)+
-              annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-0.5, ymax=0.5, alpha = .2)+
+
+
+              geom_vline(xintercept = -450, linetype = "longdash")+
+
+              # prime annotation
+              annotate(geom = "text", x = -420, y = y_annot, label = "Prime", angle = 90)+
               annotate("rect", xmin = -450, xmax = -250, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
+
+              # target annotation
+              annotate(geom = "text", x = 30, y = y_annot, label = "Target", angle = 90)+
               annotate("rect", xmin = 0, xmax = 200, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
+
+              # baseline annotation
+              annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-0.5, ymax=0.5, alpha = .2)+
               annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
+
               facet_wrap( ~ Electrode , nrow = 3, ncol = 3 )
 
 
@@ -77,6 +87,8 @@ plot_erp_by_electrode<- function( data,
 
 # plot_erp_by_electrode (data=datatest, conditionToPlot = "MM_RAW" )
 
- # check the conditionToPlot is a factor
-# check output_type is in "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
 
+# check the conditionToPlot is a factor
+# check output_type is in "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
+# scale_x_continuous(breaks=seq(-500,900,100))
+# manage annotations
