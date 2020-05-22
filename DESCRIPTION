@@ -21,4 +21,12 @@ Imports:
     stargazer (>= 5.2.2),
     tidyr,
     lazyeval,
-    checkmate
+    checkmate,
+    tidyverse,
+    akima,
+    scales,
+    mgcv,
+    gridExtra,
+    grid,
+    ggpubr,
+    Hmisc

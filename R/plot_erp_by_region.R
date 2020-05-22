@@ -52,6 +52,6 @@ plot_erp_by_region<- function(  data,
     annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
     facet_grid( anteriority_3l ~ mediality_a)  # reformulate(med_levels,ant_levels)
 
-  ggsave(filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
+  ggsave(filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
 
 }
