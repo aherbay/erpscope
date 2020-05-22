@@ -33,8 +33,14 @@ plot_erp_by_electrode<- function( data,
 
 
     #length(unique(data$Subject))
-  choice <- menu(c("y", "n"), title="You are about to plot an ERP graph?")
 
+  number_of_subjects <- length(unique(data$Subject))
+  number_of_levels <- length(levels(data[,conditionToPlot]))
+
+
+  title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.","Do you want to continue?")
+  choice <- menu(c("y", "n"), title=title_text)
+  # plot erp for 9 electrode basline format  pour la condition x à z nivaux du df x, avec x obs x sujets
   if(choice == 1) {
 
     if(plotname == 'auto') {
@@ -47,10 +53,10 @@ plot_erp_by_electrode<- function( data,
 
     ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
               scale_y_reverse() + theme_light() +
-              stat_summary(fun.y = mean, geom = "line", size = .75) +
+              stat_summary(fun = mean, geom = "line", size = .75) +
               labs(x = "Time (in ms)",
                   y = bquote(paste("Voltage amplitude (", mu, "V): ", .(vary))),
-                  title = paste(vary,"by",conditionToPlot))+
+                  title = paste(vary,"by",conditionToPlot," - dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"))+
               scale_color_manual(values=color_palette)+
               scale_x_continuous(breaks=seq(-500,900,100))+
               geom_vline(xintercept = 0,linetype = "solid" )+
@@ -89,6 +95,7 @@ plot_erp_by_electrode<- function( data,
 
 
 # check the conditionToPlot is a factor
+# check if files already exists
 # check output_type is in "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
 # scale_x_continuous(breaks=seq(-500,900,100))
 # manage annotations
