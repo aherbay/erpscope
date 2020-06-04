@@ -13,6 +13,7 @@ plot_erp_by_electrode(
   baseline = c(-500, -200),
   vary = "Voltage",
   plotname = "auto",
+  check = TRUE,
   y_annot = 6,
   delta = 1
 )

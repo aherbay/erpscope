@@ -21,6 +21,7 @@ plot_erp_by_electrode<- function( data,
                                   baseline =c(-500,-200),
                                   vary ="Voltage",
                                   plotname = 'auto',
+                                  check = TRUE,
                                   y_annot = 6, delta = 1
                                   ) {
 
@@ -38,8 +39,13 @@ plot_erp_by_electrode<- function( data,
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
 
-  title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.","Do you want to continue?")
-  choice <- menu(c("y", "n"), title=title_text)
+  if(check) {
+    title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.","Do you want to continue?")
+    choice <- menu(c("y", "n"), title=title_text)
+  }else {
+    choice = 1
+  }
+
   # plot erp for 9 electrode basline format  pour la condition x à z nivaux du df x, avec x obs x sujets
   if(choice == 1) {
 

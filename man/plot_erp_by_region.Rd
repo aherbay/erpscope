@@ -6,9 +6,10 @@
 \usage{
 plot_erp_by_region(
   data,
-  plotname,
   conditionToPlot,
-  color_palette,
+  plotname = "auto",
+  output_type = "pdf",
+  color_palette = c("#4DAF4A", "#377EB8", "#FF7F00", "#984EA3", "#000000"),
   ant_levels = "anteriority_3l",
   med_levels = "mediality_k",
   vary = "Voltage",
@@ -26,10 +27,4 @@ A matrix of the infile
 \description{
 This function creates a plot file with 9 regions of interests displaying ERPs
 for different conditions indicated in the input.
-}
-\details{
-It assumes that the first column
-contains the rownames and the subsequent columns are the sample identifiers.
-Any rows with duplicated row names will be dropped with the first one being
-kepted.
 }

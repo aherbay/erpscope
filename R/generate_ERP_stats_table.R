@@ -17,6 +17,27 @@
 
 
 
+
+model_central_elec_anteriority <- function (data, time_step, min_time, max_time, model_structure, model_type, output_name) {
+
+    data <- subset(data, Electrode %in% c('A'))
+    generate_ERP_stats_table( data = pop2_B1, time_step=50, min_time=-250, max_time=700,
+                              model_structure = model_structure,
+                              model_type=model_type,
+                            output_name=output_name)
+
+}
+
+
+model_lat_elec_hemi <- function (data, time_step, min_time, max_time, model_structure, model_type, output_name) {
+
+
+
+}
+
+
+
+
 generate_ERP_stats_table <- function (data, time_step, min_time, max_time, model_structure, model_type, output_name) {
   
   if((max_time - min_time)%%time_step != 0){
