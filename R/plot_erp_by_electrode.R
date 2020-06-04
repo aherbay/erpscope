@@ -39,11 +39,11 @@ plot_erp_by_electrode<- function( data,
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
 
-  if(check) {
+  if(check == TRUE) {
     title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.","Do you want to continue?")
     choice <- menu(c("y", "n"), title=title_text)
   }else {
-    choice = 1
+    choice  <- 1
   }
 
   # plot erp for 9 electrode basline format  pour la condition x à z nivaux du df x, avec x obs x sujets
