@@ -21,8 +21,8 @@ plot_erp_by_electrode<- function( data,
                                   baseline =c(-500,-200),
                                   vary ="Voltage",
                                   plotname = 'auto',
-                                  check_message = "no",
-                                  conf_interval = "no",
+                                  check_message = FALSE,
+                                  conf_interval = FALSE,
                                   y_annot = 6, delta = 1
                                   ) {
 
@@ -41,7 +41,7 @@ plot_erp_by_electrode<- function( data,
   title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
 
-  if(check_message == "yes") {
+  if(check_message == TRUE) {
     choice <- menu(c("y", "n"), title= paste(title_text,"Do you want to continue?"))
   } else {
 
@@ -60,7 +60,7 @@ plot_erp_by_electrode<- function( data,
     dataToPlot <- subset(data, Electrode %in% electrodes_list)
     dataToPlot$Electrode <- factor(dataToPlot$Electrode, levels = electrodes_list)
 
-    if(conf_interval == "no"){
+    if(conf_interval == FALSE){
           ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
               scale_y_reverse() + theme_light() +
               stat_summary(fun = mean, geom = "line", size = .75) +
@@ -93,10 +93,11 @@ plot_erp_by_electrode<- function( data,
               facet_wrap( ~ Electrode , nrow = 3, ncol = 3 )
 
     } else {
-        ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
+
+        ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot, fill = conditionToPlot )) +
               scale_y_reverse() + theme_light() +
               stat_summary(fun = mean, geom = "line", size = .75) +
-              stat_summary(data = dataToPlot,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = conditionToPlot))+ # CI ribbon
+              stat_summary(fun.data = mean_cl_normal,geom = "ribbon",alpha = 0.3)+ # CI ribbon
               labs(x = "Time (in ms)",
                   y = bquote(paste("Voltage amplitude (", mu, "V): ", .(vary))),
                   title = paste(vary,"by",conditionToPlot," - dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"))+
