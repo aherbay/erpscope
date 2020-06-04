@@ -21,7 +21,8 @@ plot_erp_by_electrode<- function( data,
                                   baseline =c(-500,-200),
                                   vary ="Voltage",
                                   plotname = 'auto',
-                                  check = TRUE,
+                                  check_message = "no",
+                                  conf_interval = "no",
                                   y_annot = 6, delta = 1
                                   ) {
 
@@ -37,12 +38,14 @@ plot_erp_by_electrode<- function( data,
 
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
+  title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
 
-  if(check == TRUE) {
-    title_text <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.","Do you want to continue?")
-    choice <- menu(c("y", "n"), title=title_text)
-  }else {
+  if(check_message == "yes") {
+    choice <- menu(c("y", "n"), title= paste(title_text,"Do you want to continue?"))
+  } else {
+
+    message(title_text)
     choice  <- 1
   }
 
@@ -57,7 +60,8 @@ plot_erp_by_electrode<- function( data,
     dataToPlot <- subset(data, Electrode %in% electrodes_list)
     dataToPlot$Electrode <- factor(dataToPlot$Electrode, levels = electrodes_list)
 
-    ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
+    if(conf_interval == "no"){
+          ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
               scale_y_reverse() + theme_light() +
               stat_summary(fun = mean, geom = "line", size = .75) +
               labs(x = "Time (in ms)",
@@ -87,6 +91,41 @@ plot_erp_by_electrode<- function( data,
               annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
 
               facet_wrap( ~ Electrode , nrow = 3, ncol = 3 )
+
+    } else {
+        ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
+              scale_y_reverse() + theme_light() +
+              stat_summary(fun = mean, geom = "line", size = .75) +
+              stat_summary(data = dataToPlot,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = conditionToPlot))+ # CI ribbon
+              labs(x = "Time (in ms)",
+                  y = bquote(paste("Voltage amplitude (", mu, "V): ", .(vary))),
+                  title = paste(vary,"by",conditionToPlot," - dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"))+
+              scale_color_manual(values=color_palette)+
+              scale_x_continuous(breaks=seq(-500,900,100))+
+              geom_vline(xintercept = 0,linetype = "solid" )+
+              geom_hline(yintercept = 0)+
+
+              geom_vline(xintercept = 400, linetype = "dotted")+
+              annotate(geom = "text", x = 370, y = y_annot, label = "400ms", color = "dark grey", angle = 90)+
+
+
+              geom_vline(xintercept = -450, linetype = "longdash")+
+
+              # prime annotation
+              annotate(geom = "text", x = -420, y = y_annot, label = "Prime", angle = 90)+
+              annotate("rect", xmin = -450, xmax = -250, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
+
+              # target annotation
+              annotate(geom = "text", x = 30, y = y_annot, label = "Target", angle = 90)+
+              annotate("rect", xmin = 0, xmax = 200, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
+
+              # baseline annotation
+              annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-0.5, ymax=0.5, alpha = .2)+
+              annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
+
+              facet_wrap( ~ Electrode , nrow = 3, ncol = 3 )
+
+    }
 
 
       ggsave(filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
