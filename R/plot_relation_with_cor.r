@@ -1,6 +1,15 @@
 
 # plot_relation_with_cor
 
+# example 
+# plot_relation_with_cor(    dataset=byParticipantEffects, 
+#                             varx="Mean_RT_correct",
+#                             vary="score", 
+#                             var_label="Subject_short", 
+#                             graph_title_header ="Simple RT effects", 
+#                             var_color=NULL)
+
+
 # plot_relation_with_cor(dataset, varx, vary, var_label, graph_title_header, var_color=NULL)
 
 plot_relation_with_cor <- function (dataset, varx, vary, var_label, graph_title_header, var_color=NULL) {
@@ -56,20 +65,3 @@ plot_relation_with_cor <- function (dataset, varx, vary, var_label, graph_title_
   
 }
 
-plot_relation_with_cor(dataset=byParticipantEffects, varx="Mean_RT_correct", vary="score", var_label="Subject_short", graph_title_header ="Simple RT effects", var_color=NULL)
-
-
-plot_relation_with_cor(dataset=byParticipantEffects, varx="SemMM_Cons_Diff_w", vary="DbleMM_Cons_Diff_w", var_label="Subject_short", graph_title_header ="Simple RT effects", var_color=NULL)
-
-plot_relation_with_cor(dataset=byParticipantEffects, varx="SynMM_Cons_Diff", vary="DbleMM_Cons_Diff", var_label="Subject_short", graph_title_header ="Simple RT effects", var_color=NULL)
-
-plot_relation_with_cor(dataset=byParticipantEffects, varx="SemMM_Cons_Diff", vary="SynMM_Cons_Diff", var_label="Subject_short", graph_title_header ="Simple RT effects", var_color=NULL)
-
-
-plot_relation_with_cor(dataset=byParticipantEffects, varx="Cons_RTs", vary="SemMM_RTs", var_label="Subject_short", graph_title_header ="Simple RT effects", var_color=NULL)
-
-
-
-plot_relation_with_cor(dataset=byPPT_effects, varx="SemMM_Cons_Diff", vary="Cz_m300_0_SemMM", var_label="Subject_short", graph_title_header ="SemMM RT effect and Cz-pretarget", var_color="Cz_0_100_SemMM")
-plot_relation_with_cor(dataset=byPPT_effects, varx="Cz_m300_0_SemMM", vary="Cz_250_380_SemMM", var_label="Subject_short", graph_title_header =" Cz-pretarget and earlyN4", var_color="SemMM_Cons_Diff")
-plot_relation_with_cor(dataset=byPPT_effects, varx="SemMM_Cons_Diff", vary="Cz_380_500_SemMM", var_label="Subject_short", graph_title_header =" SemMM RT effect and lateN4", var_color="Cz_m300_0_SemMM")
