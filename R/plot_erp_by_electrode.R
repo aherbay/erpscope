@@ -97,11 +97,12 @@ plot_erp_by_electrode<- function( data,
         ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot, fill = conditionToPlot )) +
               scale_y_reverse() + theme_light() +
               stat_summary(fun = mean, geom = "line", size = .75) +
-              stat_summary(fun.data = mean_cl_normal,geom = "ribbon",alpha = 0.3)+ # CI ribbon
+              stat_summary(fun.data = mean_cl_normal,geom = "ribbon",alpha = 0.3, colour=NA)+ # CI ribbon
               labs(x = "Time (in ms)",
                   y = bquote(paste("Voltage amplitude (", mu, "V): ", .(vary))),
                   title = paste(vary,"by",conditionToPlot," - dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"))+
               scale_color_manual(values=color_palette)+
+              scale_fill_manual(values=color_palette)+
               scale_x_continuous(breaks=seq(-500,900,100))+
               geom_vline(xintercept = 0,linetype = "solid" )+
               geom_hline(yintercept = 0)+
