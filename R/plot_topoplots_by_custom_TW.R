@@ -115,7 +115,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
     # labs(title = paste(lowBound,'-',upperBound))
 
 
-    topo_ggplots[[length(topo_ggplots) + 1]] <-   ggplot(interpTopo,
+    topo_ggplots[[length(topo_ggplots) + 1]] <-   ggplot2::ggplot(interpTopo,
                                                          aes(x = x, y = y, fill = Voltage)
     ) +
       geom_raster(show.legend=F) +

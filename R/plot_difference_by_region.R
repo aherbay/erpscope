@@ -136,7 +136,7 @@ plot_difference_by_region  <- function( data,
 
   if(show_group_obs) {
 
-    erp_plot <-  ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
+    erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       scale_y_reverse() + theme_light() +
       stat_summary(data = data_diff,fun.y=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
       stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition))+ # CI ribbon
