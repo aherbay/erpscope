@@ -1,6 +1,7 @@
 plot_topoplots_by_custom_TW <-  function (data_diff,
                                           tw_array ,
-                                          plotname) {
+                                          plotname,
+                                          topoplots_scale) {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
@@ -126,7 +127,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
                    binwidth = 0.5) +
       theme_topo()+
       scale_fill_gradientn(colours = jet.colors(10),
-                           limits = c(-2,2),
+                           limits = c(topoplots_scale[1],topoplots_scale[2]),
                            guide = FALSE, #"colourbar"
                            oob = scales::squish) +
       geom_path(data = maskRing,

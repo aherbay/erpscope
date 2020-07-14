@@ -30,6 +30,7 @@ plot_difference_by_region  <- function( data,
           delta=1,
           baseline= c(-500,-200),
           time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+          topoplots_scale = c(-2,2),
           plot_title=" ") {
 
   conditionToPlot_enq <- rlang::enquo(conditionToPlot)
@@ -134,7 +135,7 @@ plot_difference_by_region  <- function( data,
   #time_windows <- list(c(-200,0),c(0,200),c(200,300),c(300,500),c(500,700),c(700,900))
   # time_windows <- list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900))
 
-  topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, time_windows, plotname)
+  topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, time_windows, plotname,topoplots_scale)
 
   if(show_group_obs) {
 
