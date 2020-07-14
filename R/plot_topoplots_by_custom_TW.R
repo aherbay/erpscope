@@ -2,8 +2,8 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
                                           tw_array ,
                                           plotname) {
 
-  electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
-  #electrodeLocs <- locations_51_electrodes
+  #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
+  electrodeLocs <- locations_51_electrodes
 
   electrodeLocs <- rename(electrodeLocs,   Electrode = electrode)
   electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
