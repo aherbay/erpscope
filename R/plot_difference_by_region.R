@@ -8,9 +8,9 @@
 #' Default values are provided for electrodes but it can be customized.
 #'
 #' @param file dataframe containing
-#' @param conditionToPlot column of the dataframe witht the condition to plot
-#'s
+#' @param conditionToPlot column of the dataframe with the condition to plot
 #' @return A PDF file containing the Difference plots by region
+#' @import dplyr
 #' @export
 #'
 plot_difference_by_region  <- function( data,
