@@ -13,7 +13,7 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports:
     ggplot2 (>= 3.1.1),
     lmerTest (>= 3.0),
@@ -31,8 +31,6 @@ Imports:
     Hmisc,
     png,
     rlang
-    
 Depends: 
     R (>= 2.10),
     dplyr
-    

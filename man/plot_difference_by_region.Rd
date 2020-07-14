@@ -25,8 +25,7 @@ plot_difference_by_region(
 )
 }
 \arguments{
-\item{conditionToPlot}{column of the dataframe witht the condition to plot
-s}
+\item{conditionToPlot}{column of the dataframe with the condition to plot}
 
 \item{file}{dataframe containing}
 }
