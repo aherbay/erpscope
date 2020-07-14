@@ -150,16 +150,16 @@ plot_difference_by_region  <- function( data,
 
 
 
-  if(length(electrodes_to_display) != 0)  {
+  if(length(electrodes_to_display) != 0 )  {
     data_reduced <- subset(data_reduced, Electrode %in% electrodes_to_display )
     data_reduced$Electrode <- factor(data_reduced$Electrode, levels = electrodes_to_display)
-
+    data_diff <- subset(data_diff, Electrode %in% electrodes_to_display )
+    data_diff$Electrode <- factor(data_diff$Electrode, levels = electrodes_to_display)
   }
 
   if(show_group_obs) {
 
     message("Preparing ERP plot with group data")
-    print(length(unique(data_reduced$Electrode)))
 
     erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
@@ -172,7 +172,7 @@ plot_difference_by_region  <- function( data,
   } else {
 
     message("Preparing ERP plot without group data")
-    print(length(unique(data_reduced$Electrode)))
+    print(length(unique(data_diff$Electrode)))
 
 
     erp_plot <-  ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
@@ -229,10 +229,10 @@ plot_difference_by_region  <- function( data,
     if(length(electrodes_to_display) != 0) {
 
 
-      #erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
-      erp_plot <- erp_plot + facet_grid(  ~ Electrode , scales='free_x' )
+      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+      #erp_plot <- erp_plot + facet_grid(  ~ Electrode , scales='free_x' )
 
-      ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', width = 22, height = 18)
+      #ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', width = 22, height = 18)
 
 
     }else {
@@ -247,16 +247,16 @@ plot_difference_by_region  <- function( data,
 
   message(paste(Sys.time(),"assembling all plots"))
 
-  # figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
-  #                       #labels = c("ERPs", "Voltage maps"),
-  #                       ncol = 1, nrow = 2)
-  #
-  # figure  <-  ggpubr::annotate_figure(figure,
-  #                            top = ggpubr::text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
-  #                                            color = "black", face = "bold", size = 18))
-  #
-  # message("creating file")
-  # ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
+  figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
+                        #labels = c("ERPs", "Voltage maps"),
+                        ncol = 1, nrow = 2)
+
+  figure  <-  ggpubr::annotate_figure(figure,
+                             top = ggpubr::text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
+                                             color = "black", face = "bold", size = 18))
+
+  message("creating file")
+  ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
 
 
 }
