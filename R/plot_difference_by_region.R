@@ -33,7 +33,9 @@ plot_difference_by_region  <- function( data,
           topoplots_scale = c(-2,2),
           tick_distance = 200,
           rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
-          plot_title=" ") {
+          plot_title=" ",
+          electrodes_to_display = c() #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
+          ) {
 
   conditionToPlot_enq <- rlang::enquo(conditionToPlot)
   levelA_enq <- rlang::enquo(levelA)
@@ -133,6 +135,12 @@ plot_difference_by_region  <- function( data,
 
   data_reduced <- rename(data_reduced,   Condition = !! conditionToPlot_enq)
 
+  if(length(electrodes_to_display) != 0)  {
+    data_reduced <- filter(data_reduced, Electrode %in% electrodes_to_display) %>% droplevels()
+  }
+
+
+
   data_diff$Condition <- "Difference"
 
   #topo_ggplots <- plot_topoplots_by_TW(data_diff,  50, 200, 600, plotname)
@@ -141,6 +149,8 @@ plot_difference_by_region  <- function( data,
   # time_windows <- list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900))
 
   topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, time_windows, plotname,topoplots_scale)
+
+
 
 
   if(show_group_obs) {
@@ -169,11 +179,6 @@ plot_difference_by_region  <- function( data,
   }
 
 
-
-
-
-
-
     erp_plot <- erp_plot +
       theme(
         legend.position="bottom",
@@ -197,8 +202,20 @@ plot_difference_by_region  <- function( data,
       scale_x_continuous(breaks=seq(time_min,time_max,tick_distance))+
       scale_color_manual(values=color_palette)+
       annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
-      annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
-      facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+      annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
+
+    if(length(electrodes_to_display) != 0) {
+      erp_plot <- erp_plot +
+        facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+
+    }else {
+      erp_plot <- erp_plot +
+        facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+    }
+
+
+
+
 
 
 
