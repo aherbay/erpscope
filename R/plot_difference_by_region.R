@@ -118,7 +118,7 @@ plot_difference_by_region  <- function( data,
 
     data_diff <- data_diff %>%
       tidyr::spread( !! conditionToPlot_enq, mean_Voltage )  %>%
-      tidyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
+      dplyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
     #print(head(data_diff))
     print("Data mutated")
 
