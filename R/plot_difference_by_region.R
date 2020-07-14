@@ -213,7 +213,7 @@ plot_difference_by_region  <- function( data,
 
         for(i in 1:length(rectangles)) {
 
-          erp_plot =  erp_plot + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "dotted") + # "dotted", "solid"
+          erp_plot <-  erp_plot + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "dotted") + # "dotted", "solid"
             annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
             annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
 
@@ -224,7 +224,7 @@ plot_difference_by_region  <- function( data,
       }
 
     if(length(electrodes_to_display) != 0) {
-      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+      erp_plot <- erp_plot + facet_wrap( . ~ as.factor(Electrode) , nrow = numberOfRows, ncol = 3, scales='free_x' )
 
     }else {
       erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
