@@ -70,8 +70,10 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
 
     # to solve : 1: Column `Electrode` joining factor and character vector, coercing into character vector
     #electrodeLocs$Electrode <- as.factor(electrodeLocs$Electrode)
-    means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode")
+    print(unique(data_diff$Electrode))
+    means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_diff$Electrode))
     print(head(means_by_electrodes))
+
 
     gridRes <- 250 # Specify the number of points for each grid dimension i.e. the resolution/smoothness of the interpolation
 
