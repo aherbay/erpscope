@@ -137,14 +137,6 @@ plot_difference_by_region  <- function( data,
 
   data_reduced <- rename(data_reduced,   Condition = !! conditionToPlot_enq)
 
-  if(length(electrodes_to_display) != 0)  {
-    data_reduced <- filter(data_reduced, Electrode %in% electrodes_to_display) %>% droplevels()
-    print(length(unique(data_reduced$Electrode)))
-    data_reduced$Electrode <- factor(data_reduced$Electrode, levels = electrodes_to_display)
-
-  }
-
-
 
   data_diff$Condition <- "Difference"
 
@@ -158,9 +150,16 @@ plot_difference_by_region  <- function( data,
 
 
 
+  if(length(electrodes_to_display) != 0)  {
+    data_reduced <- subset(data_reduced, Electrode %in% electrodes_to_display )
+    data_reduced$Electrode <- factor(data_reduced$Electrode, levels = electrodes_to_display)
+
+  }
+
   if(show_group_obs) {
 
     message("Preparing ERP plot with group data")
+    print(length(unique(data_reduced$Electrode)))
 
     erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
@@ -173,6 +172,8 @@ plot_difference_by_region  <- function( data,
   } else {
 
     message("Preparing ERP plot without group data")
+    print(length(unique(data_reduced$Electrode)))
+
 
     erp_plot <-  ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
