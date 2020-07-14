@@ -54,7 +54,7 @@ plot_difference_by_region  <- function( data,
 
   time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
   time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
-  numberOfRows <- length(electrodes_list)/3
+  numberOfRows <- length(electrodes_to_display)/3
 
 
   if(plotname == 'auto') {
