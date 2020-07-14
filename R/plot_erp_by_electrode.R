@@ -165,9 +165,6 @@ plot_erp_by_electrode<- function( data,
 
 
       message("Saving plot to file")
-      print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
-      print()
-      print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[[1]])
 
 
       ggsave(tempo, filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
