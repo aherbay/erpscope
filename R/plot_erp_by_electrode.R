@@ -19,6 +19,7 @@ plot_erp_by_electrode<- function( data,
                                   output_type = 'pdf',
                                   color_palette =  c("#4DAF4A","#377EB8","#FF7F00","#984EA3","#000000")  ,
                                   baseline = c(-2450,-2250),
+                                  correction = FALSE,
                                   tick_distance = 200,
                                   vary ="Voltage",
                                   plotname = 'auto',
@@ -46,7 +47,7 @@ plot_erp_by_electrode<- function( data,
   # is condition a factor?
   # is color accessible?
   # is length(color_palette) >= levels(conditionToPlot)
-  # check if length(electrodes_list) is 9 or 12 
+  # check if length(electrodes_list) is 9 or 12
 
 
 
@@ -76,10 +77,15 @@ plot_erp_by_electrode<- function( data,
     dataToPlot$Electrode <- factor(dataToPlot$Electrode, levels = electrodes_list)
 
 
+    if(correction == TRUE) {
+      dataToPlot <- baseline_correction(dataToPlot,conditionToPlot,baseline)
+      vary <- "NewVoltage"
+    }
+
     if(conf_interval == TRUE) {
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot,fill = conditionToPlot)) +
-                  scale_y_reverse() + theme_light() + 
+                  scale_y_reverse() + theme_light() +
                   stat_summary(fun = mean, geom = "line", size = .75)+
                   stat_summary(fun.data = mean_cl_normal,geom = "ribbon",alpha = 0.3 , colour=NA)+
                   scale_color_manual(values=color_palette)+
@@ -90,7 +96,7 @@ plot_erp_by_electrode<- function( data,
     } else {
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
-                  scale_y_reverse() + theme_light() + 
+                  scale_y_reverse() + theme_light() +
                   stat_summary(fun = mean, geom = "line", size = .75)+
                   scale_color_manual(values=color_palette)
 
@@ -111,16 +117,16 @@ plot_erp_by_electrode<- function( data,
                   # baseline annotation
                   annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
                   annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 2)
-              
 
 
 
-                  
-            if(length(rectangles) != 0) { 
-   
+
+
+            if(length(rectangles) != 0) {
+
               for(i in 1:length(rectangles)) {
 
-                tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") + 
+                tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") +
                                   annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
                                   annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
 
@@ -129,11 +135,11 @@ plot_erp_by_electrode<- function( data,
               }
 
             }
-          
-          
-            tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) + 
-              guides(colour = guide_legend(override.aes = list(size = 2))) + 
-              theme(  strip.text.x = element_text( size = 16, color = "black", face = "bold" ), 
+
+
+            tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) +
+              guides(colour = guide_legend(override.aes = list(size = 2))) +
+              theme(  strip.text.x = element_text( size = 16, color = "black", face = "bold" ),
                       strip.background = element_rect( fill="white", color=NA),
                       legend.position="bottom",
                       plot.title = element_text(size = 24, face = "bold",hjust = 0.5),
