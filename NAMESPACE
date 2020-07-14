@@ -3,4 +3,5 @@
 export(plot_difference_by_region)
 export(plot_erp_by_electrode)
 export(plot_erp_by_region)
-import(tidyverse)
+import(dplyr)
+import(ggplot2)

@@ -10,7 +10,8 @@
 #' @param file dataframe containing
 #' @param conditionToPlot column of the dataframe with the condition to plot
 #' @return A PDF file containing the Difference plots by region
-#' @import tidyverse
+#' @import dplyr
+#' @import ggplot2
 #' @export
 #'
 plot_difference_by_region  <- function( data,
