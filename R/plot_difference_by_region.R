@@ -1,37 +1,17 @@
-# extrafont::font_import()
-#loadfonts(device = "pdf", quiet = FALSE)
-
-
-label_wrap_gen_alex <- function(width = 25, multi_line = FALSE) {
-  fun <- function(labels) {
-    labels <- label_value_alex(labels, multi_line = multi_line)
-    lapply(labels, function(x) {
-      x <- strwrap(x, width = width, simplify = FALSE)
-      vapply(x, paste, character(1), collapse = "\n")
-    })
-  }
-  structure(fun, class = "labeller")
-}
-
-
-label_value_alex <- function(labels, multi_line = TRUE) {
-  labels <- lapply(labels, as.character)
-  if (multi_line) {
-    labels
-  } else {
-
-    collapse_labels_lines_alex(labels)
-  }
-}
-
-
-collapse_labels_lines_alex <- function(labels) {
-  out <- do.call("Map", c(list(paste, sep = " - "), rev(labels)))
-  list(unname(unlist(out)))
-}
-
-
-
+#' Difference Plots for 9 ROI
+#'
+#' This function creates a plot file with 9 electrodes of interests displaying ERPs
+#' for different conditions. It will need a loaded dataframe with your EEG data
+#' and a column indicating the condition to display.
+#' It assumes that there is a column named Voltage with your voltage values.
+#' Default values are provided for electrodes but it can be customized.
+#'
+#' @param file dataframe containing
+#' @param conditionToPlot column of the dataframe witht the condition to plot
+#'s
+#' @return A PDF file containing the Difference plots by region
+#' @export
+#'
 plot_difference_by_region  <- function( data,
           plotname,
           conditionToPlot = MM_RAW,
@@ -251,3 +231,37 @@ plot_difference_by_region  <- function( data,
 
 
 }
+
+# extrafont::font_import()
+#loadfonts(device = "pdf", quiet = FALSE)
+
+
+label_wrap_gen_alex <- function(width = 25, multi_line = FALSE) {
+  fun <- function(labels) {
+    labels <- label_value_alex(labels, multi_line = multi_line)
+    lapply(labels, function(x) {
+      x <- strwrap(x, width = width, simplify = FALSE)
+      vapply(x, paste, character(1), collapse = "\n")
+    })
+  }
+  structure(fun, class = "labeller")
+}
+
+
+label_value_alex <- function(labels, multi_line = TRUE) {
+  labels <- lapply(labels, as.character)
+  if (multi_line) {
+    labels
+  } else {
+
+    collapse_labels_lines_alex(labels)
+  }
+}
+
+
+collapse_labels_lines_alex <- function(labels) {
+  out <- do.call("Map", c(list(paste, sep = " - "), rev(labels)))
+  list(unname(unlist(out)))
+}
+
+
