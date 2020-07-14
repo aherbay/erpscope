@@ -225,6 +225,8 @@ plot_difference_by_region  <- function( data,
 
     if(length(electrodes_to_display) != 0) {
       erp_plot <- erp_plot + facet_wrap( . ~ as.factor(Electrode) , nrow = numberOfRows, ncol = 3, scales='free_x' )
+      ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', sep=''), width = 22, height = 18)
+
 
     }else {
       erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
