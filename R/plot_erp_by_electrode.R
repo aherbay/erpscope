@@ -122,20 +122,6 @@ plot_erp_by_electrode<- function( data,
 
             print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
 
-            if(length(rectangles) != 0) {
-
-              for(i in 1:length(rectangles)) {
-
-                tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") +
-                                  annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
-                                  annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
-
-
-
-              }
-
-            }
-
 
             tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) +
               guides(colour = guide_legend(override.aes = list(size = 2))) +
@@ -153,6 +139,24 @@ plot_erp_by_electrode<- function( data,
                       axis.title=element_text(size=18)
 
                     )
+
+            print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
+
+
+            if(length(rectangles) != 0) {
+
+              for(i in 1:length(rectangles)) {
+
+                tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") +
+                  annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
+                  annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
+
+
+
+              }
+
+            }
+
 
 
       message("Saving plot to file")
