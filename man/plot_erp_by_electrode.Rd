@@ -10,13 +10,16 @@ plot_erp_by_electrode(
   electrodes_list = c("F3", "Fz", "F4", "C3", "Cz", "C4", "P3", "Pz", "P4"),
   output_type = "pdf",
   color_palette = c("#4DAF4A", "#377EB8", "#FF7F00", "#984EA3", "#000000"),
-  baseline = c(-500, -200),
+  baseline = c(-2450, -2250),
+  tick_distance = 200,
   vary = "Voltage",
   plotname = "auto",
-  check_message = "no",
-  conf_interval = "no",
+  check_message = FALSE,
+  conf_interval = FALSE,
   y_annot = 6,
-  delta = 1
+  delta = 1,
+  rectangles = list(list(-2250, -1600, "N1"), list(-1500, -850, "BA/BEI"), list(-750,
+    -100, "N2"), list(0, 650, "Verb"))
 )
 }
 \arguments{
