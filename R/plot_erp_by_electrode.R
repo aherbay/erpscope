@@ -40,13 +40,13 @@ plot_erp_by_electrode<- function( data,
 
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
-  init_message <- paste("You are about to plot ERPs for 9 electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
+  init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
   # check a few things
   # is condition a factor?
   # is color accessible?
   # is length(color_palette) >= levels(conditionToPlot)
-
+  # check if length(electrodes_list) is 9 or 12 
 
 
 
@@ -69,8 +69,8 @@ plot_erp_by_electrode<- function( data,
 
     time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
     time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
-
-
+    numberOfRows <- length(electrodes_list)/3
+    #message(paste("numberOfRows",numberOfRows))
 
     dataToPlot <- subset(data, Electrode %in% electrodes_list)
     dataToPlot$Electrode <- factor(dataToPlot$Electrode, levels = electrodes_list)
@@ -131,7 +131,7 @@ plot_erp_by_electrode<- function( data,
             }
           
           
-            tempo <- tempo +  facet_wrap( ~ Electrode , nrow = 3, ncol = 3 ) + 
+            tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) + 
               guides(colour = guide_legend(override.aes = list(size = 2))) + 
               theme(  strip.text.x = element_text( size = 16, color = "black", face = "bold" ), 
                       strip.background = element_rect( fill="white", color=NA),
