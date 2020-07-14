@@ -31,6 +31,8 @@ plot_difference_by_region  <- function( data,
           baseline= c(-500,-200),
           time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           topoplots_scale = c(-2,2),
+          tick_distance = 200,
+          rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
           plot_title=" ") {
 
   conditionToPlot_enq <- rlang::enquo(conditionToPlot)
@@ -46,7 +48,10 @@ plot_difference_by_region  <- function( data,
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,rlang::quo_text(conditionToPlot_enq)]))
 
-  subject_dataset_info <-
+  #subject_dataset_info <-
+
+  time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
+  time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
 
   if(plotname == 'auto') {
       plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
@@ -169,11 +174,12 @@ plot_difference_by_region  <- function( data,
   } else {
 
 
-    print("preparing plot")
+    message("Not displaying group data - preparing ERP plot")
 
     erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
-      scale_y_reverse() + theme_light() + theme(
+      scale_y_reverse() + theme_light() +
+      theme(
         legend.position="bottom",
         strip.text.x = element_text( size = 16, color = "black", face = "bold" ),
         strip.background = element_rect( fill="white", color=NA),
@@ -184,9 +190,9 @@ plot_difference_by_region  <- function( data,
         axis.title=element_text(size=18),
         plot.title = element_text(size = 14, face = "bold",hjust = 0.5)
         #,text = element_text(family = "Andale Mono")
-
-
-        ) +
+       )+
+      geom_vline(xintercept = 0,linetype = "solid" )+
+      geom_hline(yintercept = 0)+
       #stat_summary(data = data_diff,fun.y=mean,geom = "line",aes_string(group = group_var,colour = "Condition"),alpha = 0.1)+ # by subject line
       stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
       stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
@@ -195,22 +201,28 @@ plot_difference_by_region  <- function( data,
            y = bquote(paste("Voltage amplitude (", mu, "V): ", .("Voltage"))),
            title = paste(  Sys.Date(), paste("- Baseline:[",baseline[1],"ms;",baseline[2],"ms]",sep="") ,"- dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"),
            caption = "Generated with ERPscope")+
+      # ticks on x axis
+      scale_x_continuous(breaks=seq(time_min,time_max,tick_distance))+
       scale_color_manual(values=color_palette)+
-      scale_x_continuous(breaks=seq(-500,900,100))+
-      geom_vline(xintercept = 0,linetype = "solid" )+
-      geom_hline(yintercept = 0)+
-      geom_vline(xintercept = 400, linetype = "dotted")+
-      geom_vline(xintercept = -450, linetype = "longdash")+
-      annotate(geom = "text", x = -420, y = y_annot, label = "Prime", angle = 90)+
-      annotate(geom = "text", x = 30, y = y_annot, label = "Target", angle = 90)+
-      annotate(geom = "text", x = 370, y = y_annot, label = "400ms", color = "dark grey", angle = 90)+
-      annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-0.5, ymax=0.5, alpha = .4)+
-      annotate("rect", xmin = -450, xmax = -250, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
-      annotate("rect", xmin = 0, xmax = 200, ymin=y_annot -delta, ymax=y_annot +delta, alpha = .2)+
       annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)+
       facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
 
-      # facet_wrap
+
+
+
+      if(length(rectangles) != 0) {
+
+        for(i in 1:length(rectangles)) {
+
+          erp_plot =  erp_plot + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") + # "dotted", "solid"
+            annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
+            annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
+
+
+
+        }
+
+      }
 
 
   }
