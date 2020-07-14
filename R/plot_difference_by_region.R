@@ -226,7 +226,11 @@ plot_difference_by_region  <- function( data,
       }
 
     if(length(electrodes_to_display) != 0) {
-      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+
+
+      #erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+      erp_plot <- erp_plot + facet_grid(  ~ Electrode , scales='free_x' )
+
       ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', width = 22, height = 18)
 
 
