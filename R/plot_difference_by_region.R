@@ -10,7 +10,7 @@
 #' @param file dataframe containing
 #' @param conditionToPlot column of the dataframe with the condition to plot
 #' @return A PDF file containing the Difference plots by region
-#' @import dplyr
+#' @import tidyverse
 #' @export
 #'
 plot_difference_by_region  <- function( data,
@@ -116,9 +116,7 @@ plot_difference_by_region  <- function( data,
 
   } else {
 
-    data_diff <- data_diff %>%
-      tidyr::spread( !! conditionToPlot_enq, mean_Voltage )  %>%
-      dplyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
+    data_diff <- data_diff %>% spread( !! conditionToPlot_enq, mean_Voltage )  %>% dplyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
     #print(head(data_diff))
     print("Data mutated")
 
