@@ -9,7 +9,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
   electrodeLocs <- rename(electrodeLocs,   Electrode = electrode)
   electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
 
-  print(head(electrodeLocs))
+  #print(head(electrodeLocs))
 
   # base elements for topo
 
