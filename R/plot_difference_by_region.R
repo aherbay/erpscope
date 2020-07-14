@@ -223,7 +223,7 @@ plot_difference_by_region  <- function( data,
                         #labels = c("ERPs", "Voltage maps"),
                         ncol = 1, nrow = 2)
 
-  figure  <- annotate_figure(figure,
+  figure  <-  ggpubr::annotate_figure(figure,
                              top = text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
                                              color = "black", face = "bold", size = 18))
 
