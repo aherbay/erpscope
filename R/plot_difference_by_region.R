@@ -168,7 +168,7 @@ plot_difference_by_region  <- function( data,
 
     print("preparing plot")
 
-    erp_plot <- ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
+    erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
       scale_y_reverse() + theme_light() + theme(
         legend.position="bottom",
@@ -226,7 +226,7 @@ plot_difference_by_region  <- function( data,
                                              color = "black", face = "bold", size = 18))
 
   message("creating file")
-  ggsave(plot= figure ,filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
+  ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
 
 
 }
