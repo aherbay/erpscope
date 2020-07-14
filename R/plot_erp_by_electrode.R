@@ -79,7 +79,7 @@ plot_erp_by_electrode<- function( data,
 
     if(correction == TRUE) {
       dataToPlot <- baseline_correction(dataToPlot,conditionToPlot,baseline)
-      vary <- "NewVoltage"
+      vary <- "RebaselinedVoltage"
     }
 
     if(conf_interval == TRUE) {
@@ -120,7 +120,7 @@ plot_erp_by_electrode<- function( data,
 
 
 
-            print(tempo$layout$panel_params[[1]]$y.range)
+            print(tempo$layout$panel_scales_y[[1]]$range$range)
 
             if(length(rectangles) != 0) {
 
@@ -156,7 +156,7 @@ plot_erp_by_electrode<- function( data,
 
 
       message("Saving plot to file")
-      print(tempo$layout$panel_params[[1]]$y.range)
+      print(tempo$layout$panel_scales_y[[1]]$range$range)
 
 
       ggsave(tempo, filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
