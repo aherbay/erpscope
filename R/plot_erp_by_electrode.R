@@ -120,7 +120,7 @@ plot_erp_by_electrode<- function( data,
 
 
 
-            print(tempo$layout$panel_scales_y[[1]]$range$range)
+            print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
 
             if(length(rectangles) != 0) {
 
