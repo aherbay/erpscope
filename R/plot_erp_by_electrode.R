@@ -120,7 +120,7 @@ plot_erp_by_electrode<- function( data,
 
 
 
-            print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
+            #print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
 
 
             tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) +
@@ -140,14 +140,14 @@ plot_erp_by_electrode<- function( data,
 
                     )
 
-            print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
+            #print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
 
 
             if(length(rectangles) != 0) {
 
 
-              y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 6
-              delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/15
+              y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
+              delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
 
 
               for(i in 1:length(rectangles)) {
