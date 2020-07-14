@@ -140,6 +140,8 @@ plot_difference_by_region  <- function( data,
   if(length(electrodes_to_display) != 0)  {
     data_reduced <- filter(data_reduced, Electrode %in% electrodes_to_display) %>% droplevels()
     print(length(unique(data_reduced$Electrode)))
+    data_reduced$Electrode <- factor(data_reduced$Electrode, levels = electrodes_to_display)
+
   }
 
 
@@ -224,7 +226,7 @@ plot_difference_by_region  <- function( data,
       }
 
     if(length(electrodes_to_display) != 0) {
-      erp_plot <- erp_plot + facet_wrap( . ~ as.factor(Electrode) , nrow = numberOfRows, ncol = 3, scales='free_x' )
+      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
       ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', width = 22, height = 18)
 
 
