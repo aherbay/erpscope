@@ -1,3 +1,5 @@
+require(tidyverse)
+
 #' Difference Plots for 9 ROI
 #'
 #' This function creates a plot file with 9 electrodes of interests displaying ERPs
@@ -29,13 +31,13 @@ plot_difference_by_region  <- function( data,
           time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           plot_title=" ") {
 
-  conditionToPlot_enq <- enquo(conditionToPlot)
-  levelA_enq <- enquo(levelA)
-  levelB_enq <- enquo(levelB)
-  vary_enq <- enquo(vary)
-  group_var_enq <- enquo(group_var)
-  med_levels_enq <- enquo(med_levels)
-  ant_levels_enq <- enquo(ant_levels)
+  conditionToPlot_enq <- rlang::enquo(conditionToPlot)
+  levelA_enq <- rlang::enquo(levelA)
+  levelB_enq <- rlang::enquo(levelB)
+  vary_enq <- rlang::enquo(vary)
+  group_var_enq <- rlang::enquo(group_var)
+  med_levels_enq <- rlang::enquo(med_levels)
+  ant_levels_enq <- rlang::enquo(ant_levels)
   print("Starting")
 
 
@@ -218,7 +220,7 @@ plot_difference_by_region  <- function( data,
 
   message(paste(Sys.time(),"assembling all plots"))
 
-  figure  <- ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
+  figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
                         #labels = c("ERPs", "Voltage maps"),
                         ncol = 1, nrow = 2)
 

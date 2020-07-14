@@ -126,7 +126,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
       scale_fill_gradientn(colours = jet.colors(10),
                            limits = c(-2,2),
                            guide = FALSE, #"colourbar"
-                           oob = squish) +
+                           oob = scales::squish) +
       geom_path(data = maskRing,
                 aes(x, y, z = NULL, fill =NULL),
                 colour = "white",
