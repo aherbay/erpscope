@@ -145,6 +145,11 @@ plot_erp_by_electrode<- function( data,
 
             if(length(rectangles) != 0) {
 
+
+              y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] - (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 6
+              delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/14
+
+
               for(i in 1:length(rectangles)) {
 
                 tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") +
@@ -161,7 +166,7 @@ plot_erp_by_electrode<- function( data,
 
       message("Saving plot to file")
       print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
-      print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])
+      print()
       print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[[1]])
 
 
