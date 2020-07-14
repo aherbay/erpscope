@@ -120,7 +120,7 @@ plot_erp_by_electrode<- function( data,
 
 
 
-
+            print(tempo$layout$panel_params[[1]]$y.range)
 
             if(length(rectangles) != 0) {
 
@@ -154,7 +154,10 @@ plot_erp_by_electrode<- function( data,
 
                     )
 
+
       message("Saving plot to file")
+      print(tempo$layout$panel_params[[1]]$y.range)
+
 
       ggsave(tempo, filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
 
