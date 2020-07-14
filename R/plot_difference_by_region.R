@@ -55,7 +55,7 @@ plot_difference_by_region  <- function( data,
   time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
   time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
   numberOfRows <- length(electrodes_to_display)/3
-
+  print(numberOfRows)
 
   if(plotname == 'auto') {
       plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
