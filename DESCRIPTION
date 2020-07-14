@@ -30,6 +30,7 @@ Imports:
     grid,
     ggpubr,
     Hmisc,
-    png
+    png,
+    rlang
 Depends: 
     R (>= 2.10)
