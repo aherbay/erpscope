@@ -36,10 +36,10 @@ plot_erp_by_electrode<- function( data,
   # checkDataFrame(data)
   # check that column with condition is presnt
 #
-#   if(is.factor(data[,conditionToPlot]) == FALSE ) {
-#     data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
-#     message("Converting condition to plot as a factor")
-#   }
+   if(is.factor(data[,conditionToPlot]) == FALSE ) {
+    data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
+    message("Converting condition to plot as a factor")
+  }
 
 
   print(is.factor(data[,conditionToPlot]))
