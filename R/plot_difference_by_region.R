@@ -21,6 +21,7 @@ plot_difference_by_region  <- function( data,
           levelA = semMM_RAW ,
           levelB = consistent,
           color_palette,
+          output_type ='pdf',
           ant_levels= anteriority_3l,
           med_levels= mediality_a,
           vary= Voltage,
@@ -258,7 +259,7 @@ plot_difference_by_region  <- function( data,
                                              color = "black", face = "bold", size = 18))
 
   message("creating file")
-  ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.pdf', sep=''), width = 22, height = 18)
+  ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
 
 
 }
