@@ -51,7 +51,9 @@ plot_difference_by_region  <- function( data,
   if(plotname == 'auto') {
     plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
   }
-  message(paste(Sys.time()," - Beginning to plot differences ",plotname))
+  plot_filename <- paste(plotname,'.',output_type, sep='')
+
+  message(paste(Sys.time()," - Beginning to plot differences ",plot_filename))
 
   #subject_dataset_info <-
 
@@ -60,9 +62,6 @@ plot_difference_by_region  <- function( data,
   numberOfRows <- length(electrodes_to_display)/3
   #print(numberOfRows)
 
-
-
-  plot_filename <- paste(plotname,'.',output_type, sep='')
 
   if(file.exists(plot_filename)) message("File already exists! Overwriting it")
 
@@ -233,14 +232,14 @@ plot_difference_by_region  <- function( data,
             tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
               stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
               stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
-              stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
+              #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
               facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3 )
 
           }else {
             tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
               stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
               stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
-              stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
+              #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
               facet_wrap( anteriority_3l ~ mediality_a) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
           }
         }
