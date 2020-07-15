@@ -222,10 +222,10 @@ plot_difference_by_region  <- function( data,
       if(length(rectangles) != 0) {
 
         if(y_annot == "auto"){
-          y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
+          y_annot =  ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
         }
         if(delta == "auto"){
-          delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
+          delta = (ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1])/16
         }
 
         for(i in 1:length(rectangles)) {
