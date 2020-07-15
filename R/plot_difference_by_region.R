@@ -214,23 +214,26 @@ plot_difference_by_region  <- function( data,
       annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
 
 
-    message(paste(Sys.time()," - Wrapping ERP facets"))
 
-    if(length(electrodes_to_display) != 0) {
-      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
-    }else {
-      erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
-    }
 
     message(paste(Sys.time()," - Adding ERP custom labels"))
 
       if(length(rectangles) != 0) {
 
+        if(y_annot == "auto" | delta == "auto" ){
+          message(paste(Sys.time()," - Computing automatic positions "))
+          if(length(electrodes_to_display) != 0) {
+            tempoPlot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+          }else {
+            tempoPlot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+          }
+        }
+
         if(y_annot == "auto"){
-          y_annot =  ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
+          y_annot =  ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
         }
         if(delta == "auto"){
-          delta = (ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range[1])/16
+          delta = (ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range[1])/16
         }
 
         for(i in 1:length(rectangles)) {
@@ -244,6 +247,15 @@ plot_difference_by_region  <- function( data,
         }
 
       }
+
+
+    message(paste(Sys.time()," - Wrapping ERP facets"))
+
+    if(length(electrodes_to_display) != 0) {
+      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+    }else {
+      erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+    }
 
 
   message(paste(Sys.time()," - Assembling voltage maps"))
