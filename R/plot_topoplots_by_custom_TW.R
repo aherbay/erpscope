@@ -55,7 +55,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
     lowBound <- tw_array[[tw_index]][1]
     upperBound <- tw_array[[tw_index]][2]
 
-    print(paste('Processing',lowBound,"to",upperBound))
+    message(paste('--> Generating Voltage Map for Time Window: ',lowBound,"ms to",upperBound, "ms"))
 
 
     # compute mean diff voltage for each electrode for the given time window

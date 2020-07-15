@@ -65,18 +65,16 @@ plot_difference_by_region  <- function( data,
 
   if(file.exists(plot_filename)) message("File already exists! Overwriting it")
 
-
+  message(paste(Sys.time()," - Selecting relevant data (columns) "))
   data_reduced <- dplyr::select(data, !! group_var_enq, Time, Electrode , !! vary_enq ,!! conditionToPlot_enq,!! ant_levels_enq,!! med_levels_enq)
-  message("Data selected")
+  message(paste(Sys.time()," - Filtering relevant data (data for substracted conditions only) "))
   data_reduced <- filter(data_reduced, !! conditionToPlot_enq %in% c(rlang::quo_text(levelA_enq), rlang::quo_text(levelB_enq)) ) %>% droplevels()
-  message("Data reduced")
   #print(levels(data_reduced$MM_RAW))
   #print(head(data_reduced))
-
+  message(paste(Sys.time()," - Computing the difference between conditions"))
   data_diff <- data_reduced %>%
     group_by( !! group_var_enq, Time, Electrode,!! ant_levels_enq,!! med_levels_enq, !! conditionToPlot_enq) %>%
     summarise(mean_Voltage = mean(!! vary_enq))
-  message("Data diff")
   #print(head(data_diff))
 
   if ( rlang::quo_text(group_var_enq)  == "Trigger_code") {
@@ -135,7 +133,8 @@ plot_difference_by_region  <- function( data,
 
     data_diff <- data_diff %>% spread( !!conditionToPlot_enq, mean_Voltage )  %>% dplyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
     #print(head(data_diff))
-    message("Data mutated")
+    message(paste(Sys.time()," - Difference computed "))
+
 
 
   }
