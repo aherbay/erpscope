@@ -44,7 +44,10 @@ plot_difference_by_region  <- function( data,
   group_var_enq <- rlang::enquo(group_var)
   med_levels_enq <- rlang::enquo(med_levels)
   ant_levels_enq <- rlang::enquo(ant_levels)
-  message(paste(Sys.time()," - Beginning to plot differences"))
+  if(plotname == 'auto') {
+    plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
+  }
+  message(paste(Sys.time()," - Beginning to plot differences ",plotname))
 
 
   number_of_subjects <- length(unique(data$Subject))
@@ -57,9 +60,7 @@ plot_difference_by_region  <- function( data,
   numberOfRows <- length(electrodes_to_display)/3
   #print(numberOfRows)
 
-  if(plotname == 'auto') {
-      plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
-  }
+
 
   plot_filename <- paste(plotname,'.',output_type, sep='')
 
@@ -251,7 +252,7 @@ plot_difference_by_region  <- function( data,
 
         message(paste(Sys.time()," - Auto y_annot "))
         if(y_annot == "auto"){
-          y_annot =  y_min + (y_max-y_min)/ 8
+          y_annot =  y_min - (y_max-y_min)/32
         }
         message(paste(Sys.time()," - Auto delta "))
         if(delta == "auto"){
