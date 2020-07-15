@@ -35,19 +35,23 @@ plot_erp_by_electrode<- function( data,
   # check that data is there
   # checkDataFrame(data)
   # check that column with condition is presnt
-#
+   if(!(is.data.frame(data)) ) {
+      data <- as.data.frame(data)
+      message("Converting data as data frame")
+   }
+
    if(is.factor(data[,conditionToPlot]) == FALSE ) {
     data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
     message("Converting condition to plot as a factor")
-  }
+   }
 
 
-  print(is.factor(data[,conditionToPlot]))
-  print(levels(data[,conditionToPlot]))
+  #print(is.factor(data[,conditionToPlot]))
+  #print(levels(data[,conditionToPlot]))
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
-  #if(length(color_palette) < number_of_levels) { stop("Not enough colors to plot") }
+  if(length(color_palette) < number_of_levels) { stop("Not enough colors to plot") }
 
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
