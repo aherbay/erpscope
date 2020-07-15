@@ -16,7 +16,7 @@
 #' @export
 #'
 plot_difference_by_region  <- function( data,
-          plotname,
+          plotname = 'auto',
           conditionToPlot = MM_RAW,
           levelA = semMM_RAW ,
           levelB = consistent,
@@ -25,7 +25,7 @@ plot_difference_by_region  <- function( data,
           med_levels= mediality_a,
           vary= Voltage,
           group_var,
-          show_group_obs ,
+          show_group_obs = FALSE ,
           y_annot = 'auto',
           delta = 'auto',
           baseline= c(-500,-200),
@@ -33,7 +33,6 @@ plot_difference_by_region  <- function( data,
           topoplots_scale = c(-2,2),
           tick_distance = 200,
           rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
-          plot_title=" ",
           electrodes_to_display = c() #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           ) {
 
