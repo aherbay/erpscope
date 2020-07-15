@@ -55,7 +55,7 @@ plot_erp_by_electrode<- function( data,
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
-  #if(length(color_palette) < number_of_levels) { stop("Not enough colors to plot") }
+  if(length(color_palette) < number_of_levels) { stop("Not enough colors to plot") }
 
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
