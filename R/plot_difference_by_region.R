@@ -44,14 +44,14 @@ plot_difference_by_region  <- function( data,
   group_var_enq <- rlang::enquo(group_var)
   med_levels_enq <- rlang::enquo(med_levels)
   ant_levels_enq <- rlang::enquo(ant_levels)
+  number_of_subjects <- length(unique(data$Subject))
+  number_of_levels <- length(levels(data[,rlang::quo_text(conditionToPlot_enq)]))
+
+
   if(plotname == 'auto') {
     plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
   }
   message(paste(Sys.time()," - Beginning to plot differences ",plotname))
-
-
-  number_of_subjects <- length(unique(data$Subject))
-  number_of_levels <- length(levels(data[,rlang::quo_text(conditionToPlot_enq)]))
 
   #subject_dataset_info <-
 
