@@ -32,17 +32,18 @@ plot_erp_by_electrode<- function( data,
 
 
 
+  #print(is.data.frame(data))
 
-  print(is.factor(data[,conditionToPlot]))
-  print(levels(data[,conditionToPlot]))
-  print(is.data.frame(data))
+  #print(is.factor(data[,conditionToPlot]))
+  #print(levels(data[,conditionToPlot]))
   # check that data is there
   # checkDataFrame(data)
   # check that column with condition is presnt
-   if(!(is.data.frame(data)) ) {
-      data <- as.data.frame(data)
-      message("Converting data as data frame")
-   }
+
+
+
+  #data <- as.data.frame(data)
+
 
    if(!(is.factor(data[,conditionToPlot])) ) {
     data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
@@ -79,6 +80,10 @@ plot_erp_by_electrode<- function( data,
     if(plotname == 'auto') {
           plotname = paste(Sys.Date(),"_ERPs_",deparse(substitute(data)),"_",conditionToPlot, sep="")
     }
+    plot_filename <- paste(plotname,'.',output_type, sep='')
+    t_start <- Sys.time()
+    message(paste(Sys.time()," - Beginning to plot ERP in",plot_filename))
+
 
     time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
     time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
@@ -190,7 +195,10 @@ plot_erp_by_electrode<- function( data,
       message("Saving plot to file")
 
 
-      ggsave(tempo, filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
+      ggsave(tempo, filename=paste(plotname,plot_filename,sep=''), width = 22, height = 18)
+      t_end <- Sys.time()
+      message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
+
 
 
     } # end of choice
