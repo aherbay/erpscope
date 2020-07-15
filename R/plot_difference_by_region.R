@@ -225,40 +225,43 @@ plot_difference_by_region  <- function( data,
 
       if(length(rectangles) != 0) {
 
-        if(y_annot == "auto" | delta == "auto" ){
-          message(paste(Sys.time()," - Computing automatic positions "))
-          if(length(electrodes_to_display) != 0) {
+            if(y_annot == "auto" | delta == "auto" ){
+              message(paste(Sys.time()," - Computing automatic positions "))
+              if(length(electrodes_to_display) != 0) {
 
-            tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-              stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
-              stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
-              #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-              facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3 )
+                tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
+                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
+                  #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
+                  facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3 )
 
-          }else {
-            tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-              stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
-              stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
-              #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-              facet_wrap( anteriority_3l ~ mediality_a) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
-          }
+              }else {
+                tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
+                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
+                  #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
+                  facet_wrap( anteriority_3l ~ mediality_a) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+              }
+
+
+            range <- ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range
+
+            y_min <-range[1]
+            y_max <-range[2]
+
+            #message(paste(Sys.time()," - Auto y_annot "))
+            if(y_annot == "auto"){
+              y_annot =  y_min - (y_max-y_min)/32
+            }
+
+            #message(paste(Sys.time()," - Auto delta "))
+            if(delta == "auto"){
+              delta = (y_max-y_min)/16
+            }
+
+            rm(tempoPlot)
         }
 
-        range <- ggplot_build(tempoPlot)$layout$panel_scales_y[[1]]$range$range
-
-        y_min <-range[1]
-        y_max <-range[2]
-
-        message(paste(Sys.time()," - Auto y_annot "))
-        if(y_annot == "auto"){
-          y_annot =  y_min - (y_max-y_min)/32
-        }
-        message(paste(Sys.time()," - Auto delta "))
-        if(delta == "auto"){
-          delta = (y_max-y_min)/16
-        }
-
-        rm(tempoPlot)
 
         for(i in 1:length(rectangles)) {
 

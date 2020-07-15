@@ -147,13 +147,21 @@ plot_erp_by_electrode<- function( data,
 
             if(length(rectangles) != 0) {
 
-              if(y_annot == "auto"){
-                y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
-              }
-              if(delta == "auto"){
-                delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
-              }
+              if(y_annot == "auto" | delta == "auto" ){
 
+                  range <- ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range
+
+                  y_min <-range[1]
+                  y_max <-range[2]
+
+
+                  if(y_annot == "auto"){
+                    y_annot =  y_min + (y_max - y_min) / 32
+                  }
+                  if(delta == "auto"){
+                    delta = (y_max - y_min)/16
+                  }
+              }
 
               for(i in 1:length(rectangles)) {
 
