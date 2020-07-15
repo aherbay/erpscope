@@ -42,7 +42,8 @@ plot_erp_by_electrode<- function( data,
 #   }
 
 
-
+  print(is.factor(data[,conditionToPlot]))
+  print(levels(data[,conditionToPlot]))
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
