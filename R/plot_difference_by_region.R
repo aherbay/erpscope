@@ -52,8 +52,8 @@ plot_difference_by_region  <- function( data,
     plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
   }
   plot_filename <- paste(plotname,'.',output_type, sep='')
-
-  message(paste(Sys.time()," - Beginning to plot differences ",plot_filename))
+  t_start <- Sys.time()
+  message(paste(Sys.time()," - Beginning to plot differences in",plot_filename))
 
   #subject_dataset_info <-
 
@@ -225,7 +225,7 @@ plot_difference_by_region  <- function( data,
       if(length(rectangles) != 0) {
 
             if(y_annot == "auto" | delta == "auto" ){
-              message(paste(Sys.time()," - Computing automatic positions "))
+              message(paste(Sys.time()," -->  Computing automatic positions "))
               if(length(electrodes_to_display) != 0) {
 
                 tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
@@ -301,9 +301,10 @@ plot_difference_by_region  <- function( data,
   message(paste(Sys.time()," - Creating file"))
 
 
-  message("")
-  ggplot2::ggsave(plot= figure ,filename= plot_filename, width = 22, height = 18)
 
+  ggplot2::ggsave(plot= figure ,filename= plot_filename, width = 22, height = 18)
+  t_end <- Sys.time()
+  message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
 
 }
 
