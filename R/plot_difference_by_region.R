@@ -26,8 +26,8 @@ plot_difference_by_region  <- function( data,
           vary= Voltage,
           group_var,
           show_group_obs ,
-          y_annot=6,
-          delta=1,
+          y_annot = 'auto',
+          delta = 'auto',
           baseline= c(-500,-200),
           time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           topoplots_scale = c(-2,2),
@@ -212,7 +212,21 @@ plot_difference_by_region  <- function( data,
 
 
 
+    if(length(electrodes_to_display) != 0) {
+      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+    }else {
+      erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+    }
+
+
       if(length(rectangles) != 0) {
+
+        if(y_annot == "auto"){
+          y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
+        }
+        if(delta == "auto"){
+          delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
+        }
 
         for(i in 1:length(rectangles)) {
 
@@ -226,18 +240,7 @@ plot_difference_by_region  <- function( data,
 
       }
 
-    if(length(electrodes_to_display) != 0) {
 
-
-      erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
-      #erp_plot <- erp_plot + facet_grid(  ~ Electrode , scales='free_x' )
-
-      #ggplot2::ggsave(plot= erp_plot ,filename='erp_plot.pdf', width = 22, height = 18)
-
-
-    }else {
-      erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
-    }
 
 
 

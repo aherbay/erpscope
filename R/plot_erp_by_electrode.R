@@ -25,30 +25,32 @@ plot_erp_by_electrode<- function( data,
                                   plotname = 'auto',
                                   check_message = FALSE,
                                   conf_interval = FALSE,
-                                  y_annot = 6, delta = 1,
+                                  y_annot = 'auto',
+                                  delta = 'auto',
                                   rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb"))
                                   ) {
 
-  #data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
+  #
 
   # check that data is there
   # checkDataFrame(data)
-
   # check that column with condition is presnt
 
+  if(length(color_palette) < length(levels(data[,conditionToPlot])) ) stop("Not enough colors to plot")
+  if(is.factor(data[,conditionToPlot]) == FALSE ) {
+    data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
+    message("Converting condition to plot as a factor")
+  }
 
-    #length(unique(data$Subject))
+
 
   number_of_subjects <- length(unique(data$Subject))
   number_of_levels <- length(levels(data[,conditionToPlot]))
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
   # check a few things
-  # is condition a factor?
   # is color accessible?
-  # is length(color_palette) >= levels(conditionToPlot)
   # check if length(electrodes_list) is 9 or 12
-
 
 
 
@@ -145,9 +147,12 @@ plot_erp_by_electrode<- function( data,
 
             if(length(rectangles) != 0) {
 
-
-              y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
-              delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
+              if(y_annot == "auto"){
+                y_annot =  ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1] + (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1]) / 5.2
+              }
+              if(delta == "auto"){
+                delta = (ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[2]-ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range[1])/16
+              }
 
 
               for(i in 1:length(rectangles)) {
