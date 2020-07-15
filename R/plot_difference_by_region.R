@@ -44,7 +44,7 @@ plot_difference_by_region  <- function( data,
   group_var_enq <- rlang::enquo(group_var)
   med_levels_enq <- rlang::enquo(med_levels)
   ant_levels_enq <- rlang::enquo(ant_levels)
-  message("Starting")
+  message(paste(Sys.time()," - Beginning to plot differences"))
 
 
   number_of_subjects <- length(unique(data$Subject))
@@ -244,7 +244,7 @@ plot_difference_by_region  <- function( data,
 
         message(paste(Sys.time()," - Auto y_annot "))
         if(y_annot == "auto"){
-          y_annot =  y_min + (y_max-y_min) / 5.2
+          y_annot =  y_min + (y_max-y_min)/ 8
         }
         message(paste(Sys.time()," - Auto delta "))
         if(delta == "auto"){
