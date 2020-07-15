@@ -44,7 +44,7 @@ plot_difference_by_region  <- function( data,
   group_var_enq <- rlang::enquo(group_var)
   med_levels_enq <- rlang::enquo(med_levels)
   ant_levels_enq <- rlang::enquo(ant_levels)
-  print("Starting")
+  message("Starting")
 
 
   number_of_subjects <- length(unique(data$Subject))
@@ -62,16 +62,16 @@ plot_difference_by_region  <- function( data,
   }
 
   data_reduced <- dplyr::select(data, !! group_var_enq, Time, Electrode , !! vary_enq ,!! conditionToPlot_enq,!! ant_levels_enq,!! med_levels_enq)
-  print("Data selected")
+  message("Data selected")
   data_reduced <- filter(data_reduced, !! conditionToPlot_enq %in% c(rlang::quo_text(levelA_enq), rlang::quo_text(levelB_enq)) ) %>% droplevels()
-  print("Data reduced")
+  message("Data reduced")
   #print(levels(data_reduced$MM_RAW))
   #print(head(data_reduced))
 
   data_diff <- data_reduced %>%
     group_by( !! group_var_enq, Time, Electrode,!! ant_levels_enq,!! med_levels_enq, !! conditionToPlot_enq) %>%
     summarise(mean_Voltage = mean(!! vary_enq))
-  print("Data diff")
+  message("Data diff")
   #print(head(data_diff))
 
   if ( rlang::quo_text(group_var_enq)  == "Trigger_code") {
@@ -118,11 +118,11 @@ plot_difference_by_region  <- function( data,
     rm(non_consistent,consistent_means)
     print(head(data_diff))
 
-    print("consistent means merged with non_consistent")
+    message("consistent means merged with non_consistent")
 
     # compute difference for each inconsistent trigger code
     data_diff$Voltage <- data_diff$mean_Voltage - data_diff$consistentMeanVoltage
-    print("Difference computed")
+    message("Difference computed")
 
 
 
@@ -130,7 +130,7 @@ plot_difference_by_region  <- function( data,
 
     data_diff <- data_diff %>% spread( !!conditionToPlot_enq, mean_Voltage )  %>% dplyr::mutate( Voltage = !!levelA_enq - !!levelB_enq)
     #print(head(data_diff))
-    print("Data mutated")
+    message("Data mutated")
 
 
   }
@@ -144,6 +144,8 @@ plot_difference_by_region  <- function( data,
   #time_windows <- list(c(-150,50),c(50,250),c(250,400),c(400,550),c(550,800),c(800,900))
   #time_windows <- list(c(-200,0),c(0,200),c(200,300),c(300,500),c(500,700),c(700,900))
   # time_windows <- list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900))
+
+  message(paste(Sys.time()," - Computing voltage maps"))
 
   topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, time_windows, plotname,topoplots_scale)
 
@@ -159,7 +161,7 @@ plot_difference_by_region  <- function( data,
 
   if(show_group_obs) {
 
-    message("Preparing ERP plot with group data")
+    message(paste(Sys.time()," - Preparing ERP plot with group data"))
 
     erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
@@ -171,7 +173,7 @@ plot_difference_by_region  <- function( data,
 
   } else {
 
-    message("Preparing ERP plot without group data")
+    message(paste(Sys.time()," - Starting ERP plot without group data"))
     #print(length(unique(data_diff$Electrode)))
 
 
@@ -184,6 +186,7 @@ plot_difference_by_region  <- function( data,
 
   }
 
+  message(paste(Sys.time()," - Adding ERP aesthetics"))
 
     erp_plot <- erp_plot +
       theme(
@@ -211,6 +214,7 @@ plot_difference_by_region  <- function( data,
       annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
 
 
+    message(paste(Sys.time()," - Wrapping ERP facets"))
 
     if(length(electrodes_to_display) != 0) {
       erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
@@ -218,6 +222,7 @@ plot_difference_by_region  <- function( data,
       erp_plot <- erp_plot + facet_wrap( anteriority_3l ~ mediality_a, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
     }
 
+    message(paste(Sys.time()," - Adding ERP custom labels"))
 
       if(length(rectangles) != 0) {
 
@@ -241,24 +246,24 @@ plot_difference_by_region  <- function( data,
       }
 
 
-
-
-
-
-  message("assembling topoplot")
+  message(paste(Sys.time()," - Assembling voltage maps"))
   topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 1, ncol = length(time_windows))
 
-  message(paste(Sys.time(),"assembling all plots"))
+  message(paste(Sys.time()," - Assembling ERP and Voltage maps"))
 
   figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
                         #labels = c("ERPs", "Voltage maps"),
                         ncol = 1, nrow = 2)
 
+  message(paste(Sys.time()," - Adding title"))
+
   figure  <-  ggpubr::annotate_figure(figure,
                              top = ggpubr::text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
                                              color = "black", face = "bold", size = 18))
+  message(paste(Sys.time()," - Creating file"))
 
-  message("creating file")
+
+  message("")
   ggplot2::ggsave(plot= figure ,filename=paste(plotname,'.',output_type, sep=''), width = 22, height = 18)
 
 
