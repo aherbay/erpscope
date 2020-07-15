@@ -43,7 +43,10 @@ plot_erp_by_electrode<- function( data,
 
 
   #data <- as.data.frame(data)
-
+    if(!(conditionToPlot %in% colnames(data)))
+    {
+      stop(paste("There is no column",conditionToPlot,"in the dataframe",deparse(substitute(data)) ))
+    }
 
    if(!(is.factor(data[,conditionToPlot])) ) {
     data[,conditionToPlot] <- as.factor(data[,conditionToPlot])
@@ -56,6 +59,9 @@ plot_erp_by_electrode<- function( data,
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
   if(length(color_palette) < number_of_levels) { stop(paste("Please provide more colors in your palette: currently",length(color_palette),"colors to plot",number_of_levels , "levels")) }
+
+
+
 
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
