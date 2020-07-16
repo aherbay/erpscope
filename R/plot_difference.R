@@ -249,7 +249,7 @@ plot_difference  <- function( data,
                   stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
                   stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
                   #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-                  facet_wrap( data[[ant_levels_enq]] ~ data[[med_levels_enq]]) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+                  facet_wrap( data[[rlang::quo_text(ant_levels_enq)]] ~ data[[rlang::quo_text(med_levels_enq)]] ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
               }
 
 
@@ -290,7 +290,7 @@ plot_difference  <- function( data,
     if(length(electrodes_to_display) != 0) {
       erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
     }else {
-      erp_plot <- erp_plot + facet_wrap( ant_levels_enq ~ med_levels_enq, scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+      erp_plot <- erp_plot + facet_wrap( data[[rlang::quo_text(ant_levels_enq)]] ~ data[[rlang::quo_text(med_levels_enq)]], scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
     }
 
 
