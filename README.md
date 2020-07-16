@@ -65,6 +65,10 @@ plot_erp( data = relpriming,
 ) 
 ```
 
+
+![alt text](https://github.com/man/figures/plot_erp/plot_erp_1.png "plot_erp_1.png")
+
+
 ### function plot_difference with all arguments displaying 9 electrodes and voltages maps
 ```r
 plot_difference( data = relpriming,
