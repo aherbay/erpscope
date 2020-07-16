@@ -143,7 +143,7 @@ plot_topoplots_by_custom_TW <-  function (data_diff,
       geom_path(data = nose,
                 aes(x, y, z = NULL, fill = NULL),
                 size = 1.5)+
-      coord_equal()+theme(plot.title = element_text(hjust = 0.5))+
+      coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
       labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
 
   }
