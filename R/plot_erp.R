@@ -17,14 +17,15 @@ plot_erp<- function( data,
                                   conditionToPlot,
                                   electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
                                   output_type = 'pdf',
-                                  color_palette =  c("#4DAF4A","#377EB8","#FF7F00","#984EA3","#000000")  ,
+                                  color_palette =  c("#4DAF4A", "#EA2721","#377EB8","#FF7F00","#984EA3","#000000","#5c5c5c", "#945D25", "#FF748C", "#2E692C"),
+                                  #                   green     red        blue     orange    purple   black      grey        brown      pink       dark green
                                   baseline = c(-2450,-2250),
                                   adjusted_baseline = FALSE,
                                   time_labels_interval = 200,
                                   plotname = 'auto',
                                   show_check_message = FALSE,
                                   show_conf_interval = FALSE,
-                                  custom_labels = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
+                                  custom_labels = list(),
                                   labels_vertical_position = 'auto',
                                   labels_height = 'auto',
                                   vary ="Voltage"
@@ -61,7 +62,10 @@ plot_erp<- function( data,
 
   if(length(color_palette) < number_of_levels) { stop(paste("Please provide more colors in your palette: currently",length(color_palette),"colors to plot",number_of_levels , "levels")) }
 
-
+  # check if baseline has two values, then that baseline[1] is > tmin and < tmax, same for baseline[2], check that baseline[1]< baseline[2]
+  if(length(baseline) != 2) {
+    stop(paste("Provided baseline ",baseline,"is not valid"))
+  }
 
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
@@ -102,8 +106,13 @@ plot_erp<- function( data,
 
 
     if(adjusted_baseline == TRUE) {
-      dataToPlot <- baseline_correction(dataToPlot,conditionToPlot,baseline)
-      vary <- "RebaselinedVoltage"
+      if(length(baseline) != 2) {
+        stop(paste("Provided baseline ",baseline,"is not valid"))
+      }else{
+        dataToPlot <- baseline_correction(dataToPlot,conditionToPlot,baseline)
+        vary <- "RebaselinedVoltage"
+      }
+
     }
 
     if(show_conf_interval == TRUE) {
