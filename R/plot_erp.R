@@ -31,7 +31,7 @@ plot_erp<- function( data,
                                   ) {
 
 
-    if(is_tibble(data))
+    if(tibble::is_tibble(data))
     {
       data <-  as.data.frame(data)
       message("Converting data tibble as traditional dataframe")
