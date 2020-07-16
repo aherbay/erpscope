@@ -290,7 +290,7 @@ plot_difference  <- function( data,
     if(length(electrodes_to_display) != 0) {
       erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
     }else {
-      erp_plot <- erp_plot + facet_wrap( data_reduced[[rlang::quo_text(ant_levels_enq)]] ~ data_reduced[[rlang::quo_text(med_levels_enq)]], scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+      erp_plot <- erp_plot + facet_wrap( reformulate(rlang::quo_text(ant_levels_enq),rlang::quo_text(med_levels_enq)), scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
     }
 
 
