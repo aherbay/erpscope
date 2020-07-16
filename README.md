@@ -2,7 +2,8 @@
 
 A little package to visualize ERPs in R
 
-![GitHub Logo](/man/figures/logo_ERPscope.png)
+<img src="man/figures/plot_difference_with_subjectData.png" align="right" height="200/" />
+
 
 ## Installation
 
@@ -74,7 +75,7 @@ plot_erp( data = relpriming,
 
 *  plot_erp with confidence interval ribbons for each condition
 
-To show confidence interval ribbons, just set the argument `r show_conf_interval` to `r TRUE` as below:
+To show confidence interval ribbons, just set the argument  *show_conf_interval* to *TRUE* as below:
 ```r
 plot_erp( data = relpriming,
           conditionToPlot = "Pair.Type",
@@ -140,7 +141,7 @@ plot_difference(  data = relpriming,
 ) 
 ```
 
-<img src="man/figures/plot_difference_1.png" width="80%" />
+<img src="man/figures/plot_difference_1.png" width="100%" />
 
 
 * function plot_difference to display Subject individual data
@@ -170,4 +171,4 @@ plot_difference(  data = relpriming,
 ) 
 ```
 
-<img src="man/figures/plot_difference_with_subjectData.png" width="80%" />
+<img src="man/figures/plot_difference_with_subjectData.png" width="100%" />
