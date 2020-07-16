@@ -15,7 +15,7 @@ plot_difference(
   ant_levels = anteriority_3l,
   med_levels = mediality_a,
   vary = Voltage,
-  group_var,
+  group_var = Subject,
   show_group_obs = FALSE,
   labels_vertical_position = "auto",
   labels_height = "auto",
@@ -24,8 +24,7 @@ plot_difference(
     c(300, 500), c(500, 700), c(700, 900)),
   topoplots_scale = c(-2, 2),
   time_labels_interval = 200,
-  custom_labels = list(list(-2250, -1600, "N1"), list(-1500, -850, "BA/BEI"),
-    list(-750, -100, "N2"), list(0, 650, "Verb")),
+  custom_labels = list(),
   electrodes_to_display = c()
 )
 }
