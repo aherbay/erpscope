@@ -7,7 +7,6 @@
 #' @param infile Path to the input file
 #'
 #' @return A matrix of the infile
-#' @export
 
 
 plot_erp_by_region<- function(  data,
