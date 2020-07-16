@@ -2,7 +2,7 @@
 
 A little package to visualize ERPs in R
 
-<img src="man/figures/plot_difference_with_subjectData.png" align="right" height="200/" />
+<img src="man/figures/logo_ERPscope.png" align="right" height="150/" />
 
 
 ## Installation
