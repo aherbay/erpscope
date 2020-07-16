@@ -13,7 +13,7 @@
 #' @export
 
 
-plot_erp_by_electrode<- function( data,
+plot_erp<- function( data,
                                   conditionToPlot,
                                   electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
                                   output_type = 'pdf',

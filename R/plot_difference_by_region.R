@@ -15,7 +15,7 @@
 #' @import ggplot2
 #' @export
 #'
-plot_difference_by_region  <- function( data,
+plot_difference  <- function( data,
           plotname = 'auto',
           conditionToPlot = MM_RAW,
           levelA = semMM_RAW ,
@@ -64,6 +64,16 @@ plot_difference_by_region  <- function( data,
 
 
   if(file.exists(plot_filename)) message("File already exists! Overwriting it")
+
+  levelsConditionToPlot <- levels(data[,rlang::quo_text(conditionToPlot_enq)])
+  if(!(rlang::quo_text(levelA_enq) %in% levelsConditionToPlot))
+  {
+    stop(paste("Level A",rlang::quo_text(levelA_enq),"is not present in the column",rlang::quo_text(conditionToPlot_enq)," of the dataframe",deparse(substitute(data)) ))
+  }
+  if(!(rlang::quo_text(levelB_enq) %in% levelsConditionToPlot))
+  {
+    stop(paste("Level B",rlang::quo_text(levelB_enq),"is not present in the column",rlang::quo_text(conditionToPlot_enq)," of the dataframe",deparse(substitute(data)) ))
+  }
 
   message(paste(Sys.time()," - Selecting relevant data (columns) "))
   data_reduced <- dplyr::select(data, !! group_var_enq, Time, Electrode , !! vary_enq ,!! conditionToPlot_enq,!! ant_levels_enq,!! med_levels_enq)
