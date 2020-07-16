@@ -48,6 +48,12 @@ plot_erp_by_electrode<- function( data,
     message("Converting condition to plot as a factor")
    }
 
+    df_electrodes <- levels(data$Electrode)
+    for(current_elec in 1:length(electrodes_list)){
+      if(!(electrodes_list[current_elec] %in% df_electrodes)) {
+         stop(paste("Electrode",electrodes_list[current_elec] ,"is not in the data"))
+      }
+    }
 
 
   number_of_subjects <- length(unique(data$Subject))
