@@ -1,10 +1,27 @@
-# erpscope
+# ERPscope
+
 A little package to visualize ERPs in R
 
+## Installation
 
-To install it, install the devtools package (https://www.rdocumentation.org/packages/devtools)
-And run devtools::install_github("aherbay/erpscope")
+### Devtools package
+To install ERPscope, install the devtools package if you don't already have it (https://www.rdocumentation.org/packages/devtools)
+```r
+install.packages("devtools")
+```
+### Installing ERPscope
+Run the following command to install from the github repository
+```r
+ devtools::install_github("aherbay/erpscope")
+```
 
+## Update ERPscope
+
+```r
+  detach("package:erpscope", unload=TRUE) #if ERPscope is loaded in your session
+  devtools::install_github("aherbay/erpscope") # update
+  library(erpscope) # loading again
+```
 
 ## Specification of the R dataframe:
 * one column named Voltage
