@@ -180,7 +180,7 @@ plot_difference  <- function( data,
     erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
       guides(colour = guide_legend(override.aes = list(size = 2))) +
       scale_y_reverse() + theme_light() +
-      stat_summary(data = data_diff,fun.y=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
+      stat_summary(data = data_diff,fun=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
       stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
       stat_summary(fun= mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
       stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
