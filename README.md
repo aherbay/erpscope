@@ -28,11 +28,13 @@ Run the following command to install from the github repository
 * one column named Subject
 * one column named Time
 * one column named Electrode
-* one column with the condition to plot
+* one column with the variable and conditions(levels) to plot
 
 ## Examples
 
-### function plot_erp with all arguments
+### Function plot_erp 
+
+* function plot_erp with all arguments
 
 ```r
 plot_erp( data = relpriming,
@@ -53,7 +55,7 @@ plot_erp( data = relpriming,
 ) 
 ```
 
-### function plot_erp with only necessary arguments
+* function plot_erp with only necessary arguments
 
 ```r
 plot_erp( data = relpriming,
@@ -65,9 +67,25 @@ plot_erp( data = relpriming,
 ) 
 ```
 
-
+![alt text](man/figures/plot_erp_1.png "plot_erp_1.png")
 <img src="man/figures/plot_erp_1.png" width="100%" />
 
+
+*  plot_erp with confidence interval ribbons for each condition
+
+To show confidence interval ribbons, just set the argument ```r show_conf_interval``` to ```r TRUE``` as below:
+```r
+plot_erp( data = relpriming,
+          conditionToPlot = "Pair.Type",
+          electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
+          color_palette =  c("#4DAF4A","#EA2721","#000000")  ,
+          custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+          baseline = c(-500,-300),
+          show_conf_interval = FALSE
+
+) 
+```
+<img src="man/figures/plot_erp_2.png" width="100%" />
 
 ### function plot_difference with all arguments displaying 9 electrodes and voltages maps
 ```r
