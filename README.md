@@ -1,8 +1,9 @@
+<img src="man/figures/logo_ERPscope.png" align="right" height="200/" />
+
 # ERPscope
 
 A little package to visualize ERPs in R
 
-<img src="man/figures/logo_ERPscope.png" align="right" height="150/" />
 
 
 ## Installation
