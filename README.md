@@ -117,32 +117,8 @@ plot_difference( data = relpriming,
                  plotname = 'auto'
 ) 
 ```
-* function plot_difference with all arguments displaying 9 ROI and voltages maps
 
-```r
-plot_difference(  data = relpriming,
-                  conditionToPlot = Pair.Type,
-                  levelA = Unrelated ,
-                  levelB = Consistent,
-                  color_palette =  c("#4DAF4A","#595959", "#000000"),
-                  output_type ='pdf',
-                  ant_levels= Anteriority.Levels,
-                  med_levels= Mediality.Levels,
-                  vary= Voltage,
-                  group_var = Subject,
-                  show_group_obs = FALSE ,
-                  labels_vertical_position = 'auto',
-                  labels_height = 'auto',
-                  baseline= c(-500,-200),
-                  topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
-                  topoplots_scale = c(-2,2),
-                  time_labels_interval = 200,
-                  custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
-                  plotname = 'auto'
-) 
-```
-
-<img src="man/figures/plot_difference_1.png" width="100%" />
+<img src="man/figures/plot_difference_Electrodes.png" width="100%" />
 
 
 * function plot_difference to display Subject individual data
@@ -172,4 +148,34 @@ plot_difference(  data = relpriming,
 ) 
 ```
 
-<img src="man/figures/plot_difference_with_subjectData.png" width="100%" />
+<img src="man/figures/plot_difference_Electrodes_with_subjectData.png" width="100%" />
+
+* function plot_difference with all arguments displaying 9 ROI and voltages maps
+ 
+ Instead of displaying difference on 9 specific electrodes you can display it on 9 Regions of Interest
+ To do so, just remove the line, electrodes_to_display or put it electrodes_to_display = c()
+
+```r
+plot_difference(  data = relpriming,
+                  conditionToPlot = Pair.Type,
+                  levelA = Unrelated ,
+                  levelB = Consistent,
+                  color_palette =  c("#4DAF4A","#595959", "#000000"),
+                  output_type ='pdf',
+                  ant_levels= Anteriority.Levels,
+                  med_levels= Mediality.Levels,
+                  vary= Voltage,
+                  group_var = Subject,
+                  show_group_obs = FALSE ,
+                  labels_vertical_position = 'auto',
+                  labels_height = 'auto',
+                  baseline= c(-500,-200),
+                  topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+                  topoplots_scale = c(-2,2),
+                  time_labels_interval = 200,
+                  custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+                  plotname = 'auto'
+) 
+```
+<img src="man/figures/plot_difference_ROI.png" width="100%" />
+
