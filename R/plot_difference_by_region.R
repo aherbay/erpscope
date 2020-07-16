@@ -27,13 +27,13 @@ plot_difference_by_region  <- function( data,
           vary= Voltage,
           group_var,
           show_group_obs = FALSE ,
-          y_annot = 'auto',
-          delta = 'auto',
+          labels_vertical_position = 'auto',
+          labels_height = 'auto',
           baseline= c(-500,-200),
-          time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+          topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           topoplots_scale = c(-2,2),
-          tick_distance = 200,
-          rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
+          time_labels_interval = 200,
+          custom_labels = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
           electrodes_to_display = c() #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           ) {
 
@@ -57,8 +57,8 @@ plot_difference_by_region  <- function( data,
 
   #subject_dataset_info <-
 
-  time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
-  time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
+  time_min  <- ((min(data$Time) %/% time_labels_interval) -1) * time_labels_interval
+  time_max  <- (max(data$Time) %/% time_labels_interval) * time_labels_interval
   numberOfRows <- length(electrodes_to_display)/3
   #print(numberOfRows)
 
@@ -145,13 +145,13 @@ plot_difference_by_region  <- function( data,
   data_diff$Condition <- "Difference"
 
   #topo_ggplots <- plot_topoplots_by_TW(data_diff,  50, 200, 600, plotname)
-  #time_windows <- list(c(-150,50),c(50,250),c(250,400),c(400,550),c(550,800),c(800,900))
-  #time_windows <- list(c(-200,0),c(0,200),c(200,300),c(300,500),c(500,700),c(700,900))
-  # time_windows <- list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900))
+  #topoplots_time_windows <- list(c(-150,50),c(50,250),c(250,400),c(400,550),c(550,800),c(800,900))
+  #topoplots_time_windows <- list(c(-200,0),c(0,200),c(200,300),c(300,500),c(500,700),c(700,900))
+  # topoplots_time_windows <- list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900))
 
   message(paste(Sys.time()," - Computing voltage maps"))
 
-  topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, time_windows, plotname,topoplots_scale)
+  topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale)
 
 
 
@@ -212,7 +212,7 @@ plot_difference_by_region  <- function( data,
            title = paste(  Sys.Date(), paste("- Baseline:[",baseline[1],"ms;",baseline[2],"ms]",sep="") ,"- dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"),
            caption = "Generated with ERPscope")+
       # ticks on x axis
-      scale_x_continuous(breaks=seq(time_min,time_max,tick_distance))+
+      scale_x_continuous(breaks=seq(time_min,time_max,time_labels_interval))+
       scale_color_manual(values=color_palette)+
       annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
       annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
@@ -222,9 +222,9 @@ plot_difference_by_region  <- function( data,
 
     message(paste(Sys.time()," - Adding ERP custom labels"))
 
-      if(length(rectangles) != 0) {
+      if(length(custom_labels) != 0) {
 
-            if(y_annot == "auto" | delta == "auto" ){
+            if(labels_vertical_position == "auto" | labels_height == "auto" ){
               message(paste(Sys.time()," -->  Computing automatic positions "))
               if(length(electrodes_to_display) != 0) {
 
@@ -248,25 +248,25 @@ plot_difference_by_region  <- function( data,
             y_min <-range[1]
             y_max <-range[2]
 
-            #message(paste(Sys.time()," - Auto y_annot "))
-            if(y_annot == "auto"){
-              y_annot =  y_min - (y_max-y_min)/32
+            #message(paste(Sys.time()," - Auto labels_vertical_position "))
+            if(labels_vertical_position == "auto"){
+              labels_vertical_position =  y_min - (y_max-y_min)/32
             }
 
-            #message(paste(Sys.time()," - Auto delta "))
-            if(delta == "auto"){
-              delta = (y_max-y_min)/16
+            #message(paste(Sys.time()," - Auto labels_height "))
+            if(labels_height == "auto"){
+              labels_height = (y_max-y_min)/16
             }
 
             rm(tempoPlot)
         }
 
 
-        for(i in 1:length(rectangles)) {
+        for(i in 1:length(custom_labels)) {
 
-          erp_plot <-  erp_plot + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "dotted") + # "dotted", "solid"
-            annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
-            annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
+          erp_plot <-  erp_plot + geom_vline(xintercept = custom_labels[[i]][[1]], linetype = "dotted") + # "dotted", "solid"
+            annotate(geom = "text", x= (custom_labels[[i]][[1]]+ custom_labels[[i]][[2]])/2, y = labels_vertical_position, label = custom_labels[[i]][[3]], angle = 0) +
+            annotate("rect", xmin = custom_labels[[i]][[1]], xmax = custom_labels[[i]][[2]], ymin= labels_vertical_position - labels_height, ymax=labels_vertical_position +labels_height, alpha = .2)
 
 
 
@@ -285,7 +285,7 @@ plot_difference_by_region  <- function( data,
 
 
   message(paste(Sys.time()," - Assembling voltage maps"))
-  topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 1, ncol = length(time_windows))
+  topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 1, ncol = length(topoplots_time_windows))
 
   message(paste(Sys.time()," - Assembling ERP and Voltage maps"))
 
