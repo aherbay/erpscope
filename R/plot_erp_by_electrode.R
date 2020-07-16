@@ -6,9 +6,9 @@
 #' It assumes that there is a column named Voltage with your voltage values.
 #' Default values are provided for electrodes but it can be customized.
 #'
-#' @param file dataframe containing
-#' @param conditionToPlot column of the dataframe witht the condition to plot
-#'
+#' @param file dataframe containing eeg data
+#' @param conditionToPlot column of the dataframe witht the condition and levels to plot
+#' @param electrodes_list vector of Electrodes names to plot (between quotes)
 #' @return A PDF file containing the ERP plots
 #' @export
 
@@ -19,30 +19,25 @@ plot_erp_by_electrode<- function( data,
                                   output_type = 'pdf',
                                   color_palette =  c("#4DAF4A","#377EB8","#FF7F00","#984EA3","#000000")  ,
                                   baseline = c(-2450,-2250),
-                                  correction = FALSE,
-                                  tick_distance = 200,
-                                  vary ="Voltage",
+                                  adjusted_baseline = FALSE,
+                                  time_labels_interval = 200,
                                   plotname = 'auto',
-                                  check_message = FALSE,
-                                  conf_interval = FALSE,
-                                  y_annot = 'auto',
-                                  delta = 'auto',
-                                  rectangles = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb"))
+                                  show_check_message = FALSE,
+                                  show_conf_interval = FALSE,
+                                  custom_labels = list(list(-2250,-1600,"N1"),list(-1500,-850,"BA/BEI"),list(-750,-100,"N2"),list(0,650,"Verb")),
+                                  labels_vertical_position = 'auto',
+                                  labels_height = 'auto',
+                                  vary ="Voltage"
                                   ) {
 
 
+    if(is_tibble(data))
+    {
+      data <-  as.data.frame(data)
+      message("Converting data tibble as traditional dataframe")
 
-  #print(is.data.frame(data))
+    }
 
-  #print(is.factor(data[,conditionToPlot]))
-  #print(levels(data[,conditionToPlot]))
-  # check that data is there
-  # checkDataFrame(data)
-  # check that column with condition is presnt
-
-
-
-  #data <- as.data.frame(data)
     if(!(conditionToPlot %in% colnames(data)))
     {
       stop(paste("There is no column",conditionToPlot,"in the dataframe",deparse(substitute(data)) ))
@@ -62,7 +57,6 @@ plot_erp_by_electrode<- function( data,
 
 
 
-
   init_message <- paste("You are about to plot ERPs for",length(electrodes_list), "electrodes for the condition", conditionToPlot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
   # check a few things
@@ -71,7 +65,7 @@ plot_erp_by_electrode<- function( data,
 
 
 
-  if(check_message == TRUE) {
+  if(show_check_message == TRUE) {
     choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
   } else {
 
@@ -89,10 +83,11 @@ plot_erp_by_electrode<- function( data,
     plot_filename <- paste(plotname,'.',output_type, sep='')
     t_start <- Sys.time()
     message(paste(Sys.time()," - Beginning to plot ERP in",plot_filename))
+    if(file.exists(plot_filename)) message("File already exists! Overwriting it")
 
 
-    time_min  <- ((min(data$Time) %/% tick_distance) -1) * tick_distance
-    time_max  <- (max(data$Time) %/% tick_distance) * tick_distance
+    time_min  <- ((min(data$Time) %/% time_labels_interval) -1) * time_labels_interval
+    time_max  <- (max(data$Time) %/% time_labels_interval) * time_labels_interval
     numberOfRows <- length(electrodes_list)/3
     #message(paste("numberOfRows",numberOfRows))
 
@@ -100,12 +95,12 @@ plot_erp_by_electrode<- function( data,
     dataToPlot$Electrode <- factor(dataToPlot$Electrode, levels = electrodes_list)
 
 
-    if(correction == TRUE) {
+    if(adjusted_baseline == TRUE) {
       dataToPlot <- baseline_correction(dataToPlot,conditionToPlot,baseline)
       vary <- "RebaselinedVoltage"
     }
 
-    if(conf_interval == TRUE) {
+    if(show_conf_interval == TRUE) {
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot,fill = conditionToPlot)) +
                   scale_y_reverse() + theme_light() +
@@ -133,7 +128,7 @@ plot_erp_by_electrode<- function( data,
                       subtitle = paste(  Sys.Date(), paste("- Baseline:[",baseline[1],"ms;",baseline[2],"ms]",sep="") ,"- dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects"),
                       caption = "Generated with ERPscope")+
                   # ticks on x axis
-                  scale_x_continuous(breaks=seq(time_min,time_max,tick_distance))+
+                  scale_x_continuous(breaks=seq(time_min,time_max,time_labels_interval))+
                   # axis
                   geom_vline(xintercept = 0,linetype = "solid" )+
                   geom_hline(yintercept = 0)+
@@ -166,9 +161,9 @@ plot_erp_by_electrode<- function( data,
             #print(ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range)
 
 
-            if(length(rectangles) != 0) {
+            if(length(custom_labels) != 0) {
 
-              if(y_annot == "auto" | delta == "auto" ){
+              if(labels_vertical_position == "auto" | labels_height == "auto" ){
 
                   range <- ggplot_build(tempo)$layout$panel_scales_y[[1]]$range$range
 
@@ -176,19 +171,19 @@ plot_erp_by_electrode<- function( data,
                   y_max <-range[2]
 
 
-                  if(y_annot == "auto"){
-                    y_annot =  y_min + (y_max - y_min) / 32
+                  if(labels_vertical_position == "auto"){
+                    labels_vertical_position =  y_min + (y_max - y_min) / 32
                   }
-                  if(delta == "auto"){
-                    delta = (y_max - y_min)/16
+                  if(labels_height == "auto"){
+                    labels_height = (y_max - y_min)/16
                   }
               }
 
-              for(i in 1:length(rectangles)) {
+              for(i in 1:length(custom_labels)) {
 
-                tempo =  tempo + geom_vline(xintercept = rectangles[[i]][[1]], linetype = "longdash") +
-                  annotate(geom = "text", x= (rectangles[[i]][[1]]+ rectangles[[i]][[2]])/2, y = y_annot, label = rectangles[[i]][[3]], angle = 0) +
-                  annotate("rect", xmin = rectangles[[i]][[1]], xmax = rectangles[[i]][[2]], ymin= y_annot - delta, ymax=y_annot +delta, alpha = .2)
+                tempo =  tempo + geom_vline(xintercept = custom_labels[[i]][[1]], linetype = "longdash") +
+                  annotate(geom = "text", x= (custom_labels[[i]][[1]]+ custom_labels[[i]][[2]])/2, y = labels_vertical_position, label = custom_labels[[i]][[3]], angle = 0) +
+                  annotate("rect", xmin = custom_labels[[i]][[1]], xmax = custom_labels[[i]][[2]], ymin= labels_vertical_position - labels_height, ymax=labels_vertical_position +labels_height, alpha = .2)
 
 
 
@@ -212,11 +207,6 @@ plot_erp_by_electrode<- function( data,
 }
 
 
-# plot_erp_by_electrode (data=datatest, conditionToPlot = "MM_RAW" )
 
 
-# check the conditionToPlot is a factor
-# check if files already exists
 # check output_type is in "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
-# scale_x_continuous(breaks=seq(-500,900,100))
-# manage annotations
