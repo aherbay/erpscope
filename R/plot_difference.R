@@ -20,7 +20,7 @@ plot_difference  <- function( data,
           conditionToPlot = MM_RAW,
           levelA = semMM_RAW ,
           levelB = consistent,
-          color_palette,
+          color_palette = c("#4DAF4A","#595959", "#ffffff" , "#377EB8", "#EA2721"),
           output_type ='pdf',
           ant_levels= anteriority_3l,
           med_levels= mediality_a,
@@ -34,7 +34,9 @@ plot_difference  <- function( data,
           topoplots_scale = c(-2,2),
           time_labels_interval = 200,
           custom_labels = list(),
-          electrodes_to_display = c() #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
+          electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
+          show_t_test = TRUE,
+          t_test_threshold = 0.05
           ) {
 
 
@@ -129,6 +131,37 @@ plot_difference  <- function( data,
 
       data_diff$Condition <- "Difference"
 
+
+  ##############
+  # If selected compute t-tests
+      if(show_t_test) {
+
+        message(paste(Sys.time()," - Computing t-tests "))
+
+        df<- data_reduced %>% group_by(Electrode, Time)  %>% summarize(
+          `tvalue` = t.test(
+            Voltage[Pair.Type == rlang::quo_text(levelA_enq)],
+            Voltage[Pair.Type == rlang::quo_text(levelB_enq)], paired = TRUE
+          )$statistic,
+          `pvalue` = t.test(
+            Voltage[Pair.Type == rlang::quo_text(levelA_enq)],
+            Voltage[Pair.Type == rlang::quo_text(levelB_enq)], paired = TRUE
+          )$p.value
+        )
+
+
+        df$significant   <- ifelse(  df$pvalue < t_test_threshold ,'zzz.significant',"zzz.ns")
+
+        datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
+        datadiff2$Voltage <- 6
+        #numberOfTimePoints <- length(unique(data_diff$Time))
+        #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
+
+
+      }
+
+
+
   ##############
   # Generating voltage maps
 
@@ -175,6 +208,7 @@ plot_difference  <- function( data,
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
 
       }
+
 
     ##############
     # Adding ERP aesthetics
@@ -246,6 +280,12 @@ plot_difference  <- function( data,
                 labels_height = (y_max-y_min)/16
               }
 
+              if(show_t_test){
+                datadiff2$Voltage <- y_max
+              }
+
+
+
               rm(tempoPlot)
          }
 
@@ -261,6 +301,21 @@ plot_difference  <- function( data,
           }
 
       }
+
+      ##############
+      # Adding t-test infos
+
+        message(paste(Sys.time()," - Adding t-tests labels to the plot"))
+
+
+        if(show_t_test) {
+
+          erp_plot <- erp_plot +
+            stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75 ,
+                         aes(colour = factor(significant)) , show.legend = F )
+
+
+        }
 
     ##############
     # Wrapping ERP facets
