@@ -156,7 +156,7 @@ plot_difference  <- function( data,
 
         datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
 
-        #datadiff2 <- subset(datadiff2)
+        datadiff2 <- subset(datadiff2, significant == "zzz.significant")
         datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
