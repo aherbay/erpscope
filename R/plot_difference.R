@@ -94,7 +94,7 @@ plot_difference  <- function( data,
       df.color <- as.data.frame(do.call(rbind, custom_colors))
       print(df.color)
 
-      color_text <- list(c("levelA","Unrelated"),c("levelB","Consistent"),c("difference","difference"),c("t-test","t-test"))
+      color_text <- list(c("levelA",rlang::quo_text(levelA_enq)),c("levelB",rlang::quo_text(levelB_enq)),c("difference","difference"),c("t-test","t-test"))
       df.color_text <- as.data.frame(do.call(rbind, color_text))
       print(df.color_text)
 
