@@ -258,7 +258,6 @@ plot_difference  <- function( data,
                caption = "Generated with ERPscope")+
           # ticks on x axis
           scale_x_continuous(breaks=seq(time_min,time_max,time_labels_interval))+
-          scale_color_manual(values=color_palette)+
           annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
           annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
 
@@ -345,9 +344,9 @@ plot_difference  <- function( data,
         message(paste(Sys.time()," - Wrapping ERP facets"))
 
         if(length(electrodes_to_display) != 0) {
-          erp_plot <- erp_plot + facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
+          erp_plot <- erp_plot + scale_color_manual(values=color_palette)+ facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' )
         }else {
-          erp_plot <- erp_plot + facet_wrap( reformulate(rlang::quo_text(med_levels_enq),rlang::quo_text(ant_levels_enq)), scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
+          erp_plot <- erp_plot + scale_color_manual(values=color_palette)+ facet_wrap( reformulate(rlang::quo_text(med_levels_enq),rlang::quo_text(ant_levels_enq)), scales='free_x',labeller = label_wrap_gen_alex(multi_line=FALSE) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
         }
 
     ##############
