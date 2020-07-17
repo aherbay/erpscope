@@ -174,6 +174,7 @@ plot_difference  <- function( data,
         datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
 
         datadiff2 <- subset(datadiff2, significant == significantLabel )
+        datadiff2 <- droplevels(datadiff2)
         #datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
@@ -332,8 +333,7 @@ plot_difference  <- function( data,
         if(show_t_test) {
 
           erp_plot <- erp_plot +
-            stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75 ,
-                         aes(colour = factor(significant)) , show.legend = F )
+            stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75 , show.legend = F ) # aes(colour = factor(significant)) ,
 
 
         }
