@@ -20,7 +20,7 @@ plot_difference  <- function( data,
           conditionToPlot = MM_RAW,
           levelA = semMM_RAW ,
           levelB = consistent,
-          color_palette =  c("#4DAF4A","#595959", "#000000" , "#ffffff", "#EA2721"), #list(c("levelA","#000000"),c("levelB","#4DAF4A"),c("difference","#595959"),c("t-test","#EA2721")), #377EB8
+          custom_colors =  list(c("levelA","#000000"),c("levelB","#4DAF4A"),c("difference","#595959"),c("t-test","#EA2721")) , #377EB8
           output_type ='pdf',
           ant_levels= anteriority_3l,
           med_levels= mediality_a,
@@ -88,6 +88,20 @@ plot_difference  <- function( data,
         stop(paste("Level B",rlang::quo_text(levelB_enq),"is not present in the column",rlang::quo_text(conditionToPlot_enq)," of the dataframe",deparse(substitute(data)) ))
       }
 
+    ##############
+    # adjusting colors
+
+      df.color <- as.data.frame(do.call(rbind, custom_colors))
+
+      color_text <- list(c("levelA","Unrelated"),c("levelB","Consistent"),c("difference","difference"),c("t-test","t-test"))
+      df.color_text <- as.data.frame(do.call(rbind, color_text))
+
+      df.color <- left_join(df.color,df.color_text,by="V1")
+      df.color2 <- df.color[order(df.color$V2.y),]
+      if(!show_t_test) df.color2 <- subset(df.color2, V1 != "t-test")
+      color_palette <- df.color2$V2.x
+
+
   ##############
   # selecting relevant columns to reduce df size in memory
 
@@ -151,13 +165,13 @@ plot_difference  <- function( data,
           )$p.value
         )
 
-
-        df$significant   <- ifelse(  df$pvalue < t_test_threshold ,'zzz.significant',"zzz.ns")
+        significantLabel <- paste("t-test p<(", t_test_threshold ,")", sep="")
+        df$significant   <- ifelse(  df$pvalue < t_test_threshold , significantLabel,"not significant")
 
         datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
 
-        datadiff2 <- subset(datadiff2, significant == "zzz.significant")
-        datadiff2$Voltage <- 6
+        datadiff2 <- subset(datadiff2, significant == significantLabel )
+        #datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
         print(head(datadiff2))
@@ -286,7 +300,7 @@ plot_difference  <- function( data,
               }
 
               if(show_t_test){
-                datadiff2$Voltage <- y_max
+                datadiff2$Voltage <- y_max + (y_max-y_min)/28
               }
 
 
