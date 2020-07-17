@@ -20,7 +20,7 @@ plot_difference  <- function( data,
           conditionToPlot = MM_RAW,
           levelA = semMM_RAW ,
           levelB = consistent,
-          color_palette = c("#4DAF4A","#595959", "#ffffff" , "#377EB8", "#EA2721"),
+          color_palette =  c("#4DAF4A","#595959", "#000000" , "#ffffff", "#EA2721"), #list(c("levelA","#000000"),c("levelB","#4DAF4A"),c("difference","#595959"),c("t-test","#EA2721")), #377EB8
           output_type ='pdf',
           ant_levels= anteriority_3l,
           med_levels= mediality_a,
@@ -155,6 +155,8 @@ plot_difference  <- function( data,
         df$significant   <- ifelse(  df$pvalue < t_test_threshold ,'zzz.significant',"zzz.ns")
 
         datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
+
+        #datadiff2 <- subset(datadiff2)
         datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
