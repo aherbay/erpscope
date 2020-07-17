@@ -92,15 +92,18 @@ plot_difference  <- function( data,
     # adjusting colors
 
       df.color <- as.data.frame(do.call(rbind, custom_colors))
+      print(df.color)
 
       color_text <- list(c("levelA","Unrelated"),c("levelB","Consistent"),c("difference","difference"),c("t-test","t-test"))
       df.color_text <- as.data.frame(do.call(rbind, color_text))
+      print(df.color_text)
+
 
       df.color <- left_join(df.color,df.color_text,by="V1")
       df.color2 <- df.color[order(df.color$V2.y),]
       if(!show_t_test) df.color2 <- subset(df.color2, V1 != "t-test")
       color_palette <- df.color2$V2.x
-
+      print(color_palette)
 
   ##############
   # selecting relevant columns to reduce df size in memory
@@ -152,7 +155,7 @@ plot_difference  <- function( data,
 
         message(paste(Sys.time()," - Computing t-tests "))
 
-        print(head(data_reduced))
+        #print(head(data_reduced))
 
         df<- data_reduced %>% group_by(Electrode, Time)  %>% summarize(
           `tvalue` = t.test(
@@ -174,7 +177,7 @@ plot_difference  <- function( data,
         #datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
-        print(head(datadiff2))
+        #print(head(datadiff2))
 
 
       }
