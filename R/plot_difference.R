@@ -138,6 +138,7 @@ plot_difference  <- function( data,
 
         message(paste(Sys.time()," - Computing t-tests "))
 
+        print(head(data_reduced))
 
         df<- data_reduced %>% group_by(Electrode, Time)  %>% summarize(
           `tvalue` = t.test(
