@@ -138,6 +138,7 @@ plot_difference  <- function( data,
 
         message(paste(Sys.time()," - Computing t-tests "))
 
+
         df<- data_reduced %>% group_by(Electrode, Time)  %>% summarize(
           `tvalue` = t.test(
             Voltage[!! conditionToPlot_enq == rlang::quo_text(levelA_enq)],
