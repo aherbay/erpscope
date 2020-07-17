@@ -102,7 +102,7 @@ plot_difference  <- function( data,
       df.color <- left_join(df.color,df.color_text,by="V1")
       df.color2 <- df.color[order(df.color$V2.y),]
       if(!show_t_test) df.color2 <- subset(df.color2, V1 != "t-test")
-      color_palette <- df.color2$V2.x
+      color_palette <- as.vector(df.color2$V2.x)
       print(color_palette)
 
   ##############
