@@ -141,12 +141,12 @@ plot_difference  <- function( data,
 
         df<- data_reduced %>% group_by(Electrode, Time)  %>% summarize(
           `tvalue` = t.test(
-            Voltage[!! conditionToPlot_enq == rlang::quo_text(levelA_enq)],
-            Voltage[!! conditionToPlot_enq == rlang::quo_text(levelB_enq)], paired = TRUE
+            Voltage[conditionToPlot_enq == rlang::quo_text(levelA_enq)],
+            Voltage[conditionToPlot_enq == rlang::quo_text(levelB_enq)], paired = TRUE
           )$statistic,
           `pvalue` = t.test(
-            Voltage[!! conditionToPlot_enq == rlang::quo_text(levelA_enq)],
-            Voltage[!! conditionToPlot_enq == rlang::quo_text(levelB_enq)], paired = TRUE
+            Voltage[conditionToPlot_enq == rlang::quo_text(levelA_enq)],
+            Voltage[conditionToPlot_enq == rlang::quo_text(levelB_enq)], paired = TRUE
           )$p.value
         )
 
