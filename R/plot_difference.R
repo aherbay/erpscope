@@ -171,7 +171,7 @@ plot_difference  <- function( data,
         significantLabel <- paste("t-test p<(", toString(t_test_threshold) ,")", sep="")
         df$significant   <- ifelse(  df$pvalue < t_test_threshold , significantLabel,"not significant")
 
-        datadiff2 <- left_join(datadiff,df, by=c("Electrode"="Electrode", "Time"="Time"))
+        datadiff2 <- left_join(data_diff,df, by=c("Electrode"="Electrode", "Time"="Time"))
 
         datadiff2 <- subset(datadiff2, significant == significantLabel )
         datadiff2 <- droplevels(datadiff2)
