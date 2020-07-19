@@ -197,7 +197,7 @@ plot_difference  <- function( data,
 
       }else if (topoplots_data %in% c("t_test_t_value", "t_test_p_value")) {
 
-        topo_ggplots <- plot_topoplots_by_custom_TW(data=data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq )
+        topo_ggplots <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq )
 
 
       } else { stop(paste("Invalid topoplots_data:",topoplots_data)) }
