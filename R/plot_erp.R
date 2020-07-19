@@ -13,13 +13,14 @@
 #' @export
 
 
-plot_erp<- function( data,
+plot_erp<- function(              data,
                                   conditionToPlot,
                                   electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
-                                  output_type = 'pdf',
+                                  baseline = c(-2450,-2250),
                                   color_palette =  c("#4DAF4A", "#EA2721","#377EB8","#FF7F00","#984EA3","#000000","#5c5c5c", "#945D25", "#FF748C", "#2E692C"),
                                   #                   green     red        blue     orange    purple   black      grey        brown      pink       dark green
-                                  baseline = c(-2450,-2250),
+                                  output_type = 'pdf',
+
                                   adjusted_baseline = FALSE,
                                   time_labels_interval = 200,
                                   plotname = 'auto',
