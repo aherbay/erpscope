@@ -63,6 +63,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
     if(data_to_display == "voltage_difference") {
 
+        title_legend <- "Voltage Difference"
+
         # compute mean diff voltage for each electrode for the given time window
         means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
@@ -83,6 +85,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
     } else if (data_to_display == "t_test_t_value") {
 
+        title_legend <- "t-test t-value"
+
+
         means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
@@ -98,6 +103,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
 
     } else if (data_to_display == "t_test_p_value") {
+
+      title_legend <- "t-test p-value"
 
         means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
@@ -185,12 +192,55 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
       geom_path(data = nose,
                 aes(x, y, z = NULL, fill = NULL),
                 size = 1.5)+
-      coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
+      coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
       labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
+
+
+     if(tw_index == length(tw_array) ){
+
+
+       topo_forlegend <-   ggplot2::ggplot(interpTopo,
+                                           aes(x = x, y = y, fill = Voltage)
+       ) +
+         geom_raster(show.legend=F) +
+         stat_contour(aes(z = Voltage),
+                      colour = "black",
+                      binwidth = 0.5) +
+         theme_topo()+
+         theme(legend.position="bottom",
+               legend.background = element_rect(fill = "transparent", colour = "transparent"))+
+         scale_fill_gradientn(colours = jet.colors(10),
+                              limits = c(topoplots_scale[1],topoplots_scale[2]),
+                              oob = scales::squish) +
+         geom_path(data = maskRing,
+                   aes(x, y, z = NULL, fill =NULL),
+                   colour = "white",
+                   size = 15)+
+         geom_point(data = means_by_electrodes,
+                    aes(x, y),
+                    size = 1)+
+         geom_path(data = headShape,
+                   aes(x, y, z = NULL, fill = NULL),
+                   size = 1.5)+
+         geom_path(data = nose,
+                   aes(x, y, z = NULL, fill = NULL),
+                   size = 1.5)+
+         coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
+         labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"   "))
+
+
+        # legend <- ggpubr::get_legend( topo_forlegend )
+       legend <- ggpubr::get_legend( topo_forlegend )
+       #topolegend <- cowplot::plot_grid(NULL, legend, ncol=1)
+       topolegend <- ggpubr::as_ggplot(legend)
+       saveRDS(topolegend, "legend.RDS")
+
+     }
 
   }
 
 
+  topo_ggplots_with_legend <- list(topo_ggplots,topolegend)
 
 
 
@@ -201,6 +251,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
   #ggarrange(plotlist=electro_ggplots, nrow = 4, ncol = 10)
   #ggsave(filename=paste("electro",'_',min_time,'-',max_time,'.pdf', sep=''))
-  return(topo_ggplots)
+  return(topo_ggplots_with_legend)
 
 }
