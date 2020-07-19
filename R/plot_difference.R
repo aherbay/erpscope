@@ -38,7 +38,7 @@ plot_difference  <- function( data,
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           show_t_test = TRUE,
           t_test_threshold = 0.05,
-          line_thickness = .75
+          line_thickness = 0.75
           ) {
 
 
@@ -193,7 +193,7 @@ plot_difference  <- function( data,
 
       if(topoplots_data == "voltage_difference"){
 
-        topo_ggplots <- plot_topoplots_by_custom_TW(data=data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data)
+        topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference")
 
       }else if (topoplots_data %in% c("t_test_t_value", "t_test_p_value")) {
 
@@ -344,7 +344,7 @@ plot_difference  <- function( data,
         if(show_t_test) {
 
           erp_plot <- erp_plot +
-            stat_summary(data = datadiff2, fun = mean,geom = "point",size = line_thickness,  aes(colour = factor(significant))  ) # aes(colour = factor(significant)) ,
+            stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75,  aes(colour = factor(significant))  ) # aes(colour = factor(significant)) ,
 
 
         }
