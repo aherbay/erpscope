@@ -22,8 +22,8 @@ plot_difference  <- function( data,
           levelB = consistent,
           custom_colors =  list(c("levelA","#000000"),c("levelB","#4DAF4A"),c("difference","#595959"),c("t-test","#EA2721")) , #377EB8
           output_type ='pdf',
-          ant_levels= anteriority_3l,
-          med_levels= mediality_a,
+          ant_levels= Anteriority.Levels,
+          med_levels= Mediality.Levels,
           vary= Voltage,
           group_var = Subject,
           show_group_obs = FALSE ,
@@ -37,7 +37,8 @@ plot_difference  <- function( data,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           show_t_test = TRUE,
-          t_test_threshold = 0.05
+          t_test_threshold = 0.05,
+          line_thickness= 0.75
           ) {
 
 
@@ -173,7 +174,7 @@ plot_difference  <- function( data,
         df$significant   <- ifelse(  df$pvalue < t_test_threshold , significantLabel,"not significant")
 
         datadiff2 <- left_join(data_diff,df, by=c("Electrode"="Electrode", "Time"="Time"))
-
+        datadiff2$significant <- as.factor(datadiff2$significant)
         datadiff2 <- subset(datadiff2, significant == significantLabel )
         datadiff2 <- droplevels(datadiff2)
         #datadiff2$Voltage <- 6
@@ -224,7 +225,7 @@ plot_difference  <- function( data,
           scale_y_reverse() + theme_light() +
           stat_summary(data = data_diff,fun=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-          stat_summary(fun= mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+          stat_summary(fun= mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
 
       } else {
@@ -237,7 +238,7 @@ plot_difference  <- function( data,
           guides(colour = guide_legend(override.aes = list(size = 2))) +
           scale_y_reverse() + theme_light() +
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-          stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+          stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
 
       }
@@ -286,7 +287,7 @@ plot_difference  <- function( data,
             if(length(electrodes_to_display) != 0) {
 
                 tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
                   stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
                   #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
                   facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3 )
@@ -294,7 +295,7 @@ plot_difference  <- function( data,
             }else {
 
                 tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
                   stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
                   #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
                   facet_wrap(  reformulate(rlang::quo_text(med_levels_enq),rlang::quo_text(ant_levels_enq)) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
@@ -343,7 +344,11 @@ plot_difference  <- function( data,
         if(show_t_test) {
 
           print(head(datadiff2))
-          #erp_plot <- erp_plot + stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75,  aes(colour = factor(significant))  ) # aes(colour = factor(significant)) ,
+          print(unique(datadiff2$Electrode))
+          if(length(electrodes_to_display) != 0) {
+            datadiff2 <-droplevels(subset(datadiff2,Electrode %in% electrodes_to_display))
+          }
+          erp_plot <- erp_plot + stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75,  aes(colour = significant)  ) # aes(colour = factor(significant)) ,
 
 
         }
