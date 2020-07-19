@@ -379,7 +379,7 @@ plot_difference  <- function( data,
     ##############
     #  Assembling ERP and Voltage maps
 
-        saveRDS(erp_plot, "erp_plot.RDS")
+        #saveRDS(erp_plot, "erp_plot.RDS")
         message(paste(Sys.time()," - Assembling ERP and Voltage maps"))
         figure  <- ggpubr::ggarrange( erp_plot, topoplot_with_legend, heights = c(2, 0.5),
                               #labels = c("ERPs", "Voltage maps"),

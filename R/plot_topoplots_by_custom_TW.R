@@ -244,7 +244,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
        legend <- ggpubr::get_legend( topo_forlegend )
        #topolegend <- cowplot::plot_grid(NULL, legend, ncol=1)
        topolegend <- ggpubr::as_ggplot(legend)
-       saveRDS(topolegend, "legend.RDS")
+       #saveRDS(topolegend, "legend.RDS")
 
      }
 
