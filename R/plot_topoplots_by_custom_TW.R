@@ -48,6 +48,10 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   topo_ggplots <- list()
   electro_ggplots <- list()
 
+  if (data_to_display %in% c("t_test_t_value", "t_test_p_value")) {
+    data_for_map_summarized <- data_for_map %>% group_by(Subject,Electrode,Time,Condition) %>% summarise(Voltage= mean(Voltage) )
+    #print(head(data_for_map_summarized))
+  }
 
 
 
@@ -87,11 +91,14 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
         title_legend <- "t-test t-value"
 
-
-        means_by_electrodes <- data_for_map %>%
+        means_by_electrodes <- data_for_map_summarized %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
-          group_by(Electrode)%>%
+          group_by(Subject,Electrode,Condition) %>%
+          summarise(
+            Voltage= mean(Voltage)
+          ) %>%
+          group_by(Electrode) %>%
           summarize(
             `Voltage` = t.test(   # Should change that for p value and replace voltage below by y_value_to_plot
               Voltage[Condition == rlang::quo_text(levelA)],
@@ -106,9 +113,13 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
       title_legend <- "t-test p-value"
 
-        means_by_electrodes <- data_for_map %>%
+        means_by_electrodes <- data_for_map_summarized %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
+          group_by(Subject,Electrode,Condition) %>%
+          summarise(
+            Voltage= mean(Voltage)
+          ) %>%
           group_by(Electrode)%>%
           summarize(
             `Voltage` = t.test(     # Should change that for p value and replace voltage below by y_value_to_plot
