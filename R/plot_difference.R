@@ -193,14 +193,17 @@ plot_difference  <- function( data,
 
       if(topoplots_data == "voltage_difference"){
 
-        topo_ggplots <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference")
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference")
 
       }else if (topoplots_data %in% c("t_test_t_value", "t_test_p_value")) {
 
-        topo_ggplots <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq )
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq )
 
 
       } else { stop(paste("Invalid topoplots_data:",topoplots_data)) }
+
+      topo_ggplots <- topo_ggplots_with_legend[[1]]
+      topo_legend <- topo_ggplots_with_legend[[2]]
 
   ##############
   # If showing electrodes, after generating voltage maps, keeping only the displayed electrodes in dataframe
@@ -369,13 +372,16 @@ plot_difference  <- function( data,
 
         message(paste(Sys.time()," - Assembling voltage maps"))
         topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 1, ncol = length(topoplots_time_windows))
+        topoplot_with_legend <- ggpubr::ggarrange( topo_legend, topoplot, heights = c(0.5, 3),
+                                      #labels = c("ERPs", "Voltage maps"),
+                                      ncol = 1, nrow =2)
 
     ##############
     #  Assembling ERP and Voltage maps
 
         saveRDS(erp_plot, "erp_plot.RDS")
         message(paste(Sys.time()," - Assembling ERP and Voltage maps"))
-        figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
+        figure  <- ggpubr::ggarrange( erp_plot, topoplot_with_legend, heights = c(2, 0.5),
                               #labels = c("ERPs", "Voltage maps"),
                               ncol = 1, nrow = 2)
 
