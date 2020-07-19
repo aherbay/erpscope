@@ -110,6 +110,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
             )$p.value
           )
 
+        means_by_electrodes$Voltage <- means_by_electrodes$Voltage +1
         means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
 
 
