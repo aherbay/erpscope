@@ -94,18 +94,18 @@ plot_difference  <- function( data,
     # adjusting colors
 
       df.color <- as.data.frame(do.call(rbind, custom_colors))
-      print(df.color)
+      #print(df.color)
 
       color_text <- list(c("levelA",rlang::quo_text(levelA_enq)),c("levelB",rlang::quo_text(levelB_enq)),c("difference","difference"),c("t-test","t-test"))
       df.color_text <- as.data.frame(do.call(rbind, color_text))
-      print(df.color_text)
+      #print(df.color_text)
 
 
       df.color <- left_join(df.color,df.color_text,by="V1")
       df.color2 <- df.color[order(df.color$V2.y),]
       if(!show_t_test) df.color2 <- subset(df.color2, V1 != "t-test")
       color_palette <- as.vector(df.color2$V2.x)
-      print(color_palette)
+      #print(color_palette)
 
   ##############
   # selecting relevant columns to reduce df size in memory
@@ -346,8 +346,8 @@ plot_difference  <- function( data,
 
         if(show_t_test) {
 
-          print(head(datadiff2))
-          print(unique(datadiff2$Electrode))
+          #print(head(datadiff2))
+          #print(unique(datadiff2$Electrode))
           if(length(electrodes_to_display) != 0) {
             datadiff2 <-droplevels(subset(datadiff2,Electrode %in% electrodes_to_display))
           }
