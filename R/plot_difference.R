@@ -343,8 +343,7 @@ plot_difference  <- function( data,
 
         if(show_t_test) {
 
-          erp_plot <- erp_plot +
-            stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75,  aes(colour = factor(significant))  ) # aes(colour = factor(significant)) ,
+          erp_plot <- erp_plot + stat_summary(data = datadiff2, fun = mean, geom = "point",size = .75  ) # aes(colour = factor(significant)) ,
 
 
         }
