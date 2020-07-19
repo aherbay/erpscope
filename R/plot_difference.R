@@ -225,7 +225,7 @@ plot_difference  <- function( data,
           scale_y_reverse() + theme_light() +
           stat_summary(data = data_diff,fun=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-          stat_summary(fun= mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
+          stat_summary(fun= mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
 
       } else {
@@ -238,7 +238,7 @@ plot_difference  <- function( data,
           guides(colour = guide_legend(override.aes = list(size = 2))) +
           scale_y_reverse() + theme_light() +
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
-          stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
+          stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
 
       }
@@ -287,7 +287,7 @@ plot_difference  <- function( data,
             if(length(electrodes_to_display) != 0) {
 
                 tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-                  stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
                   stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
                   #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
                   facet_wrap(  ~ Electrode , nrow = numberOfRows, ncol = 3 )
@@ -295,7 +295,7 @@ plot_difference  <- function( data,
             }else {
 
                 tempoPlot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
-                  stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
+                  stat_summary(fun = mean,geom = "line",size = .75, aes(colour = Condition) )+ # conditions lines
                   stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) + # difference line
                   #stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
                   facet_wrap(  reformulate(rlang::quo_text(med_levels_enq),rlang::quo_text(ant_levels_enq)) ) #+theme_ipsum_rc() #+ theme_ipsum()  # reformulate(med_levels,ant_levels) label_wrap_gen_alex(multi_line=FALSE)
@@ -369,6 +369,7 @@ plot_difference  <- function( data,
     ##############
     #  Assembling ERP and Voltage maps
 
+        saveRDS(erp_plot, "erp_plot.RDS")
         message(paste(Sys.time()," - Assembling ERP and Voltage maps"))
         figure  <- ggpubr::ggarrange( erp_plot, topoplot, heights = c(2, 0.5),
                               #labels = c("ERPs", "Voltage maps"),
