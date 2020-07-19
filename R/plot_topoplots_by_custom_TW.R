@@ -1,8 +1,10 @@
-plot_topoplots_by_custom_TW <-  function (data,
+plot_topoplots_by_custom_TW <-  function (data_for_map,
                                           tw_array ,
                                           plotname,
                                           topoplots_scale,
-                                          data_to_display = "voltage_difference") {
+                                          data_to_display = "voltage_difference",
+                                          levelA,
+                                          levelB) {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
@@ -62,7 +64,7 @@ plot_topoplots_by_custom_TW <-  function (data,
     if(data_to_display == "voltage_difference") {
 
         # compute mean diff voltage for each electrode for the given time window
-        means_by_electrodes <- data %>%
+        means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
           group_by(Electrode)%>%
@@ -75,40 +77,40 @@ plot_topoplots_by_custom_TW <-  function (data,
         # to solve : 1: Column `Electrode` joining factor and character vector, coercing into character vector
         #electrodeLocs$Electrode <- as.factor(electrodeLocs$Electrode)
         #print(unique(data$Electrode))
-        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data$Electrode))
+        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
         #print(head(means_by_electrodes))
 
 
     } else if (data_to_display == "t_test_t_value") {
 
-        means_by_electrodes <- data %>%
+        means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
           group_by(Electrode)%>%
           summarize(
             `Voltage` = t.test(   # Should change that for p value and replace voltage below by y_value_to_plot
-              Voltage[Condition == rlang::quo_text(levelA_enq)],
-              Voltage[Condition == rlang::quo_text(levelB_enq)], paired = TRUE
+              Voltage[Condition == rlang::quo_text(levelA)],
+              Voltage[Condition == rlang::quo_text(levelB)], paired = TRUE
             )$statistic
           )
 
-        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data$Electrode))
+        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
 
 
     } else if (data_to_display == "t_test_p_value") {
 
-        means_by_electrodes <- data %>%
+        means_by_electrodes <- data_for_map %>%
           filter ( Time > lowBound  & Time < upperBound ) %>%
           drop_na() %>%
           group_by(Electrode)%>%
           summarize(
             `Voltage` = t.test(     # Should change that for p value and replace voltage below by y_value_to_plot
-              Voltage[Condition == rlang::quo_text(levelA_enq)],
-              Voltage[Condition == rlang::quo_text(levelB_enq)], paired = TRUE
+              Voltage[Condition == rlang::quo_text(levelA)],
+              Voltage[Condition == rlang::quo_text(levelB)], paired = TRUE
             )$p.value
           )
 
-        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data$Electrode))
+        means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
 
 
     } else { stop("Invalid data_to_display in the function plot_topoplots_by_custom_TW")}
