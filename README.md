@@ -42,7 +42,7 @@ Run the following command to install from the github repository
 
 ```r
 plot_erp( data = relpriming,
-          conditionToPlot = "Pair.Type",
+          conditionToPlot = Pair.Type,
           electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
           output_type = "pdf",
           color_palette =  c("#4DAF4A","#EA2721","#000000")  ,
@@ -63,7 +63,7 @@ plot_erp( data = relpriming,
 
 ```r
 plot_erp( data = relpriming,
-          conditionToPlot = "Pair.Type",
+          conditionToPlot = Pair.Type,
           electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
           color_palette =  c("#4DAF4A","#EA2721","#000000")  ,
           custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
@@ -79,7 +79,7 @@ plot_erp( data = relpriming,
 To show confidence interval ribbons, just set the argument  *show_conf_interval* to *TRUE* as below:
 ```r
 plot_erp( data = relpriming,
-          conditionToPlot = "Pair.Type",
+          conditionToPlot = Pair.Type,
           electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
           color_palette =  c("#4DAF4A","#EA2721","#000000")  ,
           custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
