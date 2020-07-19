@@ -33,6 +33,10 @@ plot_erp<- function(              data,
                                   ) {
 
 
+    conditionToPlot_enq <- rlang::enquo(conditionToPlot)
+    conditionToPlot <- rlang::quo_text(conditionToPlot_enq)
+
+
     if(tibble::is_tibble(data))
     {
       data <-  as.data.frame(data)
@@ -50,6 +54,12 @@ plot_erp<- function(              data,
     message("Converting condition to plot as a factor")
    }
 
+    if(!(is.factor(data[,"Electrode"])) ) {
+      data[,"Electrode"] <- as.factor(data[,"Electrode"])
+      message("Converting Electrode as a factor")
+    }
+
+
     df_electrodes <- unique(data$Electrode)
     for(current_elec in 1:length(electrodes_list)){
       if(!(electrodes_list[current_elec] %in% df_electrodes)) {
@@ -58,7 +68,16 @@ plot_erp<- function(              data,
     }
 
 
-  number_of_subjects <- length(unique(data$Subject))
+
+
+    if(("Subject" %in% colnames(data)))
+    {
+      number_of_subjects <- length(unique(data$Subject))
+    }else {
+      number_of_subjects <- "unknown"
+      message(paste("No column Subject in the dataframe",deparse(substitute(data)),"- unknown value will be mentionned" ))
+    }
+
   number_of_levels <- length(levels(data[,conditionToPlot]))
 
   if(length(color_palette) < number_of_levels) { stop(paste("Please provide more colors in your palette: currently",length(color_palette),"colors to plot",number_of_levels , "levels")) }
