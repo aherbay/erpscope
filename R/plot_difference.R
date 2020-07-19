@@ -37,8 +37,7 @@ plot_difference  <- function( data,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           show_t_test = TRUE,
-          t_test_threshold = 0.05,
-          line_thickness = 0.75
+          t_test_threshold = 0.05
           ) {
 
 
@@ -343,7 +342,8 @@ plot_difference  <- function( data,
 
         if(show_t_test) {
 
-          erp_plot <- erp_plot + stat_summary(data = datadiff2, fun = mean, geom = "point",size = .75  ) # aes(colour = factor(significant)) ,
+          print(head(datadiff2))
+          #erp_plot <- erp_plot + stat_summary(data = datadiff2, fun = mean,geom = "point",size = .75,  aes(colour = factor(significant))  ) # aes(colour = factor(significant)) ,
 
 
         }
