@@ -27,7 +27,8 @@ plot_difference_maps  <- function( data,
                               topoplots_data = "voltage_difference", # "voltage_difference", "t_test_t_value", "t_test_p_value"
                               topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
                               topoplots_scale = c(-2,2),
-                              t_test_threshold = 0.05
+                              t_test_threshold = 0.05,
+                              fixed = c(-250,900,50)
 ) {
 
 
@@ -107,6 +108,24 @@ plot_difference_maps  <- function( data,
 
   data_diff$Condition <- "Difference"
 
+  ####################
+  # process time windows
+
+  if(!(length(fixed) == 0)){
+
+    range <- fixed[2] - fixed[1]
+    numberOfWindows<- range / fixed[3]
+    time_windows <- list()
+    time_windows_index <- 1
+    for(time_windows_index in 1:numberOfWindows) {
+
+      time_windows[[time_windows_index]] <- c( fixed[1]+(fixed[3]*(time_windows_index-1)), fixed[1]+(fixed[3]*(time_windows_index)))
+
+    }
+    topoplots_time_windows <- time_windows
+
+  }
+
 
   ##############
   # Generating voltage maps
@@ -158,5 +177,13 @@ plot_difference_maps  <- function( data,
   message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
 
 } # end of plot_difference
+
+
+
+
+
+
+
+
 
 
