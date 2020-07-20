@@ -145,7 +145,7 @@ plot_difference_maps  <- function( data,
   # Adding title
   message(paste(Sys.time()," - Adding title"))
 
-  figure  <-  ggpubr::annotate_figure(figure,
+  topoplot_with_legend  <-  ggpubr::annotate_figure(topoplot_with_legend,
                                       top = ggpubr::text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
                                                               color = "black", face = "bold", size = 18))
 
@@ -153,7 +153,7 @@ plot_difference_maps  <- function( data,
   # Creating file
 
   message(paste(Sys.time()," - Creating file"))
-  ggplot2::ggsave(plot= figure ,filename= plot_filename, width = 3.5*length(topoplots_time_windows), height = 3.5)
+  ggplot2::ggsave(plot= topoplot_with_legend ,filename= plot_filename, width = 3.5*length(topoplots_time_windows), height = 3.5)
   t_end <- Sys.time()
   message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
 
