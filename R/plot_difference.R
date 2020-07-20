@@ -195,9 +195,14 @@ plot_difference  <- function( data,
 
         topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference")
 
-      }else if (topoplots_data %in% c("t_test_t_value", "t_test_p_value")) {
+      }else if (topoplots_data == "t_test_t_value") {
 
         topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq )
+
+
+      } else if (topoplots_data =="t_test_p_value") {
+
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq, t_test_threshold= t_test_threshold  )
 
 
       } else { stop(paste("Invalid topoplots_data:",topoplots_data)) }
