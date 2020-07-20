@@ -182,7 +182,7 @@ plot_difference_maps  <- function( data,
   if(length(topoplots_time_windows) <13){
     ggplot2::ggsave(plot= topoplot_with_legend ,filename= plot_filename, width = 3.8*length(topoplots_time_windows), height = 5)
   } else {
-    ggplot2::ggsave(plot= topoplot_with_legend ,filename= plot_filename, width = 3.8*length(topoplots_time_windows)/2, height = 5)
+    ggplot2::ggsave(plot= topoplot_with_legend ,filename= plot_filename, width = 2*length(topoplots_time_windows), height = 5)
   }
   t_end <- Sys.time()
   message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
