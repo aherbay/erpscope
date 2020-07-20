@@ -2,6 +2,7 @@
 
 export(generate_ERP_stats_table)
 export(plot_difference)
+export(plot_difference_maps)
 export(plot_erp)
 import(dplyr)
 import(ggplot2)
