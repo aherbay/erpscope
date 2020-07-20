@@ -32,7 +32,8 @@ Imports:
     png,
     rlang,
     svglite,
-    kableExtra
+    kableExtra,
+    xml2
 Depends: 
     R (>= 2.10),
     dplyr

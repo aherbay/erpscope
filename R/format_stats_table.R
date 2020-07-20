@@ -8,7 +8,7 @@ format_stats_table <- function( capture, model_description , outputname) {
     }
 
     # transform it back in html
-    my_df <- as.data.frame(read_html(newHtml) %>% rvest::html_table(fill=TRUE))
+    my_df <- as.data.frame(xml2::read_html(newHtml) %>% rvest::html_table(fill=TRUE))
 
     # remove top line with useless info and bottom lines too
     my_df <- my_df[-c(1:6,8:9),]
@@ -18,7 +18,7 @@ format_stats_table <- function( capture, model_description , outputname) {
     my_df <- my_df[-c(nrow(my_df)),]
     my_df <- my_df[-c(nrow(my_df)),]
 
-    library(kableExtra)
+    #library(kableExtra)
 
 
     styling_function_1 <- function(x) {
@@ -43,10 +43,10 @@ format_stats_table <- function( capture, model_description , outputname) {
     colnames(my_df) <- my.names
     my_df <- my_df[-c(1),]
 
-    my_df %>% mutate_at(c(2:ncol(my_df))  , styling_function_2  ) %>% kable(format = "html", escape = F, caption = table_title) %>%
-      kable_styling("striped", full_width = F) %>% column_spec(1, bold = T, color="black")  %>%
-      footnote(general = paste("stars:", pvaluesthresholds)
-      ) %>%  save_kable(file = outputname)
+    my_df %>% dplyr::mutate_at(c(2:ncol(my_df))  , styling_function_2  ) %>% kableExtra::kable(format = "html", escape = F, caption = table_title) %>%
+      kableExtra::kable_styling("striped", full_width = F) %>% kableExtra::column_spec(1, bold = T, color="black")  %>%
+      kableExtra::footnote(general = paste("stars:", pvaluesthresholds)
+      ) %>%  kableExtra::save_kable(file = outputname)
 
 }
 
