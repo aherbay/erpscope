@@ -179,3 +179,19 @@ plot_difference(  data = relpriming,
 ```
 <img src="man/figures/plot_difference_ROI.png" width="100%" />
 
+### Function generate_ERP_stats_table 
+
+```r
+ generate_ERP_stats_table( data = relpriming,
+                                      model_structure = "Voltage ~   Pair.Type * Anteriority.Levels + (1+ Pair.Type|Subject)",
+                                      timeWindowMode="custom",
+                                      custom_TW =  list(c(-300,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700)),
+                                      output_name="2020_07_02_PairTypeModels.html")
+) 
+```
+<img src="man/figures/2020_07_20_PairTypeModels.png" width="100%" />
+
+
+
+
+           
