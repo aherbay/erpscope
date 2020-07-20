@@ -4,7 +4,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                           topoplots_scale,
                                           data_to_display = "voltage_difference",
                                           levelA,
-                                          levelB) {
+                                          levelB,
+                                          t_test_threshold) {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
@@ -176,68 +177,148 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
     # theme_topo()+
     # coord_equal()+
     # labs(title = paste(lowBound,'-',upperBound))
+    if (data_to_display == "t_test_p_value") {
+          interpTopo$Voltage <- interpTopo$Voltage - 1
+          topo_ggplots[[length(topo_ggplots) + 1]] <-   ggplot2::ggplot(interpTopo,
+                                                               aes(x = x, y = y, fill = Voltage)
+          ) +
+            geom_raster(show.legend=F) +
+            stat_contour(aes(z = Voltage),
+                         colour = "black",
+                         binwidth = 0.5) +
+            theme_topo()+
+            scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), oob=scales::squish, mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+            #scale_fill_stepsn( breaks= c(0,0.001,0.01,0.05,0.05,0.10,1), colours =  c("#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#810F7C", "#4D004B"),guide = FALSE)+ #guide = FALSE,, limits = c(0,1)
+            #scale_fill_stepsn(colors = c("#D73027", "#FC8D59", "#FEE08B","#D9EF8B", "#91CF60", "#1A9850") ,
+            #                  nice.breaks=T)+
+            #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), breaks = c(0.001, 0.01, 0.05), mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+
+            geom_path(data = maskRing,
+                      aes(x, y, z = NULL, fill =NULL),
+                      colour = "white",
+                      size = 15)+
+            geom_point(data = means_by_electrodes,
+                       aes(x, y),
+                       size = 1)+
+            geom_path(data = headShape,
+                      aes(x, y, z = NULL, fill = NULL),
+                      size = 1.5)+
+            geom_path(data = nose,
+                      aes(x, y, z = NULL, fill = NULL),
+                      size = 1.5)+
+            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
+            labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
+
+    }else {
+
+      topo_ggplots[[length(topo_ggplots) + 1]] <-   ggplot2::ggplot(interpTopo,
+                                                                    aes(x = x, y = y, fill = Voltage)
+      ) +
+        geom_raster(show.legend=F) +
+        stat_contour(aes(z = Voltage),
+                     colour = "black",
+                     binwidth = 0.5) +
+        theme_topo()+
+        scale_fill_gradientn(colours = jet.colors(10),
+                             limits = c(topoplots_scale[1],topoplots_scale[2]),
+                             guide = FALSE, #"colourbar"
+                             oob = scales::squish) +
+        geom_path(data = maskRing,
+                  aes(x, y, z = NULL, fill =NULL),
+                  colour = "white",
+                  size = 15)+
+        geom_point(data = means_by_electrodes,
+                   aes(x, y),
+                   size = 1)+
+        geom_path(data = headShape,
+                  aes(x, y, z = NULL, fill = NULL),
+                  size = 1.5)+
+        geom_path(data = nose,
+                  aes(x, y, z = NULL, fill = NULL),
+                  size = 1.5)+
+        coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
+        labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
+
+      }
 
 
-    topo_ggplots[[length(topo_ggplots) + 1]] <-   ggplot2::ggplot(interpTopo,
-                                                         aes(x = x, y = y, fill = Voltage)
-    ) +
-      geom_raster(show.legend=F) +
-      stat_contour(aes(z = Voltage),
-                   colour = "black",
-                   binwidth = 0.5) +
-      theme_topo()+
-      scale_fill_gradientn(colours = jet.colors(10),
-                           limits = c(topoplots_scale[1],topoplots_scale[2]),
-                           guide = FALSE, #"colourbar"
-                           oob = scales::squish) +
-      geom_path(data = maskRing,
-                aes(x, y, z = NULL, fill =NULL),
-                colour = "white",
-                size = 15)+
-      geom_point(data = means_by_electrodes,
-                 aes(x, y),
-                 size = 1)+
-      geom_path(data = headShape,
-                aes(x, y, z = NULL, fill = NULL),
-                size = 1.5)+
-      geom_path(data = nose,
-                aes(x, y, z = NULL, fill = NULL),
-                size = 1.5)+
-      coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
-      labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
-
-
+     # last plot to get legend
      if(tw_index == length(tw_array) ){
 
 
-       topo_forlegend <-   ggplot2::ggplot(interpTopo,
-                                           aes(x = x, y = y, fill = Voltage)
-       ) +
-         geom_raster(show.legend=F) +
-         stat_contour(aes(z = Voltage),
-                      colour = "black",
-                      binwidth = 0.5) +
-         theme_topo()+
-         theme(legend.position="bottom",
-               legend.background = element_rect(fill = "transparent", colour = "transparent"))+
-         scale_fill_gradientn(colours = jet.colors(10),
-                              limits = c(topoplots_scale[1],topoplots_scale[2]),
-                              oob = scales::squish) +
-         geom_path(data = maskRing,
-                   aes(x, y, z = NULL, fill =NULL),
-                   colour = "white",
-                   size = 15)+
-         geom_point(data = means_by_electrodes,
-                    aes(x, y),
-                    size = 1)+
-         geom_path(data = headShape,
-                   aes(x, y, z = NULL, fill = NULL),
-                   size = 1.5)+
-         geom_path(data = nose,
-                   aes(x, y, z = NULL, fill = NULL),
-                   size = 1.5)+
-         coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
-         labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"   "))
+       if(data_to_display == "t_test_p_value" ) {
+
+         #print(t_test_threshold)
+         topo_forlegend <-   ggplot2::ggplot(interpTopo,
+                                                                       aes(x = x, y = y, fill = Voltage)
+         ) +
+           geom_raster(show.legend=F) +
+           stat_contour(aes(z = Voltage),
+                        colour = "black",
+                        binwidth = 0.5) +
+           theme_topo()+
+           theme(legend.position="bottom",
+                 legend.background = element_rect(fill = "transparent", colour = "transparent"))+
+           #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), mid = scales::muted("red"), high = "white", low = "red")+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+           #scale_fill_stepsn( breaks= c(0,0.001,0.01,0.05,0.05,0.10,1), colours =  c("#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#810F7C", "#4D004B"),guide = FALSE)+ #guide = FALSE,, limits = c(0,1)
+           scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10),oob=scales::squish, mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+
+           #scale_fill_stepsn(colors = c("#FC8D59", "#FEE08B","#D9EF8B", "#91CF60", "#1A9850") ,
+            #                 breaks = c(0.001, 0.01, 0.05, 0.10))+
+           guides(fill = guide_colourbar(barwidth = 10))+
+           geom_path(data = maskRing,
+                     aes(x, y, z = NULL, fill =NULL),
+                     colour = "white",
+                     size = 15)+
+           geom_point(data = means_by_electrodes,
+                      aes(x, y),
+                      size = 1)+
+           geom_path(data = headShape,
+                     aes(x, y, z = NULL, fill = NULL),
+                     size = 1.5)+
+           geom_path(data = nose,
+                     aes(x, y, z = NULL, fill = NULL),
+                     size = 1.5)+
+           coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
+           labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
+
+
+
+       } else {
+
+         topo_forlegend <-   ggplot2::ggplot(interpTopo,
+                                             aes(x = x, y = y, fill = Voltage)
+         ) +
+           geom_raster(show.legend=F) +
+           stat_contour(aes(z = Voltage),
+                        colour = "black",
+                        binwidth = 0.5) +
+           theme_topo()+
+           theme(legend.position="bottom",
+                 legend.background = element_rect(fill = "transparent", colour = "transparent"))+
+           scale_fill_gradientn(colours = jet.colors(10),
+                                limits = c(topoplots_scale[1],topoplots_scale[2]),
+                                oob = scales::squish) +
+           guides(fill = guide_colourbar(barwidth = 10))+
+           geom_path(data = maskRing,
+                     aes(x, y, z = NULL, fill =NULL),
+                     colour = "white",
+                     size = 15)+
+           geom_point(data = means_by_electrodes,
+                      aes(x, y),
+                      size = 1)+
+           geom_path(data = headShape,
+                     aes(x, y, z = NULL, fill = NULL),
+                     size = 1.5)+
+           geom_path(data = nose,
+                     aes(x, y, z = NULL, fill = NULL),
+                     size = 1.5)+
+           coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
+           labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
+
+
+       }
+
 
 
         # legend <- ggpubr::get_legend( topo_forlegend )
