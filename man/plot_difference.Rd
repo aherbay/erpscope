@@ -10,22 +10,27 @@ plot_difference(
   conditionToPlot = MM_RAW,
   levelA = semMM_RAW,
   levelB = consistent,
-  color_palette,
+  custom_colors = list(c("levelA", "#000000"), c("levelB", "#4DAF4A"), c("difference",
+    "#595959"), c("t-test", "#EA2721")),
   output_type = "pdf",
-  ant_levels = anteriority_3l,
-  med_levels = mediality_a,
+  ant_levels = Anteriority.Levels,
+  med_levels = Mediality.Levels,
   vary = Voltage,
   group_var = Subject,
   show_group_obs = FALSE,
   labels_vertical_position = "auto",
   labels_height = "auto",
   baseline = c(-500, -200),
+  topoplots_data = "voltage_difference",
   topoplots_time_windows = list(c(-250, -150), c(-150, 50), c(50, 200), c(200, 300),
     c(300, 500), c(500, 700), c(700, 900)),
   topoplots_scale = c(-2, 2),
   time_labels_interval = 200,
   custom_labels = list(),
-  electrodes_to_display = c()
+  electrodes_to_display = c(),
+  show_t_test = TRUE,
+  t_test_threshold = 0.05,
+  line_thickness = 0.75
 )
 }
 \arguments{
