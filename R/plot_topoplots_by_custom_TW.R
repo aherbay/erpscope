@@ -187,10 +187,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                          colour = "black",
                          binwidth = 0.5) +
             theme_topo()+
-            scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), oob=scales::squish, mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
-            #scale_fill_stepsn( breaks= c(0,0.001,0.01,0.05,0.05,0.10,1), colours =  c("#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#810F7C", "#4D004B"),guide = FALSE)+ #guide = FALSE,, limits = c(0,1)
-            #scale_fill_stepsn(colors = c("#D73027", "#FC8D59", "#FEE08B","#D9EF8B", "#91CF60", "#1A9850") ,
-            #                  nice.breaks=T)+
+
+            # version 1 with more gradient approach
+             # scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), oob=scales::squish, mid = scales::muted("red"), high = "white", low = scales::muted("green", guide = FALSE) +
+            # version 2 with more stats threshold approach
+
+            #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), oob=scales::squish,mid = "#99cc33", high = "#339900", low = ," #ffcc00",  breaks= c(0.01,0.05))+ #, breaks= c(0.01,0.05,0.05)guide = FALSE,
+
+            # version 3 essai"#297D00","#3BB300","#3390FF"
+            scale_fill_stepsn( limits = c(0,0.07),colors=c("#28A500","#35DA24","#00D1FF" ) ,  breaks= c(0.01,0.05) , values = scales::rescale(c(0.01,0.05), c(0,1)) )+
+
+
+
+            #scale_fill_stepsn(  oob=scales::squish, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1), colours =  c("#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#810F7C", "#4D004B"),guide = FALSE)+ #guide = FALSE,, limits = c(0,1)
+            #scale_fill_stepsn(colors = c("#D73027", "#1A9850") , breaks= c(t_test_threshold)   )+ # pb it changes from on VM to another
             #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), breaks = c(0.001, 0.01, 0.05), mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
 
             geom_path(data = maskRing,
@@ -261,7 +271,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                  legend.background = element_rect(fill = "transparent", colour = "transparent"))+
            #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), mid = scales::muted("red"), high = "white", low = "red")+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
            #scale_fill_stepsn( breaks= c(0,0.001,0.01,0.05,0.05,0.10,1), colours =  c("#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#810F7C", "#4D004B"),guide = FALSE)+ #guide = FALSE,, limits = c(0,1)
-           scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10),oob=scales::squish, mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+           #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10),oob=scales::squish, mid = scales::muted("red"), high = "white", low = scales::muted("green") , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
+           scale_fill_stepsn( limits = c(0,0.07), oob=scales::squish,colors=c("#28A500","#35DA24","#00D1FF") ,  breaks= c(0.01,0.05) , values = scales::rescale(c(0.01,0.05), c(0,1)),
+                              guide = guide_coloursteps(even.steps = TRUE,show.limits = TRUE )  )+ # ffcc00 c("#339900","#99cc33","#3390FF") FFE033 FAE7D2 purple-blue 28A500
 
            #scale_fill_stepsn(colors = c("#FC8D59", "#FEE08B","#D9EF8B", "#91CF60", "#1A9850") ,
             #                 breaks = c(0.001, 0.01, 0.05, 0.10))+
