@@ -9,10 +9,10 @@ A little package to visualize ERPs in R
 - [Installation](#installation)
 - [Update ERPscope](#update-erpscope)
 - [Data specifications](#data-specifications)
-- [Function plot_erp ](#plot_erp)
-- [Function plot_difference  ](#plot_difference)
-- [Function plot_difference_maps ](#plot_difference_maps)
-- [Function generate_ERP_stats_table ](#generate_ERP_stats_table)
+- [Function plot_erp](#plot_erp)
+- [Function plot_difference](#plot_difference)
+- [Function plot_difference_maps](#plot_difference_maps)
+- [Function generate_ERP_stats_table](#generate_ERP_stats_table)
 
 ## Installation
 
@@ -44,9 +44,7 @@ Your dataframe should have:
 * one column named Electrode
 * one column with the variable and conditions(levels) to plot
 
-## Examples
-
-### Function plot_erp 
+## Function plot_erp 
 
 * function plot_erp with all arguments
 
@@ -100,7 +98,7 @@ plot_erp( data = relpriming,
 ```
 <img src="man/figures/plot_erp_2.png" width="100%" />
 
-### Function plot_difference 
+## Function plot_difference 
 
 * function plot_difference with all arguments displaying 9 electrodes and voltages maps
 
@@ -189,7 +187,7 @@ plot_difference(  data = relpriming,
 ```
 <img src="man/figures/plot_difference_ROI.png" width="100%" />
 
-### Function plot_difference_maps 
+## Function plot_difference_maps 
 
 * function plot_difference_maps with custom time windows
 
@@ -230,7 +228,7 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 
 
 
-### Function generate_ERP_stats_table 
+## Function generate_ERP_stats_table 
 
 ```r
  generate_ERP_stats_table( data = relpriming,
