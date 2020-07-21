@@ -173,7 +173,7 @@ plot_difference_maps  <- function( data,
 
   topoplot_with_legend  <-  ggpubr::annotate_figure(topoplot_with_legend,
                                       top = ggpubr::text_grob(paste( "Difference wave for condition",rlang::quo_text(conditionToPlot_enq),":",rlang::quo_text(levelA_enq)," - ", rlang::quo_text(levelB_enq)),
-                                                              color = "black", face = "bold", size = 18))
+                                                              color = "black", face = "bold", size = 30))
 
   ##############
   # Creating file
