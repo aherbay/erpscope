@@ -49,6 +49,9 @@ plot_difference_maps  <- function( data,
 
   if(plotname == 'auto') {
     plotname = paste(Sys.Date(),"_",deparse(substitute(data)),"_",number_of_subjects,"PPTS_ERP_DIFF_",rlang::quo_text(conditionToPlot_enq),"_",rlang::quo_text(levelA_enq),"-", rlang::quo_text(levelB_enq) ,sep="")
+    if(!(length(fixed) == 0)) {
+      plotname <- paste(plotname,"fixed",fixed[3],"_",fixed[1],"_",fixed[2],sep="")
+    }
   }
   plot_filename <- paste(plotname,'.',output_type, sep='')
   t_start <- Sys.time()
