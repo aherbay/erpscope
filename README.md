@@ -10,9 +10,9 @@ A little package to visualize ERPs in R
 - [Update ERPscope](#update-erpscope)
 - [Data specifications](#data-specifications)
 - [Function plot_erp](#function-plot_erp)
-- [Function plot_difference](#function_plot_difference)
-- [Function plot_difference_maps](#function_plot_difference_maps)
-- [Function generate_ERP_stats_table](#function_generate_ERP_stats_table)
+- [Function plot_difference](#function-plot_difference)
+- [Function plot_difference_maps](#function-plot_difference_maps)
+- [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
 
 ## Installation
 
