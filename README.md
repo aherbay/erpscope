@@ -38,11 +38,11 @@ Run the following command to install from the github repository
 ## Data specifications
 
 Your dataframe should have:
-* one column named Voltage
-* one column named Subject
-* one column named Time
-* one column named Electrode
-* one column with the variable and conditions(levels) to plot
+* one column named Voltage (numeric)
+* one column named Subject (factor)
+* one column named Time (integer)
+* one column named Electrode (factor)
+* one column for the conditionToPlot argument with the variable and levels to plot (factor)
 
 ## Function plot_erp 
 
@@ -116,7 +116,7 @@ To add a label you need to add a list to the **custom_labels** argument (which i
 The list defining a label has the structure : list(start_time, end_time, label). For example, to add a label displaying the word Prime between -450 ms and -250 ms, you would have : `custom_labels = list( list(-450,-250,"Prime") ) `
 
 
-The position of label is automatic by default but it can be adjusted to your need by changing the argument *labels_vertical_position*  to the voltage you want the label to be centered on and the argument **labels_height** if you also want to change it's height (again in mV) 
+The position of label is automatic by default but it can be adjusted to your need by changing the argument **labels_vertical_position**  to the voltage you want the label to be centered on and the argument **labels_height** if you also want to change it's height (again in mV) 
 
 * **output file form** 
 
@@ -128,13 +128,13 @@ By default, the plot name is automatic. But it can be customized by changing the
 
 * **show 95% confidence intervals**
 
-By default, only the ERPs are displayed. But it is possible to add the 95% confidence intervals for each condition by setting the argument *show_conf_interval* to *FALSE*.
+By default, only the ERPs are displayed. But it is possible to add the 95% confidence intervals for each condition by setting the argument **show_conf_interval** to **FALSE**.
 
 * **changing the colors of ERP lines**
 
 By default there are 9 colors used to display ERPs : "#4DAF4A" (green), "#EA2721" (red), "#377EB8" (blue), "#FF7F00" (orange), "#984EA3" (purple), "#000000" (black), "#5c5c5c" (grey), "#945D25" (brown),"#FF748C" (pink), "#2E692C" (dark green).
 
-To change the order of colors or to change them entirely, you can change the argument **color_palette**. For example, to put the colors red, blue, purple for 3 ERP lines `color_palette =  c("#EA2721","#377EB8","#984EA3")`
+To change the order of colors or to change them entirely, you can change the argument **color_palette**. For example, to put the colors red, blue, purple for 3 ERP lines `color_palette =  c("#EA2721","#377EB8","#984EA3")`. You can also use default values from R for example: `c("blue","red","black")`.
 
 
 ## Function plot_difference 
