@@ -28,7 +28,7 @@ plot_difference_maps  <- function( data,
                               topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
                               topoplots_scale = c(-2,2),
                               t_test_threshold = 0.05,
-                              fixed #= c(-250,900,50)
+                              fixed = c()#= c(-250,900,50)
 ) {
 
 
