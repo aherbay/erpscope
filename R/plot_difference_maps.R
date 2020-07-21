@@ -161,7 +161,7 @@ plot_difference_maps  <- function( data,
                                                #labels = c("ERPs", "Voltage maps"),
                                                ncol = 1, nrow =2)
   }else{
-    topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 2, ncol = (length(topoplots_time_windows)%/%2)+1)
+    topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 2, ncol = ((length(topoplots_time_windows)+1)%/%2))
     topoplot_with_legend <- ggpubr::ggarrange( topo_legend, topoplot, heights = c(0.5, 12),
                                                #labels = c("ERPs", "Voltage maps"),
                                                ncol = 1, nrow =2)
