@@ -4,7 +4,15 @@
 
 A little package to visualize ERPs in R
 
+## Table of Contents
 
+- [Installation](#installation)
+- [Update ERPscope](#update-erpscope)
+- [Data specifications](#data-specifications)
+- [Function plot_erp ](#plot_erp)
+- [Function plot_difference  ](#plot_difference)
+- [Function plot_difference_maps ](#plot_difference_maps)
+- [Function generate_ERP_stats_table ](#generate_ERP_stats_table)
 
 ## Installation
 
@@ -27,7 +35,9 @@ Run the following command to install from the github repository
   library(erpscope) # loading again
 ```
 
-## Specification of the R dataframe:
+## Data specifications
+
+Your dataframe should have:
 * one column named Voltage
 * one column named Subject
 * one column named Time
@@ -178,6 +188,47 @@ plot_difference(  data = relpriming,
 ) 
 ```
 <img src="man/figures/plot_difference_ROI.png" width="100%" />
+
+### Function plot_difference_maps 
+
+* function plot_difference_maps with custom time windows
+
+```r
+  plot_difference_maps(  data = relpriming,
+                         conditionToPlot = Pair.Type,
+                         levelA = Unrelated ,
+                         levelB = Consistent,
+                         output_type ='png',
+                         topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700)),
+                         topoplots_scale = c(-2,2),
+                         plotname = 'auto'
+  )
+```
+
+<img src="man/figures/2020-07-21_relpriming_11PPTS_ERP_DIFF_Pair.Type_Unrelated-Consistent.png" width="100%" />
+
+
+* function plot_difference_maps with fixed time windows
+
+Precise in the fixed argument the start_time, end_time and time duration of your windows
+
+
+```r
+  plot_difference_maps(  data = relpriming,
+                         conditionToPlot = Pair.Type,
+                         levelA = Unrelated ,
+                         levelB = Consistent,
+                         output_type ='png',
+                         fixed= c(-300,900,100), # init_time, end_time, step
+                         topoplots_scale = c(-2,2),
+                         plotname = 'auto'
+  )
+```
+
+<img src="man/figures/2020-07-21_relpriming_11PPTS_ERP_DIFF_Pair.Type_Unrelated-Consistentfixed100_-300_900.png" width="100%" />
+
+
+
 
 ### Function generate_ERP_stats_table 
 
