@@ -46,7 +46,7 @@ Your dataframe should have:
 
 ## Function plot_erp 
 
-* function plot_erp with all arguments
+* **function plot_erp with all arguments**
 
 ```r
 plot_erp( data = relpriming,
@@ -67,7 +67,7 @@ plot_erp( data = relpriming,
 ) 
 ```
 
-* function plot_erp with only necessary arguments
+* **function plot_erp with only necessary arguments**
 
 ```r
 plot_erp( data = relpriming,
@@ -82,7 +82,7 @@ plot_erp( data = relpriming,
 ![alt text](man/figures/plot_erp_1.png "plot_erp_1.png")
 
 
-*  plot_erp with confidence interval ribbons for each condition
+*  **plot_erp with confidence interval ribbons for each condition**
 
 To show confidence interval ribbons, just set the argument  *show_conf_interval* to *TRUE* as below:
 ```r
@@ -100,41 +100,41 @@ plot_erp( data = relpriming,
 
 ### plot_erp functionnalities
 
-* display ERP baseline 
+* **display ERP baseline** 
 
 For now it is a mandatory argument. Display a red rectangle from the beginning to the end of the baseline time window.
 
-* change ERP baseline 
+* **change ERP baseline** 
 
-You can adjust the ERPs to the baseline provided in the argument baseline by setting the argument *adjusted_baseline* to *TRUE*
+You can adjust the ERPs to the baseline provided in the argument baseline by setting the argument **adjusted_baseline** to **TRUE**
 
-* add custom labels
+* **add custom labels**
 
 You can add custom labels for stimuli appearing, or specific time window. It appears a vertical dotted line at start time with a grey rectangle with the label on the top of the plot.
 
-To add a label you need to add a list to the *custom_labels* argument (which is a list of lists, by default an empty list). 
-The list defining a label has the structure : list(start_time, end_time, label). For example, to add a label displaying the word Prime between -450 ms and -250 ms, you would have : `r custom_labels = list( list(-450,-250,"Prime") ) `
+To add a label you need to add a list to the **custom_labels** argument (which is a list of lists, by default an empty list). 
+The list defining a label has the structure : list(start_time, end_time, label). For example, to add a label displaying the word Prime between -450 ms and -250 ms, you would have : `custom_labels = list( list(-450,-250,"Prime") ) `
 
 
-The position of label is automatic by default but it can be adjusted to your need by changing the argument *labels_vertical_position*  to the voltage you want the label to be centered on and the argument *labels_height* if you also want to change it's height (again in mV) 
+The position of label is automatic by default but it can be adjusted to your need by changing the argument *labels_vertical_position*  to the voltage you want the label to be centered on and the argument **labels_height** if you also want to change it's height (again in mV) 
 
-* output file form 
+* **output file form** 
 
-By default, the file is exported to a PDF file. It is aslo possible to export it to png, jpeg, pdf, png, svg by changing the argument *output_type* to *"png"* for example.
+By default, the file is exported to a PDF file. It is aslo possible to export it to png, jpeg, pdf, png, svg by changing the argument **output_type** to **"png"** for example.
 
-* plot name
+* **plot name**
 
-By default, the plot name is automatic. But it can be customized by changing the argument *plotname* 
+By default, the plot name is automatic. But it can be customized by changing the argument **plotname** 
 
-* show 95% confidence intervals
+* **show 95% confidence intervals**
 
 By default, only the ERPs are displayed. But it is possible to add the 95% confidence intervals for each condition by setting the argument *show_conf_interval* to *FALSE*.
 
-* changing the colors of ERP lines
+* **changing the colors of ERP lines**
 
 By default there are 9 colors used to display ERPs : "#4DAF4A" (green), "#EA2721" (red), "#377EB8" (blue), "#FF7F00" (orange), "#984EA3" (purple), "#000000" (black), "#5c5c5c" (grey), "#945D25" (brown),"#FF748C" (pink), "#2E692C" (dark green).
 
-To change the order of colors or to change them entirely, you can change the argument *color_palette*. For example, to put the colors red, blue, purple for 3 ERP lines `r color_palette =  c("#EA2721","#377EB8","#984EA3")`
+To change the order of colors or to change them entirely, you can change the argument **color_palette**. For example, to put the colors red, blue, purple for 3 ERP lines `color_palette =  c("#EA2721","#377EB8","#984EA3")`
 
 
 ## Function plot_difference 
