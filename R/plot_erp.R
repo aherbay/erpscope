@@ -26,7 +26,9 @@ plot_erp <- function(              data,
                                   custom_labels = list(),
                                   labels_vertical_position = 'auto',
                                   labels_height = 'auto',
-                                  vary ="Voltage"
+                                  vary ="Voltage",
+                                  background = "grid",
+                                  line_thickness = 0.75
                                   ) {
 
 
@@ -73,7 +75,14 @@ plot_erp <- function(              data,
 
     if(("Subject" %in% colnames(data)))
     {
+
+      if(!(is.factor(data[,"Subject"])) ) {
+        data[,"Subject"] <- as.factor(data[,"Subject"])
+        message("Converting Subject as a factor")
+      }
+
       number_of_subjects <- length(unique(data$Subject))
+
     }else {
       number_of_subjects <- "unknown"
       message(paste("No column Subject in the dataframe",deparse(substitute(data)),"- unknown value will be mentionned" ))
@@ -117,6 +126,7 @@ plot_erp <- function(              data,
     print("D")
 
     message(paste(Sys.time()," - Beginning to plot ERP in",plot_filename))
+
     if(file.exists(plot_filename)) message("File already exists! Overwriting it")
     print("E")
 
@@ -143,8 +153,8 @@ plot_erp <- function(              data,
     if(show_conf_interval == TRUE) {
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot,fill = conditionToPlot)) +
-                  scale_y_reverse() + theme_light() +
-                  stat_summary(fun = mean, geom = "line", size = .75)+
+                  scale_y_reverse() +
+                  stat_summary(fun = mean, geom = "line", size = line_thickness)+
                   stat_summary(fun.data = mean_cl_normal,geom = "ribbon",alpha = 0.3 , colour=NA)+
                   scale_color_manual(values=color_palette)+
                   scale_fill_manual(values=color_palette)
@@ -155,10 +165,21 @@ plot_erp <- function(              data,
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
                   scale_y_reverse() + theme_light() +
-                  stat_summary(fun = mean, geom = "line", size = .75)+
+                  stat_summary(fun = mean, geom = "line", size = line_thickness)+
                   scale_color_manual(values=color_palette)
 
     }
+
+
+    if( background == "white") {
+      tempo <- tempo + theme_classic()
+    } else if ( background == "dark") {
+      tempo <- tempo + theme_dark()
+    } else {
+      tempo <- tempo + theme_light()
+    }
+
+
 
 
           tempo <- tempo +
