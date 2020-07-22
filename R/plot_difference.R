@@ -38,7 +38,9 @@ plot_difference  <- function( data,
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
           show_t_test = TRUE,
           t_test_threshold = 0.05,
-          line_thickness= 0.75
+          line_thickness= 0.75,
+          background = "grid",
+          adjusted_baseline = FALSE
           ) {
 
 
@@ -122,6 +124,19 @@ plot_difference  <- function( data,
 
       message(paste(Sys.time()," - Filtering relevant data (data for substracted conditions only) "))
       data_reduced <- filter(data_reduced, !! conditionToPlot_enq %in% c(rlang::quo_text(levelA_enq), rlang::quo_text(levelB_enq)) ) %>% droplevels()
+
+  ##############
+  # if requested, adjust baseline
+
+      if(adjusted_baseline == TRUE) {
+        if(length(baseline) != 2) {
+          stop(paste("Provided baseline ",baseline,"is not valid"))
+        }else{
+          dataToPlot <- baseline_correction(data_reduced,rlang::quo_text(conditionToPlot_enq),baseline)
+          vary <- "RebaselinedVoltage"
+        }
+
+      }
 
   ##############
   # Computing the difference between conditions
@@ -230,7 +245,7 @@ plot_difference  <- function( data,
 
         erp_plot <- ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
           guides(colour = guide_legend(override.aes = list(size = 2)), significant=FALSE) +
-          scale_y_reverse() + theme_light() +
+          scale_y_reverse() +
           stat_summary(data = data_diff,fun=mean,geom = "line",aes_string(group = rlang::quo_text(group_var_enq),colour = "Condition"),alpha = 0.1)+ # by subject line
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
           stat_summary(fun= mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
@@ -244,7 +259,7 @@ plot_difference  <- function( data,
 
         erp_plot <-  ggplot2::ggplot(data_reduced,aes_string(x= "Time", y= "Voltage" )) +
           guides(colour = guide_legend(override.aes = list(size = 2))) +
-          scale_y_reverse() + theme_light() +
+          scale_y_reverse() +
           stat_summary(data = data_diff,fun.data = mean_cl_boot,geom = "ribbon",alpha = 0.3, aes(fill = Condition), show.legend = F)+ # CI ribbon
           stat_summary(fun = mean,geom = "line",size = line_thickness, aes(colour = Condition) )+ # conditions lines
           stat_summary(data = data_diff,fun=mean,geom = "line", aes(colour = Condition)) # difference line
@@ -256,6 +271,16 @@ plot_difference  <- function( data,
     # Adding ERP aesthetics
 
         message(paste(Sys.time()," - Adding ERP aesthetics"))
+
+        if( background == "white") {
+          erp_plot <- erp_plot + theme_classic()
+        } else if ( background == "dark") {
+          erp_plot <- erp_plot + theme_dark()
+        } else {
+          erp_plot <- erp_plot + theme_light()
+        }
+
+
 
         erp_plot <- erp_plot +
           theme(
@@ -346,10 +371,9 @@ plot_difference  <- function( data,
       ##############
       # Adding t-test infos
 
-        message(paste(Sys.time()," - Adding t-tests labels to the plot"))
-
-
         if(show_t_test) {
+          message(paste(Sys.time()," - Adding t-tests labels to the plot"))
+
 
           #print(head(datadiff2))
           #print(unique(datadiff2$Electrode))
