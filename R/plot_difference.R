@@ -132,7 +132,7 @@ plot_difference  <- function( data,
         if(length(baseline) != 2) {
           stop(paste("Provided baseline ",baseline,"is not valid"))
         }else{
-          dataToPlot <- baseline_correction(data_reduced,rlang::quo_text(conditionToPlot_enq),baseline)
+          data_reduced <- baseline_correction(data_reduced,rlang::quo_text(conditionToPlot_enq),baseline)
           vary <- "RebaselinedVoltage"
         }
 
