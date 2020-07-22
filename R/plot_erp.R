@@ -51,8 +51,8 @@ plot_erp <- function(              data,
     message("Converting condition to plot as a factor")
    }
 
-    message("Dropping absent levels")
-    data <- droplevels(data)
+    #message("Dropping absent levels")
+    #data <- droplevels(data)
 
 
     if(!(is.factor(data[,"Electrode"])) ) {
@@ -106,14 +106,19 @@ plot_erp <- function(              data,
 
   # plot erp for 9 electrode basline format  pour la condition x à z nivaux du df x, avec x obs x sujets
   if(choice == 1) {
-
+    print("A")
     if(plotname == 'auto') {
           plotname = paste(Sys.Date(),"_ERPs_",deparse(substitute(data)),"_",conditionToPlot, sep="")
     }
+    print("B")
     plot_filename <- paste(plotname,'.',output_type, sep='')
+    print("C")
     t_start <- Sys.time()
+    print("D")
+
     message(paste(Sys.time()," - Beginning to plot ERP in",plot_filename))
     if(file.exists(plot_filename)) message("File already exists! Overwriting it")
+    print("E")
 
 
     time_min  <- ((min(data$Time) %/% time_labels_interval) -1) * time_labels_interval
