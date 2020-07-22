@@ -160,7 +160,7 @@ plot_difference_maps  <- function( data,
   message(paste(Sys.time()," - Assembling voltage maps"))
   if(length(topoplots_time_windows) <13){
     topoplot <- ggpubr::ggarrange(plotlist=topo_ggplots, nrow = 1, ncol = length(topoplots_time_windows))
-    topoplot_with_legend <- ggpubr::ggarrange( topo_legend, topoplot, heights = c(0.5, 4),
+    topoplot_with_legend <- ggpubr::ggarrange( topo_legend, topoplot, heights = c(0.9, 4),
                                                #labels = c("ERPs", "Voltage maps"),
                                                ncol = 1, nrow =2)
   }else{
