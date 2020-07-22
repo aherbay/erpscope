@@ -67,7 +67,7 @@ plot_erp( data = relpriming,
 ) 
 ```
 
-* **function plot_erp with only necessary arguments**
+* **function plot_erp with only mandatory arguments**
 
 ```r
 plot_erp( data = relpriming,
@@ -82,7 +82,7 @@ plot_erp( data = relpriming,
 ![alt text](man/figures/plot_erp_1.png "plot_erp_1.png")
 
 
-*  **plot_erp with confidence interval ribbons for each condition**
+*  **plot_erp with 95% bootstrapped confidence interval ribbons for each condition**
 
 To show confidence interval ribbons, just set the argument  *show_conf_interval* to *TRUE* as below:
 ```r
@@ -263,12 +263,6 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 ```
 
 <img src="man/figures/2020-07-21_relpriming_11PPTS_ERP_DIFF_Pair.Type_Unrelated-Consistentfixed100_-300_900.png" width="100%" />
-
-
-
-* function plot_difference_maps with fixed time windows
-* function plot_difference_maps with fixed time windows
-* function plot_difference_maps with fixed time windows
 
 
 
