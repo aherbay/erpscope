@@ -36,7 +36,7 @@ plot_difference  <- function( data,
           time_labels_interval = 200,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
-          show_t_test = TRUE,
+          show_t_test = FALSE,
           t_test_threshold = 0.05,
           line_thickness= 0.75,
           background = "grid",
