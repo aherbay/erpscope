@@ -54,6 +54,10 @@ plot_erp<- function(              data,
     message("Converting condition to plot as a factor")
    }
 
+    message("Dropping absent levels")
+    data <- droplevels(data)
+
+
     if(!(is.factor(data[,"Electrode"])) ) {
       data[,"Electrode"] <- as.factor(data[,"Electrode"])
       message("Converting Electrode as a factor")
@@ -98,7 +102,6 @@ plot_erp<- function(              data,
   if(show_check_message == TRUE) {
     choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
   } else {
-
     message(init_message)
     choice  <- 1
   }
