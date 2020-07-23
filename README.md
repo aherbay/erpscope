@@ -151,6 +151,15 @@ background = "grid" , "white" , "dark"
 
 ## Function plot_difference 
 
+* function plot_difference with minimal arguments displaying 9 electrodes and voltages maps
+```r
+plot_difference( data = relpriming,
+                 conditionToPlot = Pair.Type,
+                 levelA = Unrelated ,
+                 levelB = Consistent,
+```
+
+
 * function plot_difference with all arguments displaying 9 electrodes and voltages maps
 
 ```r
