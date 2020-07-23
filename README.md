@@ -13,6 +13,9 @@ A little package to visualize ERPs in R
 - [Function plot_difference](#function-plot_difference)
 - [Function plot_difference_maps](#function-plot_difference_maps)
 - [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
+- [Function plot_cor_erp_behav](#function-plot_cor_erp_behav)
+
+
 
 ## Installation
 
@@ -135,6 +138,15 @@ By default, only the ERPs are displayed. But it is possible to add the 95% confi
 By default there are 9 colors used to display ERPs : "#4DAF4A" (green), "#EA2721" (red), "#377EB8" (blue), "#FF7F00" (orange), "#984EA3" (purple), "#000000" (black), "#5c5c5c" (grey), "#945D25" (brown),"#FF748C" (pink), "#2E692C" (dark green).
 
 To change the order of colors or to change them entirely, you can change the argument **color_palette**. For example, to put the colors red, blue, purple for 3 ERP lines `color_palette =  c("#EA2721","#377EB8","#984EA3")`. You can also use default values from R for example: `c("blue","red","black")`.
+
+* **changing line thickness**
+
+line_thickness = 0.75 by default
+
+* **changing background format**
+
+background = "grid" , "white" , "dark"
+
 
 
 ## Function plot_difference 
@@ -265,6 +277,20 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 
 ## Function generate_ERP_stats_table 
 
+### mandatory arguments
+
+* dataset 
+* lmer model structure between quotes
+* timeWindowMode : "custom" or "byStep"
+* output name between quotes for the HTML file
+
+* if timeWindowMode == "custom", you need to define your custom time windows on which you will perform analyses. 
+  * custom_TW = list of vectors defining your time windows c(start_time, last_time)
+* if timeWindowMode == "byStep", you need to define when to start, stop, and the time step (all in ms):
+  * time_step=100, min_time=-300, max_time=900,
+
+
+#### generate_ERP_stats_table with custom time windows
 ```r
  generate_ERP_stats_table( 
       data = relpriming,
@@ -276,7 +302,43 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 ```
 <img src="man/figures/2020_07_20_PairTypeModels.png" width="100%" />
 
+#### generate_ERP_stats_table with custom time windows
 
+```r
+ generate_ERP_stats_table( 
+      data = relpriming,
+      model_structure = "Voltage ~   Pair.Type * Anteriority.Levels + (1+ Pair.Type|Subject)",
+      timeWindowMode="byStep",
+      time_step=100, min_time=-300, max_time=900,
+      output_name="2020_07_02_PairTypeModels.html"
+ ) 
+```
 
+## Function plot_cor_erp_behav 
+    
+Function to compute the correlation between an ERP effect (between two conditions) between two specific times and another variable (e.g. behavioral) that exists for each subject
+    
+### mandatory arguments
 
-           
+* erpDataset 
+* erp_var: ERP condition variable 
+* erp_levelA: level A in A - B
+* erp_levelB: levelB in A - B
+* erp_start_time: 
+* erp_end_time:
+
+* behavDataset : dataset with the behavioral variable
+* behav_var : behavioral variable
+                                
+                                 
+```r
+plot_cor_erp_behav ( erpDataset ,
+                     behavDataset ,
+                     erp_var ,
+                     erp_levelA  ,
+                     erp_levelB  ,
+                     behav_var ,
+                     subject_var = "Subject_short",
+                     erp_start_time  ,
+                     erp_end_time )    
+```
