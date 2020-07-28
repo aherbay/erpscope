@@ -23,7 +23,8 @@ plot_cor_with_erp_effect <- function ( erpDataset ,
                                  behav_var ,
                                  subject_var = "Subject_short",
                                  erp_start_time  ,
-                                 erp_end_time
+                                 erp_end_time,
+                                 var_color = NULL
 
                                  ) {
 
@@ -37,7 +38,7 @@ plot_cor_with_erp_effect <- function ( erpDataset ,
   behav_var_enq <- rlang::enquo(behav_var)
   behav_var_txt <-   rlang::quo_text(behav_var_enq)
 
-  summaryData <-   erpDataset  %>% subset( Time > erp_start_time & erpDataset$Time< erp_end_time) %>% dplyr::group_by(Subject,!! erp_var_enq ) %>% dplyr::summarise(Voltage=mean(Voltage))
+  summaryData <-   erpDataset  %>% subset( Time > erp_start_time & erpDataset$Time< erp_end_time) %>% dplyr::group_by(Subject,!! erp_var_enq , anteriority_3l) %>% dplyr::summarise(Voltage=mean(Voltage))
   summaryData <- tidyr::spread(summaryData, !!erp_var_enq, Voltage)
   summaryData <- left_join(summaryData,behavDataset)
   summaryData <- as.data.frame(summaryData)
@@ -45,7 +46,7 @@ plot_cor_with_erp_effect <- function ( erpDataset ,
 
 
 #  print(summaryData[,"ERPeffect"])
-  #print(summaryData[,behav_var_txt])
+  print(summaryData[,behav_var_txt])
  # cor.test(summaryData[,"ERPeffect"],summaryData[,behav_var_txt])
 
 
@@ -54,6 +55,6 @@ plot_cor_with_erp_effect <- function ( erpDataset ,
                          vary= "ERPeffect",
                          var_label=subject_var,
                          graph_title_header = paste ("Correlation between [",erp_start_time,",",erp_end_time,"]",erp_var_txt,"(",erp_levelA_txt,"-",erp_levelB_txt,") and",behav_var_txt),
-                         var_color=NULL)
+                         var_color)
 
 }
