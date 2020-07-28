@@ -192,7 +192,7 @@ plot_difference  <- function( data,
         datadiff2$significant <- as.factor(datadiff2$significant)
         datadiff2 <- subset(datadiff2, significant == significantLabel )
         datadiff2 <- droplevels(datadiff2)
-        #datadiff2$Voltage <- 6
+        datadiff2$Voltage <- 6
         #numberOfTimePoints <- length(unique(data_diff$Time))
         #ttests$ycoordinate <- rep( 0.5 , numberOfTimePoints)
         #print(head(datadiff2))
