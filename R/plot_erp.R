@@ -34,7 +34,7 @@ plot_erp <- function(              data,
 
     conditionToPlot_enq <- rlang::enquo(conditionToPlot)
     conditionToPlot <- rlang::quo_text(conditionToPlot_enq)
-    print(conditionToPlot)
+    #print(conditionToPlot)
 
     if(tibble::is_tibble(data))
     {
@@ -115,20 +115,20 @@ plot_erp <- function(              data,
 
   # plot erp for 9 electrode basline format  pour la condition x à z nivaux du df x, avec x obs x sujets
   if(choice == 1) {
-    print("A")
+    #print("A")
     if(plotname == 'auto') {
           plotname = paste(Sys.Date(),"_ERPs_",deparse(substitute(data)),"_",conditionToPlot, sep="")
     }
-    print("B")
+    #print("B")
     plot_filename <- paste(plotname,'.',output_type, sep='')
-    print("C")
+    #print("C")
     t_start <- Sys.time()
-    print("D")
+    #print("D")
 
     message(paste(Sys.time()," - Beginning to plot ERP in",plot_filename))
 
     if(file.exists(plot_filename)) message("File already exists! Overwriting it")
-    print("E")
+    #print("E")
 
 
     time_min  <- ((min(data$Time) %/% time_labels_interval) -1) * time_labels_interval
