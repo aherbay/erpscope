@@ -12,7 +12,7 @@
 #' @return A PDF file containing the ERP plots
 #' @export
 
-plot_erp <- function(              data,
+plot_erp <- function(             data,
                                   conditionToPlot,
                                   electrodes_list =  c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
                                   baseline = c(-2450,-2250),
@@ -28,9 +28,13 @@ plot_erp <- function(              data,
                                   labels_height = 'auto',
                                   vary ="Voltage",
                                   background = "grid",
-                                  line_thickness = 0.75
+                                  line_thickness = 0.75 # c(0.75, 1 , 1.25, 1.5),
+                                  linetype = 'solid' # c('solid', 'dotted , 'dashed','longdash')
                                   ) {
 
+
+
+    ## Check arguments
 
     conditionToPlot_enq <- rlang::enquo(conditionToPlot)
     conditionToPlot <- rlang::quo_text(conditionToPlot_enq)
@@ -164,12 +168,13 @@ plot_erp <- function(              data,
     } else {
 
       tempo <- ggplot(dataToPlot ,aes_string(x= "Time", y= vary ,colour = conditionToPlot)) +
-                  scale_y_reverse() + theme_light() +
+                  scale_y_reverse() +
                   stat_summary(fun = mean, geom = "line", size = line_thickness)+
                   scale_color_manual(values=color_palette)
 
     }
 
+    # add background
 
     if( background == "white") {
       tempo <- tempo + theme_classic()
@@ -180,6 +185,7 @@ plot_erp <- function(              data,
     }
 
 
+    # add axis, baseline and legend
 
 
           tempo <- tempo +
