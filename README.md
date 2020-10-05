@@ -2,7 +2,7 @@
 
 # ERPscope
 
-A little package to visualize ERPs in R
+A package to visualize ERPs in R
 
 ## Table of Contents
 
@@ -14,6 +14,7 @@ A little package to visualize ERPs in R
 - [Function plot_difference_maps](#function-plot_difference_maps)
 - [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
 - [Function plot_cor_erp_behav](#function-plot_cor_erp_behav)
+- [Future developments](#future_developments)
 
 
 
@@ -351,3 +352,20 @@ plot_cor_erp_behav ( erpDataset ,
                      erp_start_time  ,
                      erp_end_time )    
 ```
+
+
+## Future developments
+
+Among various improvements and bug fixes, here are some planned development 
+
+- [ ] Option to have negative or positive up 
+- [ ] Preselected layouts of electrodes
+- [ ] Option to automatically put labels below ERPs and not only abov
+- [ ] Define different colors for labels
+- [ ] Option to have negative or positive up 
+- [ ] Repeat Voltage scale 
+- [ ] Define specific scale limits for Voltage
+- [ ] Input specific layouts for voltage maps
+- [ ] Offer multiple CI computation options
+
+
