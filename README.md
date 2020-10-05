@@ -2,7 +2,7 @@
 
 # ERPscope
 
-A package to visualize ERPs in R
+A little package to visualize ERPs in R
 
 ## Table of Contents
 
