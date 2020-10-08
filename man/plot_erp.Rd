@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_erp.R
 \name{plot_erp}
 \alias{plot_erp}
-\title{Plot ERP for 9 electrodes of interest}
+\title{Plot ERP for 9/12 electrodes of interest}
 \usage{
 plot_erp(
   data,
@@ -13,28 +13,62 @@ plot_erp(
     "#5c5c5c", "#945D25", "#FF748C", "#2E692C"),
   output_type = "pdf",
   adjusted_baseline = FALSE,
-  time_labels_interval = 200,
+  time_labels_interval = "auto",
   plotname = "auto",
   show_check_message = FALSE,
   show_conf_interval = FALSE,
   custom_labels = list(),
   labels_vertical_position = "auto",
   labels_height = "auto",
-  vary = "Voltage"
+  vary = "Voltage",
+  background = "grid",
+  line_thickness = 0.75,
+  line_type = "solid",
+  polarity_up = "negative"
 )
 }
 \arguments{
-\item{conditionToPlot}{column of the dataframe witht the condition and levels to plot}
+\item{data}{dataframe containing ERP data}
+
+\item{conditionToPlot}{column of the dataframe with different levels to plot}
 
 \item{electrodes_list}{vector of Electrodes names to plot (between quotes)}
 
-\item{file}{dataframe containing eeg data}
+\item{baseline}{vector defining the baseline used during preprocessing}
+
+\item{color_palette}{vector with colors for each levels (in the order of levels of conditionToPlot)}
+
+\item{output_type}{file type of the output}
+
+\item{adjusted_baseline}{boolean to indicate if the baseline should be simulated on the time-window provided in}
+
+\item{plotname}{'auto' or custom string for plot title and plot file name}
+
+\item{show_check_message}{boolean to indicate if you want a confirmation message to be displayed before running the function}
+
+\item{show_conf_interval}{boolean to indicate if 95\% CI (bootstrapped) should be displayed}
+
+\item{custom_labels}{list of custom label list. Each custom labels should have the structure: list(start_time, end_time, "label")}
+
+\item{labels_vertical_position}{'auto' or custom position for the center of the label (in microVolts)}
+
+\item{labels_height}{'auto' or custom height (in microVolts)}
+
+\item{vary}{variable that is used for the y-axis}
+
+\item{background}{string that defines the color of the background : "grid" (default), "white" and "dark"}
+
+\item{line_thickness}{single value (numeric, e.g. 0.75) or a vector of numerics such as: c(0.75, 1 , 1.25, 1.5)}
+
+\item{line_type}{single value (string, e.g. 'solid') or a vector of strings such as: c('solid', 'dotted , 'dashed','longdash','F1')}
+
+\item{polarity_up}{defines which polarity is plotted up : "negative" or "positive"}
 }
 \value{
-A PDF file containing the ERP plots
+A file containing the ERP plots
 }
 \description{
-This function creates a plot file with 9 electrodes of interests displaying ERPs
+This function creates a plot file with 9 or 12 electrodes of interests (for now) displaying ERPs
 for different conditions. It will need a loaded dataframe with your EEG data
 and a column indicating the condition to display.
 It assumes that there is a column named Voltage with your voltage values.

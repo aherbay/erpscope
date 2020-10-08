@@ -1,11 +1,12 @@
 plot_topoplots_by_custom_TW <-  function (data_for_map,
                                           tw_array ,
                                           plotname,
-                                          topoplots_scale,
+                                          topoplots_scale = 'auto',
                                           data_to_display = "voltage_difference",
                                           levelA,
                                           levelB,
-                                          t_test_threshold) {
+                                          t_test_threshold,
+                                          maps_color_palette = 'auto') {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
@@ -17,7 +18,38 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
   # base elements for topo
 
-  jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+
+
+  if(maps_color_palette == 'auto') {
+    jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+    maps_color_palette <- jet.colors(10)
+  }
+
+  if(length(topoplots_scale) == 2) {
+    # topoplots_scale is a custom vector
+  } else if(topoplots_scale == 'auto') {
+
+        topoplots_scale <- c() # transforming topoplots_scale into a vector
+
+
+        means_by_electrodes_for_eachTime <- data_for_map %>%
+          group_by(Electrode,Time) %>%
+          summarise(Voltage= mean(Voltage) )
+
+        min_value <- abs( min(means_by_electrodes_for_eachTime$Voltage) )
+        max_value <- abs( max(means_by_electrodes_for_eachTime$Voltage) )
+        #print(min_value)
+        #print(max_value)
+
+         higher_value <- round(max(min_value,max_value))
+         topoplots_scale[1] <- -higher_value
+         topoplots_scale[2] <- higher_value
+         #print( topoplots_scale[1] )
+         #print( topoplots_scale[2] )
+
+      }
+
+
 
 
   circleFun <- function(center = c(0,0),diameter = 1, npoints = 100) {
@@ -55,6 +87,10 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   }
 
 
+  # if(topoplots_scale == 'auto') {
+  #   topoplots_scale[1] <- 0
+  #   topoplots_scale[2] <- 0
+  # }
 
   for( tw_index in 1:length(tw_array)) {
 
@@ -66,7 +102,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
     message(paste('--> Generating Voltage Map for Time Window: ',lowBound,"ms to",upperBound, "ms"))
 
 
-    if(data_to_display == "voltage_difference") {
+      if(data_to_display == "voltage_difference") {
 
         title_legend <- "Voltage Difference"
 
@@ -86,6 +122,12 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
         #print(unique(data$Electrode))
         means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
         #print(head(means_by_electrodes))
+
+        # if(topoplots_scale == 'auto') {
+        #     if(topoplots_scale[1] >  min(means_by_electrodes$Voltage) ) topoplots_scale[1] <- min(means_by_electrodes$Voltage)
+        #     if(topoplots_scale[1] <  max(means_by_electrodes$Voltage) ) topoplots_scale[1] <- max(means_by_electrodes$Voltage)
+        # }
+
 
 
     } else if (data_to_display == "t_test_t_value") {
@@ -172,7 +214,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
     #electro_ggplots[[length(topo_ggplots) + 1]] <-  ggplot(headShape,aes(x,y))+
     # geom_path(size = 1.5)+
     # geom_point(data = means_by_electrodes,aes(x,y,colour = Voltage),size = 3)+
-    # scale_colour_gradientn(colours = jet.colors(10),guide = "colourbar",oob = squish,limits = c(-2,2))+ #note: oob = squish forces everything outside the colour limits to equal nearest colour boundary (i.e. below min colours = min colour)
     # geom_line(data = nose,aes(x, y, z = NULL),size = 1.5)+
     # theme_topo()+
     # coord_equal()+
@@ -229,7 +270,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                      colour = "black",
                      binwidth = 0.5) +
         theme_topo()+
-        scale_fill_gradientn(colours = jet.colors(10),
+        scale_fill_gradientn(colours = maps_color_palette,
                              limits = c(topoplots_scale[1],topoplots_scale[2]),
                              guide = FALSE, #"colourbar"
                              oob = scales::squish) +
@@ -298,6 +339,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
        } else {
 
+         #highest_abs_viltage <-  max(abs(topoplots_scale[1]),abs(topoplots_scale[2]))
+         #topoplots_scale[1] <-
+
          topo_forlegend <-   ggplot2::ggplot(interpTopo,
                                              aes(x = x, y = y, fill = Voltage)
          ) +
@@ -308,9 +352,11 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
            theme_topo()+
            theme(legend.position="bottom",
                  legend.background = element_rect(fill = "transparent", colour = "transparent"))+
-           scale_fill_gradientn(colours = jet.colors(10),
+           scale_fill_gradientn(colours = maps_color_palette,
                                 limits = c(topoplots_scale[1],topoplots_scale[2]),
-                                oob = scales::squish) +
+                                oob = scales::squish,
+                                breaks= seq(round(topoplots_scale[1]),round(topoplots_scale[2]), round(topoplots_scale[2]/3) ),
+                                labels= seq(round(topoplots_scale[1]),round(topoplots_scale[2]), round(topoplots_scale[2]/3)    ) )  +
            guides(fill = guide_colourbar(barwidth = 10))+
            geom_path(data = maskRing,
                      aes(x, y, z = NULL, fill =NULL),

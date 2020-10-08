@@ -7,9 +7,27 @@
 #' It assumes that there is a column named Voltage with your voltage values.
 #' Default values are provided for electrodes but it can be customized.
 #'
-#' @param file dataframe containing
+#' @param data dataframe containing eeg data
 #' @param conditionToPlot column of the dataframe with the condition to plot
-#' @return A PDF file containing the Difference plots by region
+#' @param levelA level to be substracted from
+#' @param levelB level to substract
+#' @param custom_colors list of colors lists
+#' @param output_type file type of the output
+#' @param vary variable that is used for the y-axis
+#' @param group_var group variable, usually Subject
+#' @param show_group_obs to show Subject data
+#' @param plotname 'auto' or custom string for plot title and plot file name
+#' @param adjusted_baseline boolean to indicate if the baseline should be simulated on the time-window provided in
+#' @param topoplots_time_windows list defining the time-windows for the voltage maps
+#' @param topoplots_scale 'auto' or vector defining the limits of the scale for voltage maps
+#' @param custom_labels list of custom label list. Each custom labels should have the structure: list(start_time, end_time, "label")
+#' @param labels_vertical_position 'auto' or custom position for the center of the label (in microVolts)
+#' @param labels_height 'auto' or custom height (in microVolts)
+#' @param vary variable that is used for the y-axis
+#' @param background string that defines the color of the background : "grid" (default), "white" and "dark"
+#' @param line_thickness single value (numeric, e.g. 0.75) or a vector of numerics such as: c(0.75, 1 , 1.25, 1.5)
+#' @param line_type single value (string, e.g. 'solid') or a vector of strings such as: c('solid', 'dotted , 'dashed','longdash','F1')
+#' @return A PDF file containing the Difference plots by electrodes or region
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
@@ -32,7 +50,7 @@ plot_difference  <- function( data,
           baseline= c(-500,-200),
           topoplots_data = "voltage_difference", # "voltage_difference", "t_test_t_value", "t_test_p_value"
           topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
-          topoplots_scale = c(-2,2),
+          topoplots_scale = 'auto',
           time_labels_interval = 200,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
@@ -69,6 +87,12 @@ plot_difference  <- function( data,
 
   ##############
   # computing time_min and max for time labels + number of rows for facets
+
+
+      if(time_labels_interval == 'auto'){
+        time_labels_interval <- ceiling((max(data$Time)- min(data$Time)  )/1000)*100
+      }
+
 
       time_min  <- ((min(data$Time) %/% time_labels_interval) -1) * time_labels_interval
       time_max  <- (max(data$Time) %/% time_labels_interval) * time_labels_interval

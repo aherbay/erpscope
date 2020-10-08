@@ -7,7 +7,7 @@
 #' It assumes that there is a column named Voltage with your voltage values.
 #' Default values are provided for electrodes but it can be customized.
 #'
-#' @param file dataframe containing
+#' @param data dataframe containing ERP data
 #' @param conditionToPlot column of the dataframe with the condition to plot
 #' @return A PDF file containing the Difference plots by region
 #' @import dplyr

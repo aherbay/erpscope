@@ -24,22 +24,58 @@ plot_difference(
   topoplots_data = "voltage_difference",
   topoplots_time_windows = list(c(-250, -150), c(-150, 50), c(50, 200), c(200, 300),
     c(300, 500), c(500, 700), c(700, 900)),
-  topoplots_scale = c(-2, 2),
+  topoplots_scale = "auto",
   time_labels_interval = 200,
   custom_labels = list(),
   electrodes_to_display = c(),
-  show_t_test = TRUE,
+  show_t_test = FALSE,
   t_test_threshold = 0.05,
-  line_thickness = 0.75
+  line_thickness = 0.75,
+  background = "grid",
+  adjusted_baseline = FALSE
 )
 }
 \arguments{
+\item{data}{dataframe containing eeg data}
+
+\item{plotname}{'auto' or custom string for plot title and plot file name}
+
 \item{conditionToPlot}{column of the dataframe with the condition to plot}
 
-\item{file}{dataframe containing}
+\item{levelA}{level to be substracted from}
+
+\item{levelB}{level to substract}
+
+\item{custom_colors}{list of colors lists}
+
+\item{output_type}{file type of the output}
+
+\item{vary}{variable that is used for the y-axis}
+
+\item{group_var}{group variable, usually Subject}
+
+\item{show_group_obs}{to show Subject data}
+
+\item{labels_vertical_position}{'auto' or custom position for the center of the label (in microVolts)}
+
+\item{labels_height}{'auto' or custom height (in microVolts)}
+
+\item{topoplots_time_windows}{list defining the time-windows for the voltage maps}
+
+\item{topoplots_scale}{'auto' or vector defining the limits of the scale for voltage maps}
+
+\item{custom_labels}{list of custom label list. Each custom labels should have the structure: list(start_time, end_time, "label")}
+
+\item{line_thickness}{single value (numeric, e.g. 0.75) or a vector of numerics such as: c(0.75, 1 , 1.25, 1.5)}
+
+\item{background}{string that defines the color of the background : "grid" (default), "white" and "dark"}
+
+\item{adjusted_baseline}{boolean to indicate if the baseline should be simulated on the time-window provided in}
+
+\item{line_type}{single value (string, e.g. 'solid') or a vector of strings such as: c('solid', 'dotted , 'dashed','longdash','F1')}
 }
 \value{
-A PDF file containing the Difference plots by region
+A PDF file containing the Difference plots by electrodes or region
 }
 \description{
 This function creates a plot file with 9 electrodes of interests displaying ERPs

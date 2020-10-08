@@ -22,10 +22,20 @@ generate_ERP_stats_table(
 
 \item{model_structure}{string with the lmer model}
 
-\item{output_name}{string for the output name}
+\item{output_name}{string for the output file name}
+
+\item{timeWindowMode}{string either 'byStep' or 'custom'}
+
+\item{custom_TW}{for 'custom' mode, a list of vectors defining the time-windows}
+
+\item{time_step}{for 'byStep' mode, time windows length in ms}
+
+\item{min_time}{for 'byStep' mode, starting time of the first time window}
+
+\item{max_time}{for 'byStep' mode, end time of the last time window}
 }
 \value{
-An HTML file containing thes stats tables
+An HTML file containing the stats tables
 }
 \description{
 Description to come

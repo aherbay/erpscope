@@ -4,6 +4,8 @@
 
 A little package to visualize ERPs in R
 
+FRIENDLY WARNING: The package is still under development. You can see below what are the planned improvements over the next couple of months.
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -13,9 +15,9 @@ A little package to visualize ERPs in R
 - [Function plot_difference](#function-plot_difference)
 - [Function plot_difference_maps](#function-plot_difference_maps)
 - [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
-- [Function plot_cor_erp_behav](#function-plot_cor_erp_behav)
+- [Function plot_cor_with_erp_effect](#function-plot_cor_with_erp_effect)
 - [Future developments](#future_developments)
-
+- [Credits and other R ERP/EEG related packages](#future_developments)
 
 
 ## Installation
@@ -30,6 +32,8 @@ Run the following command to install from the github repository
 ```r
  devtools::install_github("aherbay/erpscope")
 ```
+* 2020-07-21 Sometimes the package rlang cannot update properly and needs to be removed from the R library folder. ( to know where are you packages folders stored, just run `.libPaths()` )
+
 
 ## Update ERPscope
 
@@ -158,6 +162,9 @@ plot_difference( data = relpriming,
                  conditionToPlot = Pair.Type,
                  levelA = Unrelated ,
                  levelB = Consistent,
+                 electrodes_to_display = c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
+                 topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+                 baseline= c(-500,-200))
 ```
 
 
@@ -304,7 +311,7 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 ```r
  generate_ERP_stats_table( 
       data = relpriming,
-      model_structure = "Voltage ~   Pair.Type * Anteriority.Levels + (1+ Pair.Type|Subject)",
+      model_structure = "Voltage ~   Pair.Type + (1+ Pair.Type|Subject)",
       timeWindowMode="custom",
       custom_TW =  list(c(-300,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700)),
       output_name="2020_07_02_PairTypeModels.html"
@@ -317,16 +324,16 @@ Precise in the fixed argument the start_time, end_time and time duration of your
 ```r
  generate_ERP_stats_table( 
       data = relpriming,
-      model_structure = "Voltage ~   Pair.Type * Anteriority.Levels + (1+ Pair.Type|Subject)",
+      model_structure = "Voltage ~   Pair.Type  + (1+ Pair.Type|Subject)",
       timeWindowMode="byStep",
       time_step=100, min_time=-300, max_time=900,
       output_name="2020_07_02_PairTypeModels.html"
  ) 
 ```
 
-## Function plot_cor_erp_behav 
+## Function plot_cor_with_erp_effect 
     
-Function to compute the correlation between an ERP effect (between two conditions) between two specific times and another variable (e.g. behavioral) that exists for each subject
+Function to compute the correlation between an ERP effect (between two conditions) between two specific times and another variable (e.g. behavioral, demographic) that exists for each subject
     
 ### mandatory arguments
 
@@ -337,35 +344,73 @@ Function to compute the correlation between an ERP effect (between two condition
 * erp_start_time: 
 * erp_end_time:
 
-* behavDataset : dataset with the behavioral variable
-* behav_var : behavioral variable
+* behavDataset : dataset with the behavioral/demographic variable
+* behav_var : behavioral/demographic variable
                                 
                                  
 ```r
-plot_cor_erp_behav ( erpDataset ,
-                     behavDataset ,
-                     erp_var ,
-                     erp_levelA  ,
-                     erp_levelB  ,
-                     behav_var ,
-                     subject_var = "Subject_short",
-                     erp_start_time  ,
-                     erp_end_time )    
+plot_cor_with_erp_effect ( erpDataset = relpriming2,
+                     erp_var = Pair.Type ,
+                     erp_levelA = Unrelated ,
+                     erp_levelB =  Consistent,
+                     erp_start_time = 700 ,
+                     erp_end_time = 900,
+                     behavDataset = relpriming_RT,
+                     behav_var = Related_RTs,
+                     subject_var = "Subject_short"
+                     )    
 ```
 
 
 ## Future developments
 
-Among various improvements and bug fixes, here are some planned development 
+Among various improvements and bug fixes, here are some planned development over the next couple of month
 
-- [ ] Option to have negative or positive up 
-- [ ] Preselected layouts of electrodes
-- [ ] Option to automatically put labels below ERPs and not only abov
+### plot_erp
+- [x] Option to have negative or positive up 
+- [ ] Split plotname into plot_filename and plot_title
+- [ ] Make the baseline argument not mandatory and change its name to preprocessing_baseline
+- [ ] Change the adjusted_baseline argument name to simulate_baseline 
+
+### plot_difference
+- [ ] Allow to make multiple comparisons defined in a pairwise manner
+
+
+### plot_erp and plot_difference
+- [ ] Move beyond 9 or 12 electrodes and display preselected layouts of electrodes
+- [ ] Option to automatically put labels below ERPs and not only above
 - [ ] Define different colors for labels
-- [ ] Option to have negative or positive up 
+- [ ] Option to adjust font sizes of various elements
 - [ ] Repeat Voltage scale 
-- [ ] Define specific scale limits for Voltage
-- [ ] Input specific layouts for voltage maps
-- [ ] Offer multiple CI computation options
+- [ ] Define custom scale limits for Voltage in ERP plots
+- [ ] Offer multiple CI computation options/ standard error option
+- [ ] Input custom electrodes layouts for voltage maps
+- [ ] Allow to define ROI in a better way
+- [ ] Offer various color scale for voltage maps and change the default one
+
+### plot_cor_with_erp_effect
+- [ ] Input specific custom ROI
+- [ ] Replace regression line by correlation line
+
+
+### generate_ERP_stats_table
+- [ ] Improve the table output: more details on dataset
+- [ ] The table should report that some models do not converge properly
+- [ ] Fix the warning regarding the nonempty <title> element in the HTML file
+- [ ] Allow to output the table into an editable word document
+- [ ] Allow to run linear models (not mixed-models)
+
+## Other R ERP/EEG related packages 
+
+- [eegUtils](https://github.com/craddm/eegUtils) by Matt Craddock
+- [eeguana](https://github.com/bnicenboim/eeguana) by Bruno Nicenboim 
+- [erpinr](https://erpinr.org) by David Causeur and Ching-Fan Sheu
+
+
+## Acknoledgements
+
+I would like want to thank my supervisor Karsten Steinhauer and my labmates for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
+
+
 
 

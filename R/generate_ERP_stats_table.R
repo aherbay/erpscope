@@ -4,8 +4,13 @@
 #'
 #' @param data dataframe containing eeg data
 #' @param model_structure string with the lmer model
-#' @param output_name string for the output name
-#' @return An HTML file containing thes stats tables
+#' @param output_name string for the output file name
+#' @param timeWindowMode string either 'byStep' or 'custom'
+#' @param custom_TW for 'custom' mode, a list of vectors defining the time-windows
+#' @param time_step for 'byStep' mode, time windows length in ms
+#' @param min_time for 'byStep' mode, starting time of the first time window
+#' @param max_time for 'byStep' mode, end time of the last time window
+#' @return An HTML file containing the stats tables
 #' @export
 
 
