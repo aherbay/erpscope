@@ -16,8 +16,8 @@ FRIENDLY WARNING: The package is still under development. You can see below what
 - [Function plot_difference_maps](#function-plot_difference_maps)
 - [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
 - [Function plot_cor_with_erp_effect](#function-plot_cor_with_erp_effect)
-- [Future developments](#future_developments)
-- [Other R ERP/EEG related packages](#other_r_erp/eeg_related_packages)
+- [Future developments](#future-developments)
+- [Other R EEG packages](#other-R-EEG-packages)
 - [Acknowledgments](#acknowledgments)
 
 ## Installation
