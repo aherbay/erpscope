@@ -400,14 +400,14 @@ Among various improvements and bug fixes, here are some planned development over
 - [ ] Allow to output the table into an editable word document
 - [ ] Allow to run linear models (not mixed-models)
 
-## Other R ERP/EEG related packages 
+## Other R EEG packages 
 
 - [eegUtils](https://github.com/craddm/eegUtils) by Matt Craddock
 - [eeguana](https://github.com/bnicenboim/eeguana) by Bruno Nicenboim 
 - [erpinr](https://erpinr.org) by David Causeur and Ching-Fan Sheu
 
 
-## Acknoledgements
+## Acknowledgments
 
 I would like want to thank my supervisor Karsten Steinhauer and my labmates for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
 
