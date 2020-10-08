@@ -17,8 +17,8 @@ FRIENDLY WARNING: The package is still under development. You can see below what
 - [Function generate_ERP_stats_table](#function-generate_ERP_stats_table)
 - [Function plot_cor_with_erp_effect](#function-plot_cor_with_erp_effect)
 - [Future developments](#future_developments)
-- [Credits and other R ERP/EEG related packages](#future_developments)
-
+- [Other R ERP/EEG related packages](#other_r_erp/eeg_related_packages)
+- [Acknowledgments](#acknowledgments)
 
 ## Installation
 
