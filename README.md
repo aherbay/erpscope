@@ -6,6 +6,8 @@ A little package to visualize ERPs in R
 
 FRIENDLY WARNING: The package is still under development. You can see below what are the planned improvements over the next couple of months.
 
+You have exported your preprocessed ERP data and loaded them into R in order to run your statistics? Why not plot your data in the same environment and take advantage of R high plotting capabilities?
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -366,27 +368,29 @@ plot_cor_with_erp_effect ( erpDataset = relpriming2,
 
 Among various improvements and bug fixes, here are some planned development over the next couple of month
 
-### plot_erp
-- [x] Option to have negative or positive up 
-- [ ] Split plotname into plot_filename and plot_title
-- [ ] Make the baseline argument not mandatory and change its name to preprocessing_baseline
-- [ ] Change the adjusted_baseline argument name to simulate_baseline 
+### plot_erp and plot_difference
+- [ ] Option to have negative or positive up - in progress - 
+- [ ] Split plotname into plot_filename and plot_title - in progress -
+- [ ] Make the baseline argument not mandatory and change its name to preprocessing_baseline - in progress - 
+- [ ] Change the adjusted_baseline argument name to simulate_baseline - in progress -
+- [ ] Option to automatically put labels below ERPs and not only above - in progress - 
+- [ ] Define custom scale limits for Voltage in ERP plots - in progress - 
+- [ ] Offer multiple CI computation options/ standard error option - in progress - 
+- [ ] Define different colors for labels - in progress -
+- [ ] Option to adjust font sizes of various elements  x and y axis labels, legend, title and subtitle  - in progress - 
+
+- [ ] Move beyond 9 or 12 electrodes and display preselected layouts of electrodes - evaluation of one possible solution
+- [ ] Repeat Voltage scale on all facets
+
+- [ ] Allow to define ROIs in a better way
+
 
 ### plot_difference
 - [ ] Allow to make multiple comparisons defined in a pairwise manner
-
-
-### plot_erp and plot_difference
-- [ ] Move beyond 9 or 12 electrodes and display preselected layouts of electrodes
-- [ ] Option to automatically put labels below ERPs and not only above
-- [ ] Define different colors for labels
-- [ ] Option to adjust font sizes of various elements
-- [ ] Repeat Voltage scale 
-- [ ] Define custom scale limits for Voltage in ERP plots
-- [ ] Offer multiple CI computation options/ standard error option
-- [ ] Input custom electrodes layouts for voltage maps
-- [ ] Allow to define ROI in a better way
 - [ ] Offer various color scale for voltage maps and change the default one
+- [ ] Input custom electrodes layouts for voltage maps
+
+
 
 ### plot_cor_with_erp_effect
 - [ ] Input specific custom ROI
@@ -409,7 +413,7 @@ Among various improvements and bug fixes, here are some planned development over
 
 ## Acknowledgments
 
-I would like want to thank my supervisor Karsten Steinhauer and my labmates for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
+I would like want to thank my supervisor Karsten Steinhauer and my labmates [Anastasia Glushko](https://github.com/nastiaglushko) and [Max Wolpert](https://github.com/mxwolpert) for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me very useful feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
 
 
 
