@@ -413,7 +413,7 @@ Among various improvements and bug fixes, here are some planned development over
 
 ## Acknowledgments
 
-I would like want to thank my supervisor Karsten Steinhauer and my labmates [Anastasia Glushko](https://github.com/nastiaglushko) and [Max Wolpert](https://github.com/mxwolpert) for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me very useful feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
+I would like want to thank my supervisors Karsten Steinhauer and Shari Baum and my labmates [Anastasia Glushko](https://github.com/nastiaglushko) and [Max Wolpert](https://github.com/mxwolpert) for their support and feedback, as well as people who visited my poster at the LiveMEEG 2020 conference and gave me very useful feedback to improve the package. Finally special thanks to Matt Craddock, his blog and work served as an inspiration and basis for ERPscope.
 
 
 
