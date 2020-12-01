@@ -47,7 +47,10 @@ plot_erp <- function(             data, #
                                   line_type = 'solid', # alternative a vector as: c('solid', 'dotted , 'dashed','longdash','F1')
                                   polarity_up = 'negative',
                                   font_size_electrode_label = 16,
-                                  font_size_x_axis_ticks = 12
+                                  font_size_x_axis_ticks = 12,
+                                  font_size_y_axis_ticks = 12,
+                                  display_baseline = TRUE,
+                                  baseline_label = "Baseline"
                                   ) {
 
 
@@ -258,11 +261,16 @@ plot_erp <- function(             data, #
 
                 # add line axis
                 geom_vline(xintercept = 0,linetype = "solid" )+
-                geom_hline(yintercept = 0)+
+                geom_hline(yintercept = 0)
 
-                # baseline annotation
-                annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
-                annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 2)
+           # baseline annotation
+           if(display_baseline) {
+                  
+                  tempo <- tempo +
+                            annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
+                            annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = baseline_label, color = "red",size = 2)
+            }
+                
 
       # add facets and define theme (font sizes, facets labels)
       tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) +
@@ -280,7 +288,9 @@ plot_erp <- function(             data, #
                                 #legend.key.size = unit(2, "lines"),
                                 #legend.key.height  = unit(15, "lines"),
                                 axis.title = element_text(size=18),
-                                axis.text.x = element_text( size= font_size_x_axis_ticks)
+                                axis.text.x = element_text( size= font_size_x_axis_ticks),
+                                axis.text.y = element_text( size= font_size_y_axis_ticks)
+
                           )
 
       # if there are custom labels to add
