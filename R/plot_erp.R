@@ -45,7 +45,9 @@ plot_erp <- function(             data, #
                                   background = "grid", # alternative : "dark" or "white"
                                   line_thickness = 0.75 , # alternative a vector as:  c(0.75, 1 , 1.25, 1.5)
                                   line_type = 'solid', # alternative a vector as: c('solid', 'dotted , 'dashed','longdash','F1')
-                                  polarity_up = 'negative'
+                                  polarity_up = 'negative',
+                                  font_size_electrode_label = 16,
+                                  font_size_x_axis_ticks = 12
                                   ) {
 
 
@@ -266,7 +268,7 @@ plot_erp <- function(             data, #
       tempo <- tempo +  facet_wrap( ~ Electrode , nrow = numberOfRows, ncol = 3, scales='free_x' ) +
                         guides(colour = guide_legend(override.aes = list(size = 2))) +
 
-                        theme(  strip.text.x = element_text( size = 16, color = "black", face = "bold" ),
+                        theme(  strip.text.x = element_text( size = font_size_electrode_label, color = "black", face = "bold" ),
                                 strip.background = element_rect( fill="white", color=NA),
                                 legend.position="bottom",
                                 plot.title = element_text(size = 24, face = "bold",hjust = 0.5),
@@ -277,7 +279,8 @@ plot_erp <- function(             data, #
                                 legend.key.width = unit(3, "lines"),
                                 #legend.key.size = unit(2, "lines"),
                                 #legend.key.height  = unit(15, "lines"),
-                                axis.title=element_text(size=18)
+                                axis.title = element_text(size=18),
+                                axis.text.x = element_text( size= font_size_x_axis_ticks)
                           )
 
       # if there are custom labels to add
