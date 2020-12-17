@@ -127,7 +127,7 @@ plot_erp <- function(             data, #
 
       # set the automatic plot name if selected
       if(plotname == 'auto') {
-            plotname = paste(Sys.time(),"_ERPs_",deparse(substitute(data)),"_",conditionToPlot, sep="") # Sys.time Sys.Date
+            plotname = paste(Sys.Date(),"_ERPs_",deparse(substitute(data)),"_",conditionToPlot, sep="") # Sys.time Sys.Date
       }
 
       # set the file name (adding the extension to plot name)
