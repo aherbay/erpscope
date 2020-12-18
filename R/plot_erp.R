@@ -50,7 +50,8 @@ plot_erp <- function(             data, #
                                   font_size_x_axis_ticks = 12,
                                   font_size_y_axis_ticks = 12,
                                   display_baseline = TRUE,
-                                  baseline_label = "Baseline"
+                                  baseline_label = "Baseline",
+                                  voltage_scale_limits = 'auto'
                                   ) {
 
 
@@ -293,6 +294,12 @@ plot_erp <- function(             data, #
 
                           )
 
+      
+      if(voltage_scale_limits != 'auto'){
+        tempo <- tempo +  coord_cartesian(ylim = voltage_scale_limits )
+      }
+      
+      
       # if there are custom labels to add
       if(length(custom_labels) != 0) {
 
