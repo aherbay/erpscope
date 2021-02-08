@@ -58,7 +58,8 @@ plot_difference  <- function( data,
           t_test_threshold = 0.05,
           line_thickness= 0.75,
           background = "grid",
-          adjusted_baseline = FALSE
+          adjusted_baseline = FALSE,
+          voltage_scale_limits = 'auto'
           ) {
 
 
@@ -330,6 +331,10 @@ plot_difference  <- function( data,
           annotate("rect", xmin = baseline[1] , xmax = baseline[2] , ymin=-1, ymax=1, alpha = .4,fill = "red")+
           annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
 
+        
+          if(voltage_scale_limits != 'auto'){
+                erp_plot <- erp_plot +  coord_cartesian(ylim = voltage_scale_limits )
+          }
 
    ##############
    # Adding ERP custom labels
