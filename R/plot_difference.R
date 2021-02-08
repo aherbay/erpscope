@@ -59,7 +59,8 @@ plot_difference  <- function( data,
           line_thickness= 0.75,
           background = "grid",
           adjusted_baseline = FALSE,
-          voltage_scale_limits = 'auto'
+          voltage_scale = 'auto',                  
+          voltage_scale_limits = c(-5,5)
           ) {
 
 
@@ -332,7 +333,7 @@ plot_difference  <- function( data,
           annotate(geom = "text", x = (baseline[2] + baseline[1])/2, y = 0.3, label = "Baseline", color = "red",size = 3)
 
           
-          if(voltage_scale_limits != 'auto'){
+          if(voltage_scale == 'manual'){
                     erp_plot <- erp_plot +  coord_cartesian(ylim = voltage_scale_limits )
           }
 
