@@ -2,11 +2,25 @@
 
 # ERPscope
 
-A little package to visualize ERPs in R
-
-FRIENDLY WARNING: The package is still under development. You can see below what are the planned improvements over the next couple of months.
+A package to visualize ERPs in R
 
 You have exported your preprocessed ERP data and loaded them into R in order to run your statistics? Why not plot your data in the same environment and take advantage of R high plotting capabilities?
+
+The package is still under development to make it more flexible and compatible with more data formats. 
+
+Some new options will be available in early April 2021.  To support these new options, some arguments will have a new names and new arguments have been created 
+
+- Option to have negative or positive up : argument **polarity_up** ('negative' or 'positive')
+- Split plotname into output_file_name (for the file) and plot_title (for the title in the graph)
+- The former **baseline** argument is not mandatory anymore and  its name has been changed to **prepro_bsl** with many options (display it or not, define its time-window,the  fill color, the label, its font size and font color, the height of the label)
+- The **adjusted_baseline** argument has been changed to **simul_bsl**
+- Option to automatically put labels below ERPs and not only above
+- Define custom scale limits for Voltage in ERP plots
+- Offer multiple CI computation options/ standard error option
+- Define different colors for labels
+- Option to adjust font sizes of various elements x and y axis labels, legend, title and subtitle
+
+We are also working on an interactive version of ERPscope for a release during the summer!
 
 ## Table of Contents
 
@@ -366,22 +380,11 @@ plot_cor_with_erp_effect ( erpDataset = relpriming2,
 
 ## Future developments
 
-Among various improvements and bug fixes, here are some planned development over the next couple of month
+Among various improvements and bug fixes, here are some other planned development
 
 ### plot_erp and plot_difference
-- [ ] Option to have negative or positive up - in progress - 
-- [ ] Split plotname into plot_filename and plot_title - in progress -
-- [ ] Make the baseline argument not mandatory and change its name to preprocessing_baseline - in progress - 
-- [ ] Change the adjusted_baseline argument name to simulate_baseline - in progress -
-- [ ] Option to automatically put labels below ERPs and not only above - in progress - 
-- [ ] Define custom scale limits for Voltage in ERP plots - in progress - 
-- [ ] Offer multiple CI computation options/ standard error option - in progress - 
-- [ ] Define different colors for labels - in progress -
-- [ ] Option to adjust font sizes of various elements  x and y axis labels, legend, title and subtitle  - in progress - 
-
 - [ ] Move beyond 9 or 12 electrodes and display preselected layouts of electrodes - evaluation of one possible solution
 - [ ] Repeat Voltage scale on all facets
-
 - [ ] Allow to define ROIs in a better way
 
 
@@ -389,8 +392,6 @@ Among various improvements and bug fixes, here are some planned development over
 - [ ] Allow to make multiple comparisons defined in a pairwise manner
 - [ ] Offer various color scale for voltage maps and change the default one
 - [ ] Input custom electrodes layouts for voltage maps
-
-
 
 ### plot_cor_with_erp_effect
 - [ ] Input specific custom ROI
