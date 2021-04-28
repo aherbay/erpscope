@@ -8,7 +8,7 @@ You have exported your preprocessed ERP data and loaded them into R in order to 
 
 The package is still under development to make it more flexible and compatible with more data formats. 
 
-Some new options will be available in early April 2021.  To support these new options, some arguments will have a new names and new arguments have been created 
+Some new options will be available by the end of May 2021.  To support these new options, some arguments will have a new names and new arguments have been created 
 
 - Option to have negative or positive up : argument **polarity_up** ('negative' or 'positive')
 - Split plotname into output_file_name (for the file) and plot_title (for the title in the graph)
