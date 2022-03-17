@@ -38,7 +38,7 @@
 #' @param prepro_bsl_display boolean, defines whether an indication of preprocessing baseline is displayed or not
 #' @param prepro_bsl_time_window vector defining the time limits of the preprocessing baseline (e.g.,c(-500, -300))
 #' @param prepro_bsl_fill_color = "#DEE5ED"
-#' @param prepro_bsl_label_fill_alpha value between 0 and 1 defining the transparency of the baseline indication
+#' @param prepro_bsl_label_fill_alpha value between 0 and 1 defining the transparency of the preprocessing baseline indication
 #' @param prepro_bsl_label  ""
 #' @param prepro_bsl_label_font_size  2
 #' @param prepro_bsl_label_text_color  "blue"
@@ -47,7 +47,7 @@
 #' @param simul_bsl_active  FALSE
 #' @param simul_bsl_time_window  c(-200, 0)
 #' @param simul_bsl_label_fill_color  "#8282DF"
-#' @param simul_bsl_label_fill_alpha  0.9
+#' @param simul_bsl_label_fill_alpha  value between 0 and 1 defining the transparency of the simulated baseline indication
 #' @param simul_bsl_label_text  ""
 #' @param simul_bsl_label_font_size  4
 #' @param custom_labels list of custom label list. Each custom labels should have the structure: list(start_time, end_time, "label")
@@ -122,7 +122,7 @@ plot_erp <- function(
   prepro_bsl_label_font_size = 2,
   prepro_bsl_label_text_color = "blue",
   prepro_bsl_label_vertical_position = 0,
-  prepro_bsl_vertical_limits = c(-0.5,0.5),
+  prepro_bsl_vertical_limits = c(-0.2,0.2),
 
   # simulate a new baseline
 
@@ -215,35 +215,35 @@ plot_erp <- function(
 
   # storing the number of levels to plot
 
-  number_of_levels <- length(levels(data[,condition_to_plot]))
+    number_of_levels <- length(levels(data[,condition_to_plot]))
 
   # checking that there is enough colors in the palette to plot all levels
 
-  if(length(line_colors) < number_of_levels) { stop(paste("Please provide more colors in your palette: currently",length(line_colors),"colors to plot",number_of_levels , "levels")) }
+   if(length(line_colors) < number_of_levels) { stop(paste("Please provide more colors in your palette: currently",length(line_colors),"colors to plot",number_of_levels , "levels")) }
 
   # check if vector baseline has two elements, then that baseline[1] is > tmin and < tmax, same for baseline[2], check that baseline[1]< baseline[2]
 
-  if( prepro_bsl_display ){ # if preprocessing baseline is to be displayed on the plot
+    if( prepro_bsl_display ){ # if preprocessing baseline is to be displayed on the plot
 
-    if(length(prepro_bsl_time_window) != 2) {
-      stop(paste("Provided preprocessing baseline",toString(prepro_bsl_time_window),"is not a vector of 2 elements"))
-    }
+      if(length(prepro_bsl_time_window) != 2) {
+        stop(paste("Provided preprocessing baseline",toString(prepro_bsl_time_window),"is not a vector of 2 elements"))
+      }
 
-    if(prepro_bsl_time_window[2] <=  prepro_bsl_time_window[1]) {
-      stop(paste("Problem with the provided preprocessing baseline:",prepro_bsl_time_window[1],"is higher than", prepro_bsl_time_window[2]))
+      if(prepro_bsl_time_window[2] <=  prepro_bsl_time_window[1]) {
+        stop(paste("Problem with the provided preprocessing baseline:",prepro_bsl_time_window[1],"is higher than", prepro_bsl_time_window[2]))
+      }
     }
-  }
 
   # settings of the confirmation menu if show_check_message is set to TRUE
 
-  init_message <- paste("You are about to plot ERPs for",length(electrodes_subset), "electrodes with the layout",deparse(substitute(electrodes_layout)),"for the condition", condition_to_plot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
+    init_message <- paste("You are about to plot ERPs for",length(electrodes_subset), "electrodes with the layout",deparse(substitute(electrodes_layout)),"for the condition", condition_to_plot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
 
-  if(show_check_message == TRUE) {
-    choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
-  } else {
-    message(init_message)
-    choice  <- 1
-  }
+    if(show_check_message == TRUE) {
+      choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
+    } else {
+      message(init_message)
+      choice  <- 1
+    }
 
 
 
@@ -344,12 +344,14 @@ plot_erp <- function(
       if(length(line_type) < 2){
         message('plot with single thickness values and single linetype')
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot) )+
+          geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line", size = line_thickness, linetype= line_type)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
         message('plot with single thickness values and multiple line types')
-        erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,linetype= condition_to_plot) )+
+        erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot, linetype= condition_to_plot) )+
+          geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line", size = line_thickness) + scale_linetype_manual(values=line_type)
       } else { stop("Not valid type of linetype argument") }
 
@@ -360,12 +362,14 @@ plot_erp <- function(
       if(length(line_type) < 2){
         message('plot with multiple thickness single linetype')
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot) )+
+          geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line",linetype= line_type) + scale_size_manual(values= line_thickness)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
         message('plot with multiple thickness multiple linetype')
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot,linetype= condition_to_plot) )+
+          geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line")+
           scale_size_manual(values= line_thickness)+
           scale_linetype_manual(values=line_type)
@@ -459,7 +463,7 @@ plot_erp <- function(
     erp_plot <- erp_plot + scale_x_continuous(breaks= ticks_vector)
 
     # add lines of x and y axis
-    erp_plot <- erp_plot + geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)
+    #erp_plot <- erp_plot +
 
 
     # add baseline annotation
