@@ -10,9 +10,8 @@
 #' @param condition_to_plot string for the column of the dataframe containing different levels to plot
 #' @param electrodes_layout table describing the layout of electrodes names to plot
 #' @param polarity_up defines which polarity is plotted up : "negative" (default) or "positive"
-#' @param output indicate the plot destination: "file" (default) or "window"
 #' @param output_file_name 'auto' or custom string for plot file name
-#' @param output_file_type extension between quotes: 'pdf' by default
+#' @param output_format indicate the plot destination: "window" (default) or file extension between quotes: 'pdf'
 #' @param line_colors vector with colors for each levels (in the order of levels of condition_to_plot)
 #' @param line_thickness single value (numeric e.g. 0.75) or a vector of numerics such as: c(0.75, 1 , 1.25, 1.5)
 #' @param line_type single value (string, e.g. 'solid') or a vector of strings such as: c('solid', 'dotted , 'dashed','longdash','F1')
@@ -57,8 +56,7 @@
 #' @param custom_labels_font_size 1.9
 #' @param custom_labels_line_style "dashed"
 #' @param custom_labels_line_color "black"
-#' @param add_ribbon string to indicate if 95% CI (bootstrapped) should be displayed: 'none' (by default),'mean_sdl', 'mean_cl_boot', "mean_cl_normal"
-#' @param within_SE 'no'
+#' @param variability_info string to indicate if 95% CI (bootstrapped) should be displayed: 'none' (by default),'mean_sdl', 'mean_cl_boot', "mean_cl_normal"
 #' @param vary string to define the variable that is used for the y-axis: "Voltage" by default
 #' @param varx string to define the variable that is used for the x-axis: "Time" by default
 #' @param var_electrode string to define the variable that is used for the electrodes: "Electrode" by default
@@ -77,9 +75,8 @@ plot_erp <- function(
   polarity_up = 'negative',
 
   # output file parameters
-  output = 'file', # or 'window'
   output_file_name = 'auto', # don't put the extension
-  output_file_type = 'pdf',    #output_file_type
+  output_format = 'window', # by defaut window or 'pdf', 'svg','jpg' ...
 
   # plot aesthetics
 
@@ -87,31 +84,40 @@ plot_erp <- function(
   line_thickness = 0.75 , # alternative a vector as:  c(0.75, 1 , 1.25, 1.5)
   line_type  = 'solid', # alternative a vector as: c('solid', 'dotted , 'dashed','longdash','F1')
 
+  text_font_size = NA,
+
   # titles
   plot_title = 'auto',
-  plot_title_font_size = 24,
+  plot_title_font_size = NA,
   plot_title_font_color = 'black',
 
   plot_subtitle = 'auto',
-  plot_subtitle_font_size = 20,
+  plot_subtitle_font_size = NA,
   plot_subtitle_font_color = 'black',
 
   plot_background = "grid", # alternative : "dark" or "white"
-  plot_height = 18,
-  plot_width = 22 ,
-  electrode_labels_font_size = 14,
+  plot_height = 8.5,
+  plot_width = 11 ,
+  electrode_labels_font_size = NA,
   electrode_labels_font_color = "black",
 
+
   # axis parameters
+  axis_titles_font_size = NA, #18
+
   voltage_axis_title= bquote(paste("Voltage amplitude (", mu, "V)")),
-  voltage_axis_tick_mark_labels_font_size= 12,
+  voltage_axis_tick_mark_labels_font_size= NA,
   voltage_scale_limits = 'auto', # c(-4,4)
   voltage_labels_interval = 'auto',
 
   time_axis_title= "Time (ms)",
   time_scale_limits = 'auto',
   time_labels = 'auto', # 'auto', or single value or vector
-  time_axis_tick_mark_labels_font_size= 12,
+  time_axis_tick_mark_labels_font_size= NA,
+
+  legend_text_font_size = NA,
+  legend_title_font_size = NA,
+  legend_position = "bottom",
 
   # add info about the preprocessing baseline time window
   prepro_bsl_display = FALSE,
@@ -143,8 +149,8 @@ plot_erp <- function(
   custom_labels_line_color = "black",
 
   # Add ribbon
-  add_ribbon = 'none',# 'mean_sdl'  'mean_cl_boot' "mean_cl_normal"
-  within_SE = 'no',
+  variability_info = 'none',# 'mean_sdl'  'mean_cl_boot' "mean_cl_normal"
+
 
   # to change the default column containing voltage and time
   vary ="Voltage",
@@ -194,6 +200,8 @@ plot_erp <- function(
         electrodes_layout <- frame_single_elec
         electrodes_layout$name <- deparsed_layout
         electrodes_layout$code <- deparsed_layout
+
+        electrodes_subset <- unique(electrodes_layout$code)
       } else {   # if the layout is a NOT single electrode
         # checking that given electrodes to display are in the dataframe
         electrodes_subset <- unique(electrodes_layout$code)
@@ -244,7 +252,7 @@ plot_erp <- function(
 
   # settings of the confirmation menu if show_check_message is set to TRUE
 
-    init_message <- paste("You are about to plot ERPs for",length(electrodes_subset), "electrodes with the layout",deparse(substitute(electrodes_layout)),"for the condition", condition_to_plot , "with",number_of_levels,"levels and for",number_of_subjects,"subjects.")
+    init_message <- paste("You are about to plot ERPs for",length(electrodes_subset), "electrode(s) with the layout",deparsed_layout,"for the condition", condition_to_plot , "with",number_of_levels,"level(s) and for",number_of_subjects,"subject(s).")
 
     if(show_check_message == TRUE) {
       choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
@@ -261,11 +269,17 @@ plot_erp <- function(
 
     # set the automatic plot filename if selected
 
-    if(output_file_name == 'auto') {
-      output_file_name = paste(Sys.Date(),"_ERPs_",deparse(substitute(data)),"_",condition_to_plot,'.',output_file_type, sep="") # Sys.time Sys.Date
+    if(output_format != 'window') {
+      if(output_file_name == 'auto') {
+        current_time <- format(as.POSIXct(Sys.time()), "%d-%m-%Y %Hh%Mm%Ss")
+        output_file_name = paste(current_time,"_ERPs_",deparse(substitute(data)),"_",condition_to_plot,"_",deparsed_layout,'.',output_format, sep="") # Sys.time Sys.Date
+      } else {
+        output_file_name = paste(output_file_name,'.',output_format, sep="")
+      }
     } else {
-      output_file_name = paste(output_file_name,output_file_type, sep="")
+      output_file_name = "window"
     }
+
 
     # store start time to compute total duration
 
@@ -277,7 +291,7 @@ plot_erp <- function(
 
     # check if a file with the same name already exists
 
-    if(file.exists(output_file_name) & output == 'file') {
+    if(file.exists(output_file_name) & output_format != 'window') {
       overwriting_choice <- menu(c("y", "n"), title="A file with the same name already exists! Do you want to continue?")
       if(overwriting_choice ==1){
         message("File will be overwritten")
@@ -398,43 +412,47 @@ plot_erp <- function(
     }
 
     # add error bar if needed mean_sdl  mean_cl_boot mean_cl_normal
-    if(add_ribbon != 'none') {
-      erp_plot <- erp_plot +  stat_summary(fun.data = eval(parse(text= add_ribbon)),geom = "ribbon",alpha = 0.3 , colour=NA)
-    }
+    if(variability_info != 'none') {
+      if(variability_info != 'within_subject_ci') {
+        erp_plot <- erp_plot +  stat_summary(fun.data = eval(parse(text= variability_info)),geom = "ribbon",alpha = 0.3 , colour=NA)
 
+      } else {
 
-    # within subject confidence interval
+        # within subject confidence interval
 
-    if(within_SE != 'no') {
+        electrodes_layout_forWSCI <- unique(dataToPlot$Electrode)
+        #print(electrodes_layout_forWSCI[1])
 
-      electrodes_layout <- unique(dataToPlot$Electrode)
-      runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout[1]) %>%
-        split(.$Time) %>%
-        map(~summarySEwithin(data = ., measurevar = "Voltage",
-                             withinvars = "conditions_CIU", idvar = "Subject"))
-      WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
-      WSCI$Electrode <- electrodes_layout[1]
-
-      for(i in 2:length(electrodes_layout)) {
-        runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout[i]) %>%
+        runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[1]) %>%
           split(.$Time) %>%
           map(~summarySEwithin(data = ., measurevar = "Voltage",
-                               withinvars = "conditions_CIU", idvar = "Subject"))
-        WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
-        WSCI_temp$Electrode <- electrodes_layout[i]
-        WSCI <- rbind(WSCI,WSCI_temp)
+                               withinvars = "Pair.Type", idvar = "Subject"))
+
+        WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
+        WSCI$Electrode <- electrodes_layout_forWSCI[1]
+
+        for(i in 2:length(electrodes_layout_forWSCI)) {
+          runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[i]) %>%
+            split(.$Time) %>%
+            map(~summarySEwithin(data = ., measurevar = "Voltage",
+                                 withinvars = "Pair.Type", idvar = "Subject"))
+          WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
+          WSCI_temp$Electrode <- electrodes_layout_forWSCI[i]
+          WSCI <- rbind(WSCI,WSCI_temp)
+        }
+
+        WSCI$Electrode <- as.factor(WSCI$Electrode )
+        WSCI$Time <- as.numeric(WSCI$Time )
+
+
+
+        erp_plot <- erp_plot + geom_ribbon(data = WSCI, aes(ymin = Voltage- ci, ymax = Voltage+ ci ), linetype="blank", alpha = 0.3 )
+        #   summarySEwithin(data = data, measurevar = "Voltage", betweenvars = NULL, withinvars = NULL, idvar = , na.rm = FALSE, conf.interval = 0.95, .drop = TRUE)
+
+
       }
-
-      WSCI$Electrode <- as.factor(WSCI$Electrode )
-      WSCI$Time <- as.numeric(WSCI$Time )
-
-
-
-      erp_plot <- erp_plot + geom_ribbon(data = WSCI, aes(ymin = Voltage- ci, ymax = Voltage+ ci ), linetype="blank", alpha = 0.3 )
-      message('within_SE 4')
-      #   summarySEwithin(data = data, measurevar = "Voltage", betweenvars = NULL, withinvars = NULL, idvar = , na.rm = FALSE, conf.interval = 0.95, .drop = TRUE)
-
     }
+
 
     # add background layer to plot
     if( plot_background == "white") {
@@ -494,21 +512,24 @@ plot_erp <- function(
     # define theme (font sizes, facets labels)
     erp_plot <- erp_plot + guides(colour = guide_legend(override.aes = list(size = 2))) +
 
-      theme(  strip.text.x = element_text( size = electrode_labels_font_size, color = electrode_labels_font_color, face = "bold" ),
+      theme(
               strip.background = element_rect( fill="white", color=NA),
-              legend.position="bottom",
-              plot.title = element_text(size = plot_title_font_size, face = "bold",hjust = 0.5),
-              plot.subtitle = element_text(size = plot_subtitle_font_size ,hjust = 0.5),
-              legend.title = element_text(size = 16),
-              legend.text = element_text(size = 15),
+              legend.position= legend_position ,
               legend.spacing.x = unit(0.8, "cm"),
               legend.key.width = unit(3, "lines"),
-              #legend.key.size = unit(2, "lines"),
-              #legend.key.height  = unit(15, "lines"),
-              axis.title=element_text(size=18),
-              axis.text.y = element_text( size= voltage_axis_tick_mark_labels_font_size),
-              axis.text.x = element_text( size= time_axis_tick_mark_labels_font_size)
+              text = element_text(size = text_font_size)
       )
+
+
+    if( !(is.na(plot_title_font_size)) ){ erp_plot <- erp_plot +  theme(plot.title = element_text(size = plot_title_font_size, face = "bold",hjust = 0.5)) } else { erp_plot <- erp_plot + theme(plot.title = element_text(face = "bold",hjust = 0.5)) }
+    if( !(is.na(plot_subtitle_font_size)) ){ erp_plot <- erp_plot +  theme(plot.subtitle = element_text(size = plot_subtitle_font_size,hjust = 0.5)) } else { erp_plot <- erp_plot + theme(plot.subtitle = element_text(hjust = 0.5)) }
+    if( !(is.na(axis_titles_font_size)) ){ erp_plot <- erp_plot +  theme(axis.title = element_text(size = axis_titles_font_size)) }
+    if( !(is.na(voltage_axis_tick_mark_labels_font_size)) ){ erp_plot <- erp_plot +  theme(axis.text.y = element_text(size = voltage_axis_tick_mark_labels_font_size)) }
+    if( !(is.na(legend_title_font_size)) ){ erp_plot <- erp_plot +  theme(legend.title = element_text(size = legend_title_font_size)) }
+    if( !(is.na(legend_text_font_size)) ){ erp_plot <- erp_plot +  theme(legend.text = element_text(size = legend_text_font_size)) }
+    if( !(is.na(electrode_labels_font_size)) ){ erp_plot <- erp_plot +  theme(strip.text.x = element_text(size = electrode_labels_font_size, color = electrode_labels_font_color, face = "bold" )) } else
+      { erp_plot <- erp_plot +  theme(strip.text.x = element_text(color = electrode_labels_font_color, face = "bold" )) }
+
 
     # implement voltage_scale_limits if provided
     if(voltage_scale_limits != 'auto'){
@@ -556,21 +577,23 @@ plot_erp <- function(
 
 
     # "save" message to user
-    message(paste(Sys.time()," - Saving plot to file"))
 
     # save plot to file
-    if( output == 'file' ){
+    if( output_format != 'window' ){
+      message(paste(Sys.time()," - Saving plot to file"))
+
       ggsave(erp_plot, filename=output_file_name, width = plot_width, height = plot_height)
+      # store end time for total duration calculation
+      t_end <- Sys.time()
+
+      # end message to user
+      message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
+
     }
 
-    if( output == 'window' ){
+    if( output_format == 'window' ){
       return(erp_plot)
     }
-    # store end time for total duration calculation
-    t_end <- Sys.time()
-
-    # end message to user
-    message(paste(Sys.time()," - End - Generating the file took",  substring(round(   difftime(t_end,t_start,units="mins")  , 2),1 ),"mins"))
 
 
   } # end of menu
