@@ -536,6 +536,11 @@ plot_erp <- function(
       erp_plot <- erp_plot +  coord_cartesian(ylim = voltage_scale_limits )
     }
 
+    # implement time_scale_limits if provided
+    if(time_scale_limits != 'auto'){
+      erp_plot <- erp_plot +  coord_cartesian(xlim = time_scale_limits )
+    }
+
 
     # if there are custom labels to add
     if(length(custom_labels) != 0) {
@@ -549,11 +554,11 @@ plot_erp <- function(
 
         erp_plot <- erp_plot +  coord_cartesian(ylim = c(y_min,y_max) )
 
-        if((custom_labels_vertical_position == "auto_top" && polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_bottom" && polarity_up == 'positive') ){
+        if((custom_labels_vertical_position == "auto_top" & polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_bottom" & polarity_up == 'positive') ){
           custom_labels_vertical_position =  y_min + (y_max - y_min) / 32
         }
 
-        if((custom_labels_vertical_position == "auto_bottom" && polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_top" && polarity_up == 'positive') ){
+        if((custom_labels_vertical_position == "auto_bottom" & polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_top" & polarity_up == 'positive') ){
           custom_labels_vertical_position =  y_max - (y_max - y_min) / 32
         }
 
