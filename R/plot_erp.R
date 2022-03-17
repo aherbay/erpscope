@@ -186,15 +186,23 @@ plot_erp <- function(
     message("Converting Electrode as a factor")
   }
 
-  # checking that given electrodes to display are in the dataframe
+  # checking if the value provided in electrodes_layout is an electrode or a layout
 
-  df_electrodes <- unique(data[,var_electrode])
-  electrodes_subset <- unique(electrodes_layout$code)
-  for(current_elec in 1:length(electrodes_subset)){
-    if(!(electrodes_subset[current_elec] %in% df_electrodes)) {
-      warning(paste("Electrode",electrodes_subset[current_elec] ,"defined in the layout is not in the data"))
-    }
-  }
+      df_electrodes <- unique(data[,var_electrode])
+      deparsed_layout <- deparse(substitute(electrodes_layout))
+      if(deparsed_layout %in% df_electrodes){ # if the layout is a single electrode
+        electrodes_layout <- frame_single_elec
+        electrodes_layout$name <- deparsed_layout
+        electrodes_layout$code <- deparsed_layout
+      } else {   # if the layout is a NOT single electrode
+        # checking that given electrodes to display are in the dataframe
+        electrodes_subset <- unique(electrodes_layout$code)
+        for(current_elec in 1:length(electrodes_subset)){
+          if(!(electrodes_subset[current_elec] %in% df_electrodes)) {
+            warning(paste("Electrode",electrodes_subset[current_elec] ,"defined in the layout is not in the data"))
+          }
+        }
+      }
 
   # checking that the variable Subject is in the provided dataframe and is a factor
 
@@ -399,21 +407,21 @@ plot_erp <- function(
 
     if(within_SE != 'no') {
 
-      electrodes_to_plot <- unique(dataToPlot$Electrode)
-      runningSE <- dataToPlot %>% filter(Electrode == electrodes_to_plot[1]) %>%
+      electrodes_layout <- unique(dataToPlot$Electrode)
+      runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout[1]) %>%
         split(.$Time) %>%
         map(~summarySEwithin(data = ., measurevar = "Voltage",
                              withinvars = "conditions_CIU", idvar = "Subject"))
       WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
-      WSCI$Electrode <- electrodes_to_plot[1]
+      WSCI$Electrode <- electrodes_layout[1]
 
-      for(i in 2:length(electrodes_to_plot)) {
-        runningSE <- dataToPlot %>% filter(Electrode == electrodes_to_plot[i]) %>%
+      for(i in 2:length(electrodes_layout)) {
+        runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout[i]) %>%
           split(.$Time) %>%
           map(~summarySEwithin(data = ., measurevar = "Voltage",
                                withinvars = "conditions_CIU", idvar = "Subject"))
         WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
-        WSCI_temp$Electrode <- electrodes_to_plot[i]
+        WSCI_temp$Electrode <- electrodes_layout[i]
         WSCI <- rbind(WSCI,WSCI_temp)
       }
 
