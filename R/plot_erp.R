@@ -546,7 +546,8 @@ plot_erp <- function(
     if( !(is.na(plot_subtitle_font_size)) ){ erp_plot <- erp_plot +  theme(plot.subtitle = element_text(size = plot_subtitle_font_size,hjust = 0.5)) } else { erp_plot <- erp_plot + theme(plot.subtitle = element_text(hjust = 0.5)) }
     if( !(is.na(axis_titles_font_size)) ){ erp_plot <- erp_plot +  theme(axis.title = element_text(size = axis_titles_font_size)) }
     if( !(is.na(voltage_axis_tick_mark_labels_font_size)) ){ erp_plot <- erp_plot +  theme(axis.text.y = element_text(size = voltage_axis_tick_mark_labels_font_size)) }
-    if( !(is.na(legend_title_font_size)) ){ erp_plot <- erp_plot +  theme(legend.title = element_text(size = legend_title_font_size)) }
+    if( !(is.na(time_axis_tick_mark_labels_font_size)) ){ erp_plot <- erp_plot +  theme(axis.text.x = element_text(size = time_axis_tick_mark_labels_font_size)) }
+     if( !(is.na(legend_title_font_size)) ){ erp_plot <- erp_plot +  theme(legend.title = element_text(size = legend_title_font_size)) }
     if( !(is.na(legend_text_font_size)) ){ erp_plot <- erp_plot +  theme(legend.text = element_text(size = legend_text_font_size)) }
     if( !(is.na(electrode_labels_font_size)) ){ erp_plot <- erp_plot +  theme(strip.text.x = element_text(size = electrode_labels_font_size, color = electrode_labels_font_color, face = "bold" )) } else
       { erp_plot <- erp_plot +  theme(strip.text.x = element_text(color = electrode_labels_font_color, face = "bold" )) }
