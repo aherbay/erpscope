@@ -536,7 +536,7 @@ plot_erp <- function(
       theme(
               strip.background = element_rect( fill="white", color=NA),
               legend.position= legend_position ,
-              #legend.spacing.x = unit(0.8, "cm"),
+              legend.spacing.x = unit(0.2, "cm"),
               legend.key.width = unit(3, "lines"),
               text = element_text(size = text_font_size)
       )
