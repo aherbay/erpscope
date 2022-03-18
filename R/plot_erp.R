@@ -140,7 +140,7 @@ plot_erp <- function(
   simul_bsl_label_text = "",
   simul_bsl_label_font_size = 4,
   simul_bsl_label_text_color = "#000000",
-  simul_bsl_label = '',
+
 
   # custom labels
   custom_labels = list(),
@@ -428,7 +428,7 @@ plot_erp <- function(
 
         runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[1]) %>%
           split(.$Time) %>%
-          map(~summarySEwithin(data = ., measurevar = "Voltage",
+          purrr::map(~summarySEwithin(data = ., measurevar = "Voltage",
                                withinvars = "Pair.Type", idvar = "Subject"))
 
         WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
@@ -437,7 +437,7 @@ plot_erp <- function(
         for(i in 2:length(electrodes_layout_forWSCI)) {
           runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[i]) %>%
             split(.$Time) %>%
-            map(~summarySEwithin(data = ., measurevar = "Voltage",
+            purrr::map(~summarySEwithin(data = ., measurevar = "Voltage",
                                  withinvars = "Pair.Type", idvar = "Subject"))
           WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
           WSCI_temp$Electrode <- electrodes_layout_forWSCI[i]
@@ -491,22 +491,18 @@ plot_erp <- function(
     # ticks on x axis
     erp_plot <- erp_plot + scale_x_continuous(breaks= ticks_vector)
 
-    # add lines of x and y axis
-    #erp_plot <- erp_plot +
-
-
     # add preprocessing baseline annotation
     if(prepro_bsl_display){
       erp_plot <- erp_plot +
         annotate("rect", xmin = prepro_bsl_time_window[1] , xmax = prepro_bsl_time_window[2] , ymin=prepro_bsl_vertical_limits[1], ymax=prepro_bsl_vertical_limits[2], alpha = prepro_bsl_label_fill_alpha, fill = prepro_bsl_fill_color)+
-        annotate(geom = "text", x = (prepro_bsl_time_window[2] + prepro_bsl_time_window[1])/2, y = 0.3, label = prepro_bsl_label, color = prepro_bsl_label_text_color,size = prepro_bsl_label_font_size)
+        annotate(geom = "text", x = (prepro_bsl_time_window[2] + prepro_bsl_time_window[1])/2, y = (prepro_bsl_vertical_limits[2] + prepro_bsl_vertical_limits[1])/2, label = prepro_bsl_label, color = prepro_bsl_label_text_color,size = prepro_bsl_label_font_size)
     }
 
     # add simulated baseline annotation
     if(simul_bsl_active){
       erp_plot <- erp_plot +
         annotate("rect", xmin = simul_bsl_time_window[1] , xmax = simul_bsl_time_window[2] , ymin=simul_bsl_vertical_limits[1], ymax=simul_bsl_vertical_limits[2], alpha = simul_bsl_label_fill_alpha, fill = simul_bsl_label_fill_color)+
-        annotate(geom = "text", x = (simul_bsl_time_window[2] + simul_bsl_time_window[1])/2, y = 0.3, label = simul_bsl_label_text, color = simul_bsl_label_text_color,size = simul_bsl_label_font_size)
+        annotate(geom = "text", x = (simul_bsl_time_window[2] + simul_bsl_time_window[1])/2, y = (simul_bsl_vertical_limits[2] + simul_bsl_vertical_limits[1])/2, label = simul_bsl_label_text, color = simul_bsl_label_text_color,size = simul_bsl_label_font_size)
     }
 
     # add facets and define theme (font sizes, facets labels)
