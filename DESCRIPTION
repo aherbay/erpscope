@@ -34,7 +34,8 @@ Imports:
     svglite,
     kableExtra,
     xml2,
-    tibble
+    tibble,
+    Rmisc
 Depends: 
-    R (>= 2.10),
+    R (>= 3.50),
     dplyr

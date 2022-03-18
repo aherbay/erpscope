@@ -140,6 +140,7 @@ plot_erp <- function(
   simul_bsl_label_text = "",
   simul_bsl_label_font_size = 4,
   simul_bsl_label_text_color = "#000000",
+  simul_bsl_label = '',
 
   # custom labels
   custom_labels = list(),
