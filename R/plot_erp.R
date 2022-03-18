@@ -506,7 +506,7 @@ plot_erp <- function(
     if(simul_bsl_active){
       erp_plot <- erp_plot +
         annotate("rect", xmin = simul_bsl_time_window[1] , xmax = simul_bsl_time_window[2] , ymin=simul_bsl_vertical_limits[1], ymax=simul_bsl_vertical_limits[2], alpha = simul_bsl_label_fill_alpha, fill = simul_bsl_label_fill_color)+
-        annotate(geom = "text", x = (simul_bsl_time_window[2] + simul_bsl_time_window[1])/2, y = 0.3, label = simul_bsl_label, color = simul_bsl_label_text_color,size = simul_bsl_label_font_size)
+        annotate(geom = "text", x = (simul_bsl_time_window[2] + simul_bsl_time_window[1])/2, y = 0.3, label = simul_bsl_label_text, color = simul_bsl_label_text_color,size = simul_bsl_label_font_size)
     }
 
     # add facets and define theme (font sizes, facets labels)
