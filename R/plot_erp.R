@@ -473,6 +473,9 @@ plot_erp <- function(
       plot_title = paste("ERP: ", vary,"by",condition_to_plot)
     }
 
+    if(simul_bsl_active){ plot_title <- paste(plot_title, '- Simulated baseline: [',simul_bsl_time_window[1],'ms;',simul_bsl_time_window[2], 'ms]') }
+    if(variability_info != 'none'){ plot_title <- paste(plot_title, 'with', variability_info ) }
+
     # set the automatic plot subtitle if selected
     if(plot_subtitle == 'auto') {
       if(prepro_bsl_display){
@@ -546,7 +549,7 @@ plot_erp <- function(
 
 
     # implement voltage_scale_limits if provided
-    if(voltage_scale_limits != 'auto'){
+    if( !(is.character(voltage_scale_limits)) ){ #!= 'auto'
       erp_plot <- erp_plot +  coord_cartesian(ylim = voltage_scale_limits )
     }
 
