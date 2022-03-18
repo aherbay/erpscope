@@ -183,6 +183,10 @@ plot_erp <- function(
     stop(paste("There is no column",condition_to_plot,"in the dataframe",deparse(substitute(data)) ))
   }
 
+  # checking that the argument subfolder exists
+
+  if (!(dir.exists(output_subfolder))){stop(paste("There is no subfolder",output_subfolder ))}
+
   # checking that the argument condition_to_plot is a factor
 
   if(!(is.factor(data[,condition_to_plot])) ) {
