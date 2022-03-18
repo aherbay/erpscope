@@ -162,8 +162,8 @@ plot_erp <- function(
   var_subject = "Subject",
 
   # interface message
-  show_check_message = FALSE
-
+  show_check_message = FALSE,
+  verbose = FALSE
 ) {
 
   # for now ERPscope works with traditional dataframes
@@ -260,7 +260,7 @@ plot_erp <- function(
     if(show_check_message == TRUE) {
       choice <- menu(c("y", "n"), title= paste(init_message,"Do you want to continue?"))
     } else {
-      message(init_message)
+      if(verbose){ message(init_message) }
       choice  <- 1
     }
 
@@ -290,7 +290,7 @@ plot_erp <- function(
 
     # message to user
 
-    message(paste(Sys.time()," - Beginning to plot ERP in",output_file_name))
+    if(verbose){message(paste(Sys.time()," - Beginning to plot ERP in",output_file_name))}
 
     # check if a file with the same name already exists
 
@@ -368,14 +368,14 @@ plot_erp <- function(
 
       # if single value for line_type
       if(length(line_type) < 2){
-        message('plot with single thickness values and single linetype')
+        if(verbose){message('plot with single thickness values and single linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line", size = line_thickness, linetype= line_type)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
-        message('plot with single thickness values and multiple line types')
+        if(verbose){message('plot with single thickness values and multiple line types')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot, linetype= condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line", size = line_thickness) + scale_linetype_manual(values=line_type)
@@ -386,14 +386,14 @@ plot_erp <- function(
 
       # if single value for line_type
       if(length(line_type) < 2){
-        message('plot with multiple thickness single linetype')
+        if(verbose){message('plot with multiple thickness single linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line",linetype= line_type) + scale_size_manual(values= line_thickness)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
-        message('plot with multiple thickness multiple linetype')
+        if(verbose){message('plot with multiple thickness multiple linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot,linetype= condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
           stat_summary(fun = mean, geom = "line")+
