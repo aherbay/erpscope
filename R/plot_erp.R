@@ -29,7 +29,7 @@
 #' @param voltage_axis_title voltage axis title (string), default:bquote(paste("Voltage amplitude (", mu, "V)"))
 #' @param voltage_axis_tick_mark_labels_font_size font size, default: 12
 #' @param voltage_scale_limits 'auto' or vector defining lower and upper limits (e.g.,c(-4,4))
-#' @param voltage_labels_interval 'auto'
+#' @param voltage_labels 'auto'
 #' @param time_axis_title= time axis title (string), default: "Time (ms)"
 #' @param time_scale_limits 'auto' or vector defining lower and upper limits (e.g.,c(-200,500))
 #' @param time_labels 'auto', or single value or vector defining Tine lables to display
@@ -108,7 +108,7 @@ plot_erp <- function(
   voltage_axis_title= bquote(paste("Voltage amplitude (", mu, "V)")),
   voltage_axis_tick_mark_labels_font_size= NA,
   voltage_scale_limits = 'auto', # c(-4,4)
-  voltage_labels_interval = 'auto',
+  voltage_labels= 'auto',
 
   time_axis_title= "Time (ms)",
   time_scale_limits = 'auto',
@@ -324,6 +324,7 @@ plot_erp <- function(
       ticks_vector <- time_labels
     }
 
+
     # remove from the df electrodes that are not necessary to improve memory load
 
     dataToPlot <- subset(data, Electrode %in% electrodes_subset)
@@ -428,7 +429,7 @@ plot_erp <- function(
 
         runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[1]) %>%
           split(.$Time) %>%
-          purrr::map(~Rmsic::summarySEwithin(data = ., measurevar = "Voltage",
+          purrr::map(~Rmisc::summarySEwithin(data = ., measurevar = "Voltage",
                                withinvars = "Pair.Type", idvar = "Subject"))
 
         WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
@@ -437,7 +438,7 @@ plot_erp <- function(
         for(i in 2:length(electrodes_layout_forWSCI)) {
           runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[i]) %>%
             split(.$Time) %>%
-            purrr::map(~Rmsic::summarySEwithin(data = ., measurevar = "Voltage",
+            purrr::map(~Rmisc::summarySEwithin(data = ., measurevar = "Voltage",
                                  withinvars = "Pair.Type", idvar = "Subject"))
           WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
           WSCI_temp$Electrode <- electrodes_layout_forWSCI[i]
@@ -490,6 +491,13 @@ plot_erp <- function(
       )
     # ticks on x axis
     erp_plot <- erp_plot + scale_x_continuous(breaks= ticks_vector)
+
+    # ticks on y axis
+    if(voltage_labels != 'auto'){
+      erp_plot <- erp_plot + scale_y_continuous(breaks= voltage_labels)
+    }
+
+
 
     # add preprocessing baseline annotation
     if(prepro_bsl_display){
@@ -557,15 +565,16 @@ plot_erp <- function(
         range <- ggplot_build(erp_plot)$layout$panel_scales_y[[1]]$range$range
         y_min <-range[1]
         y_max <-range[2]
-
-        erp_plot <- erp_plot +  coord_cartesian(ylim = c(y_min,y_max) )
+        print(y_min)
+        print(y_max)
+        #erp_plot <- erp_plot +  coord_cartesian(ylim = c(y_min,y_max) )
 
         if((custom_labels_vertical_position == "auto_top" & polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_bottom" & polarity_up == 'positive') ){
-          custom_labels_vertical_position =  y_min + (y_max - y_min) / 32
+          custom_labels_vertical_position =  y_min - (y_max - y_min) / 32
         }
 
         if((custom_labels_vertical_position == "auto_bottom" & polarity_up == 'negative') |  (custom_labels_vertical_position == "auto_top" & polarity_up == 'positive') ){
-          custom_labels_vertical_position =  y_max - (y_max - y_min) / 32
+          custom_labels_vertical_position =  y_max + (y_max - y_min) / 32
         }
 
         if(custom_labels_height == "auto"){
