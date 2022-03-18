@@ -281,7 +281,7 @@ plot_erp <- function(
       } else {
         output_file_name = paste(output_file_name,'.',output_format, sep="")
       }
-      if(!is.na(output_subfolder)){paste(output_subfolder,output_file_name,sep="")}
+      if(!is.na(output_subfolder)){ output_file_name <- paste(output_subfolder,output_file_name,sep="")}
     } else {
       output_file_name = "window"
     }
