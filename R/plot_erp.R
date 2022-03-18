@@ -39,6 +39,7 @@
 #' @param prepro_bsl_fill_color = "#DEE5ED"
 #' @param prepro_bsl_label_fill_alpha value between 0 and 1 defining the transparency of the preprocessing baseline indication
 #' @param prepro_bsl_label  ""
+#' @param output_subfolder
 #' @param prepro_bsl_label_font_size  2
 #' @param prepro_bsl_label_text_color  "blue"
 #' @param prepro_bsl_label_vertical_position vertical position of the center of the rectangle
