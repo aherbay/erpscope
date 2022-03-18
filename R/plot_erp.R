@@ -428,7 +428,7 @@ plot_erp <- function(
 
         runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[1]) %>%
           split(.$Time) %>%
-          purrr::map(~summarySEwithin(data = ., measurevar = "Voltage",
+          purrr::map(~Rmsic::summarySEwithin(data = ., measurevar = "Voltage",
                                withinvars = "Pair.Type", idvar = "Subject"))
 
         WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
@@ -437,7 +437,7 @@ plot_erp <- function(
         for(i in 2:length(electrodes_layout_forWSCI)) {
           runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[i]) %>%
             split(.$Time) %>%
-            purrr::map(~summarySEwithin(data = ., measurevar = "Voltage",
+            purrr::map(~Rmsic::summarySEwithin(data = ., measurevar = "Voltage",
                                  withinvars = "Pair.Type", idvar = "Subject"))
           WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
           WSCI_temp$Electrode <- electrodes_layout_forWSCI[i]
