@@ -77,6 +77,7 @@ plot_erp <- function(
   # output file parameters
   output_file_name = 'auto', # don't put the extension
   output_format = 'window', # by defaut window or 'pdf', 'svg','jpg' ...
+  output_subfolder = NA, # by defaut NA
 
   # plot aesthetics
 
@@ -279,6 +280,7 @@ plot_erp <- function(
       } else {
         output_file_name = paste(output_file_name,'.',output_format, sep="")
       }
+      if(!is.na(output_subfolder)){paste(output_subfolder,output_file_name,sep="")}
     } else {
       output_file_name = "window"
     }
