@@ -427,20 +427,20 @@ plot_erp <- function(
         electrodes_layout_forWSCI <- unique(dataToPlot$Electrode)
         #print(electrodes_layout_forWSCI[1])
 
-        runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[1]) %>%
+        runningSE <- dataToPlot %>% dplyr::filter(Electrode == electrodes_layout_forWSCI[1]) %>%
           split(.$Time) %>%
           purrr::map(~Rmisc::summarySEwithin(data = ., measurevar = "Voltage",
                                withinvars = "Pair.Type", idvar = "Subject"))
 
-        WSCI <- runningSE %>% map_df(as_tibble,.id = "Time")
+        WSCI <- runningSE %>% purrr::map_dfr(as_tibble,.id = "Time")
         WSCI$Electrode <- electrodes_layout_forWSCI[1]
 
         for(i in 2:length(electrodes_layout_forWSCI)) {
-          runningSE <- dataToPlot %>% filter(Electrode == electrodes_layout_forWSCI[i]) %>%
+          runningSE <- dataToPlot %>% dplyr::filter(Electrode == electrodes_layout_forWSCI[i]) %>%
             split(.$Time) %>%
             purrr::map(~Rmisc::summarySEwithin(data = ., measurevar = "Voltage",
                                  withinvars = "Pair.Type", idvar = "Subject"))
-          WSCI_temp <- runningSE %>% map_df(as_tibble,.id = "Time")
+          WSCI_temp <- runningSE %>% purrr::map_dfr(as_tibble,.id = "Time")
           WSCI_temp$Electrode <- electrodes_layout_forWSCI[i]
           WSCI <- rbind(WSCI,WSCI_temp)
         }
