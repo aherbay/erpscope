@@ -35,7 +35,8 @@ Imports:
     kableExtra,
     xml2,
     tibble,
-    Rmisc
+    Rmisc,
+    purrr
 Depends: 
     R (>= 3.50),
     dplyr
