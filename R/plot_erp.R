@@ -327,8 +327,10 @@ plot_erp <- function(
 
     # remove from the df electrodes that are not necessary to improve memory load
 
-    dataToPlot <- subset(data, Electrode %in% electrodes_subset)
-
+    dataToPlot <- subset(data, data[,var_electrode] %in% electrodes_subset)
+    dataToPlot$Electrode <- NULL
+    names(dataToPlot)[names(dataToPlot) == var_electrode] <- 'Electrode'
+      #print(colnames(dataToPlot))
     # for now plot_erp work for 9 or 12 electrodes, that will change soon
     # not relevant with layout numberOfRows <- length(electrodes_subset)/3
 
@@ -484,7 +486,6 @@ plot_erp <- function(
         plot_subtitle = paste(  Sys.Date(),"- dataset:",deparse(substitute(data)),"with",number_of_subjects,"subjects")
       }
     }
-
     # add axis titles and plot title
     erp_plot <- erp_plot +
       labs( x = time_axis_title,
