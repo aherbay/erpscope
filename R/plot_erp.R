@@ -603,7 +603,7 @@ plot_erp <- function(
 
     # save plot to file
     if( output_format != 'window' ){
-      message(paste(Sys.time()," - Saving plot to file"))
+      message(paste(Sys.time()," - Saving plot to file",output_file_name))
 
       ggsave(erp_plot, filename=output_file_name, width = plot_width, height = plot_height)
       # store end time for total duration calculation
