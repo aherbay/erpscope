@@ -304,7 +304,7 @@ Precise in the fixed argument the start_time, end_time and time duration of your
   )
 ```
 
-<img src="man/figures/2020-07-21_relpriming_11PPTS_ERP_DIFF_Pair.Type_Unrelated-Consistentfixed100_-300_900.png" width="100%" />
+<img src="man/figures/figure_ERP_DIFF_Unrelated-Consistentfixed100_-300_900.png" width="100%" />
 
 
 
