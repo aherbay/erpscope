@@ -36,7 +36,8 @@ Imports:
     xml2,
     tibble,
     Rmisc,
-    purrr
+    purrr,
+    geofacet
 Depends: 
     R (>= 3.50),
     dplyr
