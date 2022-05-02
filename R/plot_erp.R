@@ -385,14 +385,14 @@ plot_erp <- function(
         if(verbose){message('plot with single thickness values and single linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
-          stat_summary(fun = mean, geom = "line", size = line_thickness, linetype= line_type)
+          stat_summary(fun = base::mean, geom = "line", size = line_thickness, linetype= line_type)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
         if(verbose){message('plot with single thickness values and multiple line types')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot, linetype= condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
-          stat_summary(fun = mean, geom = "line", size = line_thickness) + scale_linetype_manual(values=line_type)
+          stat_summary(fun = base::mean, geom = "line", size = line_thickness) + scale_linetype_manual(values=line_type)
       } else { stop("Not valid type of linetype argument") }
 
       # if vector value for line_thickness
@@ -403,14 +403,14 @@ plot_erp <- function(
         if(verbose){message('plot with multiple thickness single linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
-          stat_summary(fun = mean, geom = "line",linetype= line_type) + scale_size_manual(values= line_thickness)
+          stat_summary(fun = base::mean, geom = "line",linetype= line_type) + scale_size_manual(values= line_thickness)
 
         # if vector for line_type
       } else if (is.vector(line_type) ) {
         if(verbose){message('plot with multiple thickness multiple linetype')}
         erp_plot <- ggplot(dataToPlot, aes_string(x= varx, y= vary, colour = condition_to_plot, fill = condition_to_plot,size = condition_to_plot,linetype= condition_to_plot) )+
           geom_vline(xintercept = 0,linetype = "solid" )+ geom_hline(yintercept = 0)+
-          stat_summary(fun = mean, geom = "line")+
+          stat_summary(fun = base::mean, geom = "line")+
           scale_size_manual(values= line_thickness)+
           scale_linetype_manual(values=line_type)
       } else { stop("Not valid type of linetype argument") }
