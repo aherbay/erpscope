@@ -367,10 +367,10 @@ plot_erp <- function(
       dataToPlot$Voltage <- dataToPlot$Voltage - average_voltage_in_bsl_tw
 
     }else{
-      # make sure that the average voltage = 0 in the baseline time window
-      voltage_in_bsl_tw <- subset(dataToPlot, Time > prepro_bsl_time_window[1] & Time < prepro_bsl_time_window[2])
-      average_voltage_in_bsl_tw <- mean(voltage_in_bsl_tw$Voltage)
-      dataToPlot$Voltage <- dataToPlot$Voltage - average_voltage_in_bsl_tw
+      # make sure that the average voltage = 0 in the baseline time window - REMOVED as it causes errors when no prepro_bsl_time_window is mentionned + is it necessary?
+        # voltage_in_bsl_tw <- subset(dataToPlot, Time > prepro_bsl_time_window[1] & Time < prepro_bsl_time_window[2])
+        # average_voltage_in_bsl_tw <- mean(voltage_in_bsl_tw$Voltage)
+        # dataToPlot$Voltage <- dataToPlot$Voltage - average_voltage_in_bsl_tw
     }
 
     # ggplot creation
