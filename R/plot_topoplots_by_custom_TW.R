@@ -15,9 +15,10 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   #electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
 
   #print(head(electrodeLocs))
-  print(data_for_map$Electrode)
-  message(data_for_map$Electrode)
-
+  print(unique(data_for_map$Electrode))
+  
+  
+  
   # base elements for topo
 
 
@@ -123,13 +124,14 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
         #electrodeLocs$Electrode <- as.factor(electrodeLocs$Electrode)
         #print(unique(data$Electrode))
         means_by_electrodes <- means_by_electrodes %>% right_join(electrodeLocs, by = "Electrode") %>% filter(Electrode  %in% unique(data_for_map$Electrode))
-        #print(head(means_by_electrodes))
+        print(head(means_by_electrodes))
 
         # if(topoplots_scale == 'auto') {
         #     if(topoplots_scale[1] >  min(means_by_electrodes$Voltage) ) topoplots_scale[1] <- min(means_by_electrodes$Voltage)
         #     if(topoplots_scale[1] <  max(means_by_electrodes$Voltage) ) topoplots_scale[1] <- max(means_by_electrodes$Voltage)
         # }
-
+        print("Look at this")
+        print(unique(means_by_electrodes$Electrode))
 
 
     } else if (data_to_display == "t_test_t_value") {
