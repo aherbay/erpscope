@@ -12,9 +12,11 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   electrodeLocs <- locations_51_electrodes
 
   electrodeLocs <- rename(electrodeLocs,   Electrode = electrode)
-  electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
+  #electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
 
   #print(head(electrodeLocs))
+  print(data_for_map$Electrode)
+  message(data_for_map$Electrode)
 
   # base elements for topo
 
