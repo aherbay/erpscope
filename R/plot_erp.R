@@ -295,7 +295,7 @@ plot_erp <- function(             data, #
                           )
 
       
-      if(voltage_scale_limits != 'auto'){
+      if( !(is.character(voltage_scale_limits)) ){
         tempo <- tempo +  coord_cartesian(ylim = voltage_scale_limits )
       }
       
