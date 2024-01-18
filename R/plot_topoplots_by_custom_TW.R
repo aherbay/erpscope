@@ -20,9 +20,12 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
 
 
-  if(maps_color_palette == 'auto') {
-    jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
-    maps_color_palette <- jet.colors(10)
+  if (maps_color_palette == 'auto') {
+      jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+      maps_color_palette <- jet.colors(10)
+  } else if (maps_color_palette == 'grey_gradient') {
+      grey.colors <- colorRampPalette(c("white", "grey"))
+      maps_color_palette <- grey.colors(10)
   }
 
   if(length(topoplots_scale) == 2) {
