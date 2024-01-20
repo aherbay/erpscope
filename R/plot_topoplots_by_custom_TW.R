@@ -6,7 +6,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                           levelA,
                                           levelB,
                                           t_test_threshold,
-                                          maps_color_palette = 'auto') {
+                                          maps_color_palette = 'auto',
+                                          custom_color_palette_infos = c(c("#b4b4b4","#303030"),10) {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
@@ -26,6 +27,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   } else if (maps_color_palette == 'grey_gradient') {
       grey.colors <- colorRampPalette(c("#b4b4b4", "#303030"))
       maps_color_palette <- grey.colors(10)
+  } else if (maps_color_palette == 'custom') {
+      custom.colors <- colorRampPalette(custom_color_palette_infos[1])
+      maps_color_palette <- custom.colors(custom_color_palette_infos[2])
   }
 
   if(length(topoplots_scale) == 2) {
