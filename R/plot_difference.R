@@ -52,6 +52,7 @@ plot_difference  <- function( data,
           topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           topoplots_scale = 'auto',
           topoplots_maps_color_palette = 'auto',
+          topoplots_custom_color_palette_infos = c(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"),10),
           time_labels_interval = 200,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
@@ -235,16 +236,16 @@ plot_difference  <- function( data,
 
       if(topoplots_data == "voltage_difference"){
 
-        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference", maps_color_palette = topoplots_maps_color_palette)
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_diff, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = "voltage_difference", maps_color_palette = topoplots_maps_color_palette, custom_color_palette_infos = topoplots_custom_color_palette_infos)
 
       }else if (topoplots_data == "t_test_t_value") {
 
-        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq, maps_color_palette = topoplots_maps_color_palette )
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq, maps_color_palette = topoplots_maps_color_palette,  custom_color_palette_infos = topoplots_custom_color_palette_infos )
 
 
       } else if (topoplots_data =="t_test_p_value") {
 
-        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq, t_test_threshold= t_test_threshold, maps_color_palette = topoplots_maps_color_palette )
+        topo_ggplots_with_legend <- plot_topoplots_by_custom_TW(data_reduced, topoplots_time_windows, plotname,topoplots_scale,  data_to_display = topoplots_data, levelA= levelA_enq,levelB= levelB_enq, t_test_threshold= t_test_threshold, maps_color_palette = topoplots_maps_color_palette, custom_color_palette_infos = topoplots_custom_color_palette_infos )
 
 
       } else { stop(paste("Invalid topoplots_data:",topoplots_data)) }
