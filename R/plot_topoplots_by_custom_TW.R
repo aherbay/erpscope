@@ -7,7 +7,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                           levelB,
                                           t_test_threshold,
                                           maps_color_palette = 'auto',
-                                          custom_color_palette_infos = c(c("#b4b4b4","#303030"),10) {
+                                          custom_color_palette_infos = c(c("#b4b4b4","#303030"),10)
+                                         ) {
 
   #electrodeLocs <- readRDS("electrodeLocs_51elec.RDS")
   electrodeLocs <- locations_51_electrodes
