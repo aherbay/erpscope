@@ -52,7 +52,7 @@ plot_difference  <- function( data,
           topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
           topoplots_scale = 'auto',
           topoplots_maps_color_palette = 'auto',
-          topoplots_custom_color_palette_infos = c(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"),10),
+          topoplots_custom_color_palette_infos = list(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"),10),
           time_labels_interval = 200,
           custom_labels = list(),
           electrodes_to_display = c(), #c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4")
