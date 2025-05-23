@@ -279,7 +279,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
         theme_topo()+
         scale_fill_gradientn(colours = maps_color_palette,
                              limits = c(topoplots_scale[1],topoplots_scale[2]),
-                             guide = FALSE, #"colourbar"
+                             guide = "none", #"colourbar"
                              oob = scales::squish) +
         geom_path(data = maskRing,
                   aes(x, y, z = NULL),
