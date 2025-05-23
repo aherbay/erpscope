@@ -1,0 +1,627 @@
+---
+title: "Discover ERPscope - plot_erp, plot_difference & generate_stats_table"
+author: "Alexandre Herbay"
+date: "23/05/2025"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 2
+    number_sections: yes
+    code_folding: hide
+    theme: united
+    fig_width: 8
+    fig_height: 6
+editor_options:
+  chunk_output_type: inline
+---
+
+# Setup
+
+Run this code manually just once if the package is not already installed
+
+```{r, eval=FALSE}
+  detach("package:erpscope", unload=TRUE) 
+  devtools::install_github("aherbay/erpscope", ref= "workshop_2025")
+  library(erpscope)
+```
+
+```{r, eval=FALSE}
+  install.packages('gifski')
+```
+
+
+```{r setup, include=FALSE}
+library(erpscope)
+```
+
+Let's discover the main capabilities
+
+In this part, we will use the relpriming dataset included in the package. This dataset included the data from `r length(unique(relpriming$Subject))` participants.
+The preprocessing baseline was [-500ms,-300ms]. 
+
+# Basic plot in the window
+
+We minimally need to indicate 3 things : which data we use, the condition to plot and the electrode to plot
+
+## Single electrode
+
+```{r}
+head(relpriming, 10)
+```
+
+
+```{r single_electrode}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz
+  )
+```
+
+## Layout of 9 electrodes 
+```{r layout_9elec }
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4
+  )
+
+```
+
+## Layout of 64 electrodes 
+
+```{r layout_64elec , eval=FALSE}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_64e_waveguard_cap,
+             electrode_labels_font_size = 8
+  )
+```
+
+## Determine which polarity is plotted up
+
+```{r}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             polarity_up = "positive"
+  )
+```
+
+
+# Explore file options
+
+## Basic plot in a file
+
+possible file format:  pdf, jpeg, svg, tiff, png, bmp, eps/ps, tex (pictex)
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = lay_9el_FCP_3z4, 
+           output_format = 'pdf'
+)
+```
+
+## File name
+
+By default it is automatic with the following format:
+time - plot type - dataset - condition - electrode layout
+
+```{r, eval=FALSE}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4, 
+             output_format = 'pdf',
+             output_file_name = "a_much_better_title3"
+  )
+```
+
+## Image output
+
+```{r, eval=FALSE}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4, 
+            output_format = 'jpeg',
+  )
+```
+
+## JPEG output
+
+```{r, eval=FALSE}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4, 
+             plot_subtitle = 'my_subtitle',
+             plot_subtitle_font_color = 'black',
+  )
+```
+
+
+## File dimension
+
+by default : 8.5 by 11 inches
+
+```{r}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4, 
+             output_format = 'pdf',
+             plot_height = 8.5,
+             plot_width = 20 
+  )
+```
+
+## Create a file in a subfolder
+
+possible file format:  pdf, jpeg, svg, tiff, png, bmp, eps/ps, tex (pictex)
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = lay_9el_FCP_3z4, 
+           output_format = 'pdf',
+           output_subfolder = "plots/"
+)
+```
+
+
+# Explore graphic options
+
+## line colors
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           line_colors = c('black','green','blue')
+  
+)
+```
+
+
+## line types
+
+one single value: same type for all lines, 
+a vector: different values for each level of the condition to plot (in the same order as levels of the condition)
+
+https://r-charts.com/base-r/line-types/
+
+c('solid', 'dotted' , 'dashed','longdash','F1')
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           line_type = c('solid','dashed','1342')
+  
+)
+```
+
+## line thickness
+
+line_thickness argument
+one single value: same type for all lines, 
+a vector: different values for each level of the condition to plot (in the same order as levels of the condition)
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           line_thickness = 1.2
+  
+)
+
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           line_thickness = c(0.5, 0.75,1.2)
+  
+)
+
+```
+
+## plot background
+
+default: "grid",  alternative : "dark" or "white"
+
+```{r}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             plot_background =  "dark"
+  )
+  
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             plot_background =  "white"
+  )
+```
+
+# Explore axis options
+
+## voltage axis
+
+voltage_axis_title : default Voltage amplitude (microV)
+voltage_axis_tick_mark_labels_font_size
+voltage_scale_limits
+
+```{r}
+
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             voltage_axis_title =  "Voltage",
+             voltage_scale_limits = c(10,-10)
+  )
+
+```
+
+            
+## time axis
+
+time_axis_title
+
+time_scale_limits
+time_labels
+
+time_axis_tick_mark_labels_font_size
+
+```{r}
+ plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             time_axis_title =  "Temps (en ms)",
+             time_scale_limits = c(0,700),
+             time_labels = c(0,200,300,500,700)
+  )
+
+```
+
+## axis font sizes
+
+```{r}
+ plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = lay_9el_FCP_3z4,
+              time_axis_tick_mark_labels_font_size = 9,
+             voltage_axis_tick_mark_labels_font_size = 9
+  )
+
+```
+
+
+# Explore text options
+
+
+## title and subtitle
+
+title by default: automatic "ERP: ", vary,"by",condition_to_plot 
+subtitle by default: Date - Baseline:[beginning ms;end ms] - dataset: dataset_name with X subjects
+
+you can also change: plot_title_font_size, plot_title_font_color, plot_subtitle_font_size, plot_subtitle_font_color
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           plot_title = "My own title",
+           plot_subtitle = "My own subtitle"
+  
+)
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           plot_title = "",
+           plot_subtitle = ""
+  
+)
+```
+
+
+
+## change overall font size
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           text_font_size = 16
+  
+)
+
+```
+
+## electrode labels
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           electrode_labels_font_size = 16,
+           electrode_labels_font_color = 'grey'
+  
+)
+
+```
+
+# Explore custom labels options
+
+ custom_labels list of custom label list. Each custom labels should have the structure: list(start_time, end_time, "label")
+ custom_labels_vertical_position 'auto_top', 'auto_bottom' or custom position for the center of the label (in microVolts)
+ custom_labels_height 'auto' or custom height (in microVolts)
+ custom_labels_fill_color 'grey'
+ custom_labels_font_size 1.9
+ custom_labels_line_style "dashed" # not implemented
+ custom_labels_line_color "black" # not implemented
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           polarity_up =  'negative',
+           custom_labels = list(list(0,200,"Target")),
+           custom_labels_vertical_position = 'auto_bottom',
+           custom_labels_height = 'auto'
+)
+
+```
+
+
+# Explore variability information options
+
+## mean_sdl
+
+```{r}
+
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           variability_info = "mean_sdl"
+) 
+
+```
+
+'mean_cl_boot', "mean_cl_normal"
+
+## mean_cl_normal
+
+```{r}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             variability_info = "mean_cl_normal"
+  )
+```
+
+## mean_cl_boot
+
+```{r}
+  plot_erp ( data = relpriming,
+             condition_to_plot = "Pair.Type",
+             electrodes_layout = Cz,
+             variability_info = "mean_cl_boot"
+  )
+```
+
+## within_subject_ci
+
+```{r}
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           variability_info = "within_subject_ci"
+)
+```
+
+# Explore display of info about preprocessing baseline
+
+ prepro_bsl_display boolean, defines whether an indication of preprocessing baseline is displayed or not
+ prepro_bsl_time_window vector defining the time limits of the preprocessing baseline (e.g.,c(-500, -300))
+ prepro_bsl_fill_color = "#DEE5ED"
+ prepro_bsl_label_fill_alpha value between 0 and 1 defining the transparency of the preprocessing baseline indication
+ prepro_bsl_label  ""
+ prepro_bsl_label_font_size  2
+ prepro_bsl_label_text_color  "blue"
+ prepro_bsl_label_vertical_position vertical position of the center of the rectangle
+ prepro_bsl_vertical_limits  c(-0.5,0.5)
+
+```{r}
+
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           prepro_bsl_display = T,
+           prepro_bsl_time_window = c(-500,-300),
+           prepro_bsl_vertical_limits = c(6.5,7),
+           prepro_bsl_fill_color = 'grey'
+           
+)
+```
+
+# Explore simulated baseline options
+
+
+## simulate a new baseline
+
+  simul_bsl_active = FALSE,
+  simul_bsl_time_window = c(-200, 0),
+  simul_bsl_label_fill_color = "#8282DF",
+  simul_bsl_label_fill_alpha = 0.9,
+  simul_bsl_label_text = "",
+  simul_bsl_label_font_size = 4,
+
+```{r}
+
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz,
+           simul_bsl_active = T,
+           simul_bsl_time_window = c(-0,200),
+           simul_bsl_vertical_limits = c(4.5,5),
+           simul_bsl_label_fill_color = 'grey',
+           simul_bsl_label_text = 'simulated baseline',
+           simul_bsl_label_font_size = 1.7
+           
+)
+```
+
+
+## Compare simulated and preprocessing baseline
+
+install.packages('gifski')
+
+```{r,  animation.hook="gifski", eval=FALSE}
+ 
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz ,
+           prepro_bsl_display = T,
+           prepro_bsl_time_window = c(-500,-300),
+           prepro_bsl_vertical_limits = c(6.5,7),
+           voltage_scale_limits = c(7,-7)
+)
+
+plot_erp ( data = relpriming,
+           condition_to_plot = "Pair.Type",
+           electrodes_layout = Cz ,
+           simul_bsl_active = TRUE,
+           simul_bsl_time_window = c(-200, 0),
+           simul_bsl_vertical_limits = c(6.5,7),
+           voltage_scale_limits = c(7,-7)
+)
+
+
+```
+
+
+# Explore plot_difference
+
+## Some electrodes
+
+```{r}
+plot_difference( data = relpriming,
+                 conditionToPlot = Pair.Type,
+                 levelA = Unrelated ,
+                 levelB = Consistent,
+                 output_type ='pdf',
+                 vary= Voltage,
+                 group_var = Subject,
+                 show_group_obs = FALSE ,
+                 labels_vertical_position = 'auto',
+                 labels_height = 'auto',
+                 baseline= c(-500,-200),
+                 time_labels_interval = 200,
+                 custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+                 electrodes_to_display = c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
+                 plotname = 'auto'
+) 
+```
+
+# ROI
+
+```{r}
+plot_difference( data = relpriming,
+                 conditionToPlot = Pair.Type,
+                 ant_levels= Anteriority.Levels,
+                 med_levels= Mediality.Levels,
+                 levelA = Unrelated ,
+                 levelB = Consistent,
+                 output_type ='pdf',
+                 vary= Voltage,
+                 group_var = Subject,
+                 show_group_obs = FALSE ,
+                 labels_vertical_position = 'auto',
+                 labels_height = 'auto',
+                 baseline= c(-500,-200),
+                 time_labels_interval = 200,
+                 custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+                 plotname = 'auto'
+) 
+```
+
+## with subject average
+
+
+```{r}
+plot_difference( data = relpriming,
+                 conditionToPlot = Pair.Type,
+                 levelA = Unrelated ,
+                 levelB = Consistent,
+                 output_type ='pdf',
+                 vary= Voltage,
+                 group_var = Subject,
+                 show_group_obs = TRUE ,
+                 labels_vertical_position = 'auto',
+                 labels_height = 'auto',
+                 baseline= c(-500,-200),
+                 topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+                 topoplots_scale = c(-2,2),
+                 time_labels_interval = 200,
+                 custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+                 electrodes_to_display = c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
+                 plotname = 'auto'
+) 
+
+```
+
+## with t-test 
+
+```{r}
+plot_difference( data = relpriming,
+                 conditionToPlot = Pair.Type,
+                 levelA = Unrelated ,
+                 levelB = Consistent,
+                 output_type ='pdf',
+                 ant_levels= Anteriority.Levels,
+                 med_levels= Mediality.Levels,
+                 vary= Voltage,
+                 group_var = Subject,
+                 show_group_obs = TRUE ,
+                 labels_vertical_position = 'auto',
+                 labels_height = 'auto',
+                 baseline= c(-500,-200),
+                 topoplots_time_windows = list(c(-250,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700),c(700,900)),
+                 topoplots_scale = c(-2,2),
+                 time_labels_interval = 200,
+                 custom_labels = list(list(-450,-250,"Prime"),list(0,200,"Target")),
+                 electrodes_to_display = c("F3", "Fz", "F4","C3", "Cz","C4", "P3", "Pz", "P4"),
+                 plotname = 'auto',
+                 show_t_test = T,
+                 t_test_threshold = 0.01
+) 
+
+```
+
+# plot difference maps
+
+```{r}
+plot_difference_maps(  data = relpriming,
+                         conditionToPlot = Pair.Type,
+                         levelA = Unrelated ,
+                         levelB = Consistent,
+                         output_type ='window',
+                         fixed= c(-300,900,100), # init_time, end_time, step
+                         topoplots_scale = c(-2,2),
+                         plotname = 'auto'
+)
+
+```
+
+
+# generate stats table
+
+```{r}
+ generate_ERP_stats_table( 
+      data = relpriming,
+      model_structure = "Voltage ~   Pair.Type + (1+ Pair.Type|Subject)",
+      timeWindowMode="custom",
+      custom_TW =  list(c(-300,-150),c(-150,50),c(50,200),c(200,300),c(300,500),c(500,700)),
+      output_name="2020_07_02_PairTypeModels.html"
+ ) 
+```
+
+
+
