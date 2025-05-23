@@ -15,7 +15,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
   #electrodeLocs <- subset(electrodeLocs, !(Electrode %in% c("AFz","PO5","PO6") ))
 
   #print(head(electrodeLocs))
-  print(unique(data_for_map$Electrode))
+  #print(unique(data_for_map$Electrode))
   
   
   
