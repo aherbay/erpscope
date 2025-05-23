@@ -231,7 +231,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
             stat_contour(aes(z = Voltage),
                          colour = "black",
                          binwidth = 0.5,
-                         inherit.aes = FALSE)) +
+                         inherit.aes = FALSE) +
             theme_topo()+
 
             # version 1 with more gradient approach
