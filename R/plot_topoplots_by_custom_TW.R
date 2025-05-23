@@ -249,17 +249,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
             #scale_fill_steps2(midpoint = t_test_threshold, limits = c(0,0.10), breaks = c(0.001, 0.01, 0.05), mid = scales::muted("red"), high = "white", low = "red" , guide = FALSE)+ #, breaks= c(0,0.001,0.01,0.05,0.05,0.10,1)
 
             geom_path(data = maskRing,
-                      aes(x, y, z = NULL, fill = NA),
+                      aes(x, y, z = NULL),
+                      fill = NA,
                       colour = "white",
                       size = 15)+
             geom_point(data = means_by_electrodes,
                        aes(x, y),
                        size = 1)+
             geom_path(data = headShape,
-                      aes(x, y, z = NULL, fill = NA),
+                      aes(x, y, z = NULL),
+                      fill = NA,
                       size = 1.5)+
             geom_path(data = nose,
-                      aes(x, y, z = NULL, fill = NA),
+                      aes(x, y, z = NULL),
+                      fill = NA,
                       size = 1.5)+
             coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
             labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
@@ -279,17 +282,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                              guide = FALSE, #"colourbar"
                              oob = scales::squish) +
         geom_path(data = maskRing,
-                  aes(x, y, z = NULL, fill = NA),
+                  aes(x, y, z = NULL),
+                  fill = NA,
                   colour = "white",
                   size = 15)+
         geom_point(data = means_by_electrodes,
                    aes(x, y),
                    size = 1)+
         geom_path(data = headShape,
-                  aes(x, y, z = NULL, fill = NA),
+                  aes(x, y, z = NULL),
+                  fill = NA,
                   size = 1.5)+
         geom_path(data = nose,
-                  aes(x, y, z = NULL, fill = NA),
+                  aes(x, y, z = NULL),
+                  fill = NA,
                   size = 1.5)+
         coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
         labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
@@ -324,17 +330,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
             #                 breaks = c(0.001, 0.01, 0.05, 0.10))+
            guides(fill = guide_colourbar(barwidth = 10))+
            geom_path(data = maskRing,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      colour = "white",
                      size = 15)+
            geom_point(data = means_by_electrodes,
                       aes(x, y),
                       size = 1)+
            geom_path(data = headShape,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      size = 1.5)+
            geom_path(data = nose,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      size = 1.5)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
@@ -363,17 +372,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                 labels= seq(round(topoplots_scale[1]),round(topoplots_scale[2]), round(topoplots_scale[2]/3)    ) )  +
            guides(fill = guide_colourbar(barwidth = 10))+
            geom_path(data = maskRing,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      colour = "white",
                      size = 15)+
            geom_point(data = means_by_electrodes,
                       aes(x, y),
                       size = 1)+
            geom_path(data = headShape,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      size = 1.5)+
            geom_path(data = nose,
-                     aes(x, y, z = NULL, fill = NA),
+                     aes(x, y, z = NULL),
+                     fill = NA,
                      size = 1.5)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
