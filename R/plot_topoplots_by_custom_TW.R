@@ -250,7 +250,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
 
             geom_path(data = maskRing,
                       aes(x, y, z = NULL),
-                      fill = NA,
                       colour = "white",
                       size = 15)+
             geom_point(data = means_by_electrodes,
@@ -258,11 +257,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                        size = 1)+
             geom_path(data = headShape,
                       aes(x, y, z = NULL),
-                      fill = NA,
                       size = 1.5)+
             geom_path(data = nose,
                       aes(x, y, z = NULL),
-                      fill = NA,
                       size = 1.5)+
             coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
             labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
@@ -283,7 +280,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                              oob = scales::squish) +
         geom_path(data = maskRing,
                   aes(x, y, z = NULL),
-                  fill = NA,
                   colour = "white",
                   size = 15)+
         geom_point(data = means_by_electrodes,
@@ -291,11 +287,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                    size = 1)+
         geom_path(data = headShape,
                   aes(x, y, z = NULL),
-                  fill = NA,
                   size = 1.5)+
         geom_path(data = nose,
                   aes(x, y, z = NULL),
-                  fill = NA,
                   size = 1.5)+
         coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
         labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
@@ -331,7 +325,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
            guides(fill = guide_colourbar(barwidth = 10))+
            geom_path(data = maskRing,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      colour = "white",
                      size = 15)+
            geom_point(data = means_by_electrodes,
@@ -339,11 +332,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                       size = 1)+
            geom_path(data = headShape,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      size = 1.5)+
            geom_path(data = nose,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      size = 1.5)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
@@ -373,7 +364,6 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
            guides(fill = guide_colourbar(barwidth = 10))+
            geom_path(data = maskRing,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      colour = "white",
                      size = 15)+
            geom_point(data = means_by_electrodes,
@@ -381,11 +371,9 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                       size = 1)+
            geom_path(data = headShape,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      size = 1.5)+
            geom_path(data = nose,
                      aes(x, y, z = NULL),
-                     fill = NA,
                      size = 1.5)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
