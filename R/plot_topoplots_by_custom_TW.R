@@ -251,16 +251,19 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
             geom_path(data = maskRing,
                       aes(x, y, z = NULL),
                       colour = "white",
-                      size = 15)+
+                      size = 15,
+                     inherit.aes = FALSE)+
             geom_point(data = means_by_electrodes,
                        aes(x, y),
                        size = 1)+
             geom_path(data = headShape,
                       aes(x, y, z = NULL),
-                      size = 1.5)+
+                      size = 1.5,
+                     inherit.aes = FALSE)+
             geom_path(data = nose,
                       aes(x, y, z = NULL),
-                      size = 1.5)+
+                      size = 1.5,
+                      inherit.aes = FALSE)+
             coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
             labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
 
@@ -281,16 +284,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
         geom_path(data = maskRing,
                   aes(x, y, z = NULL),
                   colour = "white",
-                  size = 15)+
+                  size = 15,
+                     inherit.aes = FALSE)+
         geom_point(data = means_by_electrodes,
                    aes(x, y),
-                   size = 1)+
+                   size = 1,
+                   inherit.aes = FALSE)+
         geom_path(data = headShape,
                   aes(x, y, z = NULL),
-                  size = 1.5)+
+                  size = 1.5,
+                  inherit.aes = FALSE)+
         geom_path(data = nose,
                   aes(x, y, z = NULL),
-                  size = 1.5)+
+                  size = 1.5,
+                  inherit.aes = FALSE)+
         coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
         labs(title = paste(lowBound,'ms to',upperBound, 'ms'))
 
@@ -326,16 +333,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
            geom_path(data = maskRing,
                      aes(x, y, z = NULL),
                      colour = "white",
-                     size = 15)+
+                     size = 15,
+                     inherit.aes = FALSE)+
            geom_point(data = means_by_electrodes,
                       aes(x, y),
-                      size = 1)+
+                      size = 1,
+                     inherit.aes = FALSE)+
            geom_path(data = headShape,
                      aes(x, y, z = NULL),
-                     size = 1.5)+
+                     size = 1.5,
+                     inherit.aes = FALSE)+
            geom_path(data = nose,
                      aes(x, y, z = NULL),
-                     size = 1.5)+
+                     size = 1.5,
+                     inherit.aes = FALSE)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -4))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
 
@@ -365,16 +376,20 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
            geom_path(data = maskRing,
                      aes(x, y, z = NULL),
                      colour = "white",
-                     size = 15)+
+                     size = 15,
+                     inherit.aes = FALSE)+
            geom_point(data = means_by_electrodes,
                       aes(x, y),
-                      size = 1)+
+                      size = 1,
+                     inherit.aes = FALSE)+
            geom_path(data = headShape,
                      aes(x, y, z = NULL),
-                     size = 1.5)+
+                     size = 1.5,
+                     inherit.aes = FALSE)+
            geom_path(data = nose,
                      aes(x, y, z = NULL),
-                     size = 1.5)+
+                     size = 1.5,
+                     inherit.aes = FALSE)+
            coord_equal()+theme(plot.title = element_text(hjust = 0.5,vjust = -2))+
            labs(title = paste(lowBound,'ms to',upperBound, 'ms'), fill = paste(title_legend,"    "))
 
