@@ -130,8 +130,8 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
         #     if(topoplots_scale[1] >  min(means_by_electrodes$Voltage) ) topoplots_scale[1] <- min(means_by_electrodes$Voltage)
         #     if(topoplots_scale[1] <  max(means_by_electrodes$Voltage) ) topoplots_scale[1] <- max(means_by_electrodes$Voltage)
         # }
-        print("Look at this")
-        print(unique(means_by_electrodes$Electrode))
+        # print("Look at this")
+        # print(unique(means_by_electrodes$Electrode))
 
 
     } else if (data_to_display == "t_test_t_value") {
