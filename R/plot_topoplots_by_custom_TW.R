@@ -228,10 +228,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                                                aes(x = x, y = y, fill = Voltage)
           ) +
             geom_raster(show.legend=F) +
-            stat_contour(aes(z = Voltage),
-                         colour = "black",
-                         binwidth = 0.5,
-                         inherit.aes = FALSE) +
+            stat_contour(aes(x = x, y = y, z = Voltage), colour = "black", binwidth = 0.5, inherit.aes = FALSE) +
             theme_topo()+
 
             # version 1 with more gradient approach
@@ -274,10 +271,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                                                     aes(x = x, y = y, fill = Voltage)
       ) +
         geom_raster(show.legend=F) +
-        stat_contour(aes(z = Voltage),
-                     colour = "black",
-                     binwidth = 0.5,
-                     inherit.aes = FALSE) +
+        stat_contour(aes(x = x, y = y, z = Voltage), colour = "black", binwidth = 0.5, inherit.aes = FALSE) +
         theme_topo()+
         scale_fill_gradientn(colours = maps_color_palette,
                              limits = c(topoplots_scale[1],topoplots_scale[2]),
@@ -317,10 +311,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                                                        aes(x = x, y = y, fill = Voltage)
          ) +
            geom_raster(show.legend=F) +
-           stat_contour(aes(z = Voltage),
-                        colour = "black",
-                        binwidth = 0.5,
-                        inherit.aes = FALSE) +
+           stat_contour(aes(x = x, y = y, z = Voltage), colour = "black", binwidth = 0.5, inherit.aes = FALSE) +
            theme_topo()+
            theme(legend.position="bottom",
                  legend.background = element_rect(fill = "transparent", colour = "transparent"))+
@@ -364,10 +355,7 @@ plot_topoplots_by_custom_TW <-  function (data_for_map,
                                              aes(x = x, y = y, fill = Voltage)
          ) +
            geom_raster(show.legend=F) +
-           stat_contour(aes(z = Voltage),
-                        colour = "black",
-                        binwidth = 0.5,
-                        inherit.aes = FALSE) +
+           stat_contour(aes(x = x, y = y, z = Voltage), colour = "black", binwidth = 0.5, inherit.aes = FALSE) +
            theme_topo()+
            theme(legend.position="bottom",
                  legend.background = element_rect(fill = "transparent", colour = "transparent"))+
